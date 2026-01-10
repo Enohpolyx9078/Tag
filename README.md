@@ -55,11 +55,15 @@ sequenceDiagram
 
 ```
 
+The server will act as the brain of the game. It will keep track of player locations and when someone is tagged.
+
 ### Key features
 
-- Describe your key feature
-- Describe your key feature
-- Describe your key feature
+- Real time online multiplayer
+- Individual player statistics are recorded
+- Player skins are customizable
+- Rooms can be created and joined by players so friends can play together
+- Obstacles and powerups make rounds diverse
 
 ### Technologies
 
