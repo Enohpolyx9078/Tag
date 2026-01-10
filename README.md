@@ -69,12 +69,19 @@ The server will act as the brain of the game. It will keep track of player locat
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Description here
-- **CSS** - Description here
-- **React** - Description here
-- **Service** - Description here
-- **DB/Login** - Description here
-- **WebSocket** - Description here
+- **HTML** - Frameworking the pages. There will be three pages: the login/create account page, the profile page, and the game page. Hyperlinks will allow users to navigate from page to page. The game screen will be drawn with a `<canvas>`
+- **CSS** - Style the pages to be consistent with each other and look appealing. This will mainly be a desktop/tablet application, so things may not look right on mobile.
+- **React** - Update the game screen, pull up modals for creating/joining games, update the statistics to track them live, etc...
+- **Service** - Backend endpoints for:
+    - Create account
+    - Login
+    - Update profile (change skin, name, etc...)
+    - Create a game
+    - Join a game
+    - Game actions (moving, being tagged, etc...)
+    - Exit a game (intentionally or because of crash or disconnection)
+- **DB/Login** - Storing profile preferences and statistics and login credentials. The user can't join or create a game without being authenticated.
+- **WebSocket** - Movements, tags, pickups, etc... will be broadcasted by the server to all players so that they can play simultaneously.
 
 ## 🚀 AWS deliverable
 
