@@ -18,10 +18,10 @@ Tag. It's tag. It'll be a real time online multiplayer version of the classic pl
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
 - [x] Proper use of Markdown: I looked up markdown syntax and made sure to follow proper conventions
-- [x] A concise and compelling elevator pitch
-- [x] Description of key features
-- [x] Description of how you will use each technology
-- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] A concise and compelling elevator pitch: I made the pitch (see below)
+- [x] Description of key features: I listed some key features I'd like for now. Subject to change depending on how things go.
+- [x] Description of how you will use each technology: I described what each technology is for.
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references: I included sketches of each HTML page as well as a sequence diagram showing the communication that happens when someone is tagged.
 
 ### Elevator pitch
 
