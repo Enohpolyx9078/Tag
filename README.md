@@ -21,7 +21,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] A concise and compelling elevator pitch
 - [ ] Description of key features
 - [ ] Description of how you will use each technology
-- [ ] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
+- [x] One or more rough sketches of your application. Images must be embedded in this file using Markdown image references.
 
 ### Elevator pitch
 
@@ -43,9 +43,16 @@ This is the main gameplay screen. In the middle is the actual game. On the left 
 
 ```mermaid
 sequenceDiagram
-    actor You
-    actor Website
-    You->>Website: Replace this with your design
+    actor Player1
+    actor Player2
+    actor Player3
+    Player1->>Server: Moved left
+    Server -->>Player2: Player1 left
+    Server -->>Player3: Player1 left
+    Server -->>Player1: Player1 tagged Player3
+    Server -->>Player2: Player1 tagged Player3
+    Server -->>Player3: Player1 tagged Player3
+
 ```
 
 ### Key features
