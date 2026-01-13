@@ -60,7 +60,7 @@ The server will act as the brain of the game. It will keep track of player locat
 
 I am going to use the required technologies in the following ways.
 
-- **HTML** - Frameworking the pages. There will be three pages: the login/create account page, the profile page, and the game page. Hyperlinks will allow users to navigate from page to page. The game screen will be drawn with a `<canvas>`
+- **HTML** - Frameworking the pages. There will be three pages: the login/create account page, the profile page, and the game page. Hyperlinks will allow users to navigate from page to page. The game screen will be drawn with a `<canvas>` or using a grid of boxes
 - **CSS** - Style the pages to be consistent with each other and look appealing. This will mainly be a desktop/tablet application, so things may not look right on mobile.
 - **React** - Update the game screen, pull up modals for creating/joining games, update the statistics to track them live, etc...
 - **Service** - Backend endpoints for:
