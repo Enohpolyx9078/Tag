@@ -1,6 +1,6 @@
 # CS 260 Notes
 
-[My startup - Simon](https://simon.cs260.click)
+[My startup - Tag](https://goplaytag.click)
 
 ## Helpful links
 
@@ -10,12 +10,12 @@
 
 ## AWS
 
-My IP address is: 54.81.96.130
-Launching my AMI I initially put it on a private subnet. Even though it had a public IP address and the security group was right, I wasn't able to connect to it.
+My IP address is: 52.73.222.26
+This is an elastic IP, so if server upgrades are needed there shouldn't be an issue.
 
 ## Caddy
 
-No problems worked just like it said in the [instruction](https://github.com/webprogramming260/.github/blob/main/profile/webServers/https/https.md).
+So far so good. LLMs are great at explaining this stuff.
 
 ## HTML
 
