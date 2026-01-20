@@ -20,15 +20,15 @@ Did you play tag on the playground? Why does such a basic game have so much appe
 
 ### Design
 
-![Login Screen](res/img/login.png)
+![Login Screen](img/login.png)
 
 This is the login/create account screen. This will be the default page when the server is first hit.
 
-![Profile Screen](res/img/profile.png)
+![Profile Screen](img/profile.png)
 
 After logging in, the user will be sent here. This screen shows gameplay statistics and customization options. Here is also where the user can create and join games.
 
-![Game Screen](res/img/game.png)
+![Game Screen](img/game.png)
 
 This is the main gameplay screen. In the middle is the actual game. On the left is a screen showing the other players in the room, and on the right shows the user and their stats for the round.
 
