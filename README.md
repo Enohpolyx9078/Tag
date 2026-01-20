@@ -71,6 +71,7 @@ I am going to use the required technologies in the following ways.
     - Join a game
     - Game actions (moving, being tagged, etc...)
     - Exit a game (intentionally or because of crash or disconnection)
+    - Google Gemini or AWS Bedrock API to analyze game statistics using AI
 - **DB/Login** - Storing profile preferences and statistics and login credentials. The user can't join or create a game without being authenticated.
 - **WebSocket** - Movements, tags, pickups, etc... will be broadcasted by the server to all players so that they can play simultaneously.
 
