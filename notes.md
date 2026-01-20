@@ -23,6 +23,8 @@ Without the CSS, this all looks awful and stacks vertically instead of side-by-s
 
 Eventually, React will handle the changes and updates instead of just using a million new pages, so that will be nice.
 
+The HTML holding the game screen is more or less a table. The player's position will be recorded by the center of their icon. If the distance between them and another player is less than or equal to the radius of the icon, then they collided.
+
 ## CSS
 
 This took a couple hours to get it how I wanted. It was important to make it responsive and Bootstrap helped with that. It looks great on all kinds of screen sizes.
