@@ -87,7 +87,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 - [x] **HTML pages** - I added four pages: index, profile, create-account, and game
 - [x] **Proper HTML element usage** - I've got main, header, and section tags where appropriate, and the anchor tags all work. I also split things into tables where it was appropriate. For now, some things are laying out vertically instead of horizontally, but I'll use CSS to fix that later.
-- [x] **Links** - All the links on all the pages work properly! (I know, I clicked 'em all).
+- [x] **Links** - The Github link is in the footer of every page. All the other links on the pages work properly! (I know, I clicked 'em all).
 - [x] **Text** - There's text where it's needed. It looks like text.
 - [x] **3rd party API placeholder** - On the profile page, there's a placeholder for where I'll make a call to the Google Gemini API to analyze some captured game statistics.
 - [x] **Images** - There's a bunch of SVGs representing skins for the game as well as a custom made (and strikingly beautiful) logo.
