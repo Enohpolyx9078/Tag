@@ -85,15 +85,15 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **HTML pages** - I did not complete this part of the deliverable.
-- [ ] **Proper HTML element usage** - I did not complete this part of the deliverable.
-- [ ] **Links** - I did not complete this part of the deliverable.
-- [ ] **Text** - I did not complete this part of the deliverable.
-- [ ] **3rd party API placeholder** - I did not complete this part of the deliverable.
-- [ ] **Images** - I did not complete this part of the deliverable.
-- [ ] **Login placeholder** - I did not complete this part of the deliverable.
-- [ ] **DB data placeholder** - I did not complete this part of the deliverable.
-- [ ] **WebSocket placeholder** - I did not complete this part of the deliverable.
+- [x] **HTML pages** - I added four pages: index, profile, create-account, and game
+- [x] **Proper HTML element usage** - I've got main, header, and section tags where appropriate, and the anchor tags all work. I also split things into tables where it was appropriate. For now, some things are laying out vertically instead of horizontally, but I'll use CSS to fix that later.
+- [x] **Links** - All the links on all the pages work properly! (I know, I clicked 'em all).
+- [x] **Text** - There's text where it's needed. It looks like text.
+- [x] **3rd party API placeholder** - On the profile page, there's a placeholder for where I'll make a call to the Google Gemini API to analyze some captured game statistics.
+- [x] **Images** - There's a bunch of SVGs representing skins for the game as well as a custom made (and strikingly beautiful) logo.
+- [x] **Login placeholder** - There's a login page. It doesn't do anything yet, but it's there.
+- [x] **DB data placeholder** - There's placeholders showing game statistics. These statistics, as well as user preferences, will be saved per user.
+- [x] **WebSocket placeholder** - The game is going to be controlled entirely by websocket.
 
 ## 🚀 CSS deliverable
 
