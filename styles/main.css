@@ -29,16 +29,28 @@ h1 {
     text-align: center;
 }
 
+input {
+    border-radius: 0.5em;
+    margin-bottom: 0.5em;
+}
+
 .card {
     background-color: var(--surface);
     border-radius: 0.5em;
     display: flex;
     flex-direction: column;
     padding: 2em;
+    width: fit-content;
 }
 
 .centered {
     text-align: center;
+}
+
+.flex-centered {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .logo {
