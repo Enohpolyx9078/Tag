@@ -10,6 +10,7 @@
 
 a {
     color: var(--primary);
+    transition-duration: 0.33s;
 }
 
 body {
@@ -76,4 +77,26 @@ input {
 
 .main-button:active {
     background-color: var(--primary-active);
+}
+
+.outline-button {
+    border: solid 2px var(--primary);
+    border-radius: 0.5em;
+    color: var(--primary);
+    font-weight: bold;
+    margin: 0.25em;
+    padding: 0.25em;
+    text-align: center;
+    text-decoration: none;
+}
+
+.outline-button:hover {
+    background-color: var(--primary-hover);
+    border: solid 2px var(--primary-hover);
+    color: var(--background);
+}
+
+.outline-button:active {
+    background-color: var(--primary-active);
+    border: solid 2px var(--primary-active);
 }
