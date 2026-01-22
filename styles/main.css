@@ -80,6 +80,7 @@ input {
 }
 
 .outline-button {
+    background-color: transparent;
     border: solid 2px var(--primary);
     border-radius: 0.5em;
     color: var(--primary);
