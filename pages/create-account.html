@@ -3,30 +3,33 @@
 
 <head>
     <title>Play Tag</title>
+    <link rel="stylesheet" href="../styles/main.css" />
 </head>
 
 <body>
-    <img src="../img/go_play_tag.png" alt="Game logo" width="100px"/>
-    <h1>Play Tag</h1>
-    <main>
+    <div class="centered">
+        <img class="logo" src="../img/go_play_tag.png" alt="Game logo" width="100px" />
+        <h1>Play Tag</h1>
+    </div>
+    <main class="flex-centered">
         <h2>Create Account</h2>
-        <label for="username">Username</label>
-        <input id="username" />
-        <br />
-        <label for="password">Password</label>
-        <input id="password" type="password" />
-        <br />
-        <a href="profile.html">Login</a>
-        <br />
-        <small>
-            Already have an account?
-            <a href="../index.html">Login instead</a>
-        </small>
+        <div class="card">
+            <label for="username">Username</label>
+            <input id="username" />
+            <label for="password">Password</label>
+            <input id="password" type="password" />
+            <a class="main-button" href="pages/profile.html">Login</a>
+            <div class="centered">
+                <small>
+                    Already have an account?
+                    <a href="../index.html">Login</a>
+                </small>
+            </div>
+        </div>
     </main>
     <footer>
         <small>Authored by Howard Crawford</small>
-        <br/>
-        <small><a href="https://github.com/Enohpolyx9078/Tag" target="_blank">Github</a></small>
+        <small><a href="https://github.com/Enohpolyx9078/Tag" target="_blank"> Github</a></small>
     </footer>
 </body>
 
