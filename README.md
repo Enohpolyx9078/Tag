@@ -104,7 +104,7 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 - [x] **All visual elements styled using CSS** - I got rid of the `<br/>` tags and things and made all the styling come from the stylesheets.
 - [x] **Responsive to window resizing using flexbox and/or grid display** - I used flexbox and media queiries to get things to resize when the screen becomes to small. Basically, cards stack and the game screen can swap between different sizes to stay visible.
 - [x] **Use of a imported font** - I got the [Oxanium](https://fonts.google.com/specimen/Oxanium) font from Google Fonts and plugged it in
-- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I use class, element, id, and pseudo selectors across the different stylesheets.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I used class, element, id, and pseudo selectors across the different stylesheets.
 
 ## 🚀 React part 1: Routing deliverable
 
