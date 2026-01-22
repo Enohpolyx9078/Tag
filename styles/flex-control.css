@@ -19,6 +19,10 @@
     margin: 0 0.5em;
 }
 
+.columns-list {
+    margin-bottom: 0.5em;
+}
+
 .sidebar {
     flex: 0 1 20%;
 }

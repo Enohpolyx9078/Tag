@@ -9,26 +9,28 @@
 </head>
 
 <body>
-    <img class="logo-small" src="../img/go_play_tag.png" alt="Game logo"/>
-    <h1>Room ASDF123</h1>
-    <main>
+    <div class="columns columns-center">
+        <img class="logo-inline" src="../img/go_play_tag.png" alt="Game logo" />
+        <h1>Room ASDF123</h1>
+    </div>
+    <main class="columns">
         <!--Player List-->
-        <section>
+        <section class="columns-child sidebar">
             <h2>Other Players</h2>
-            <div>
-                <svg width="50" height="50">
+            <div class="columns columns-list">
+                <svg class="skin-icon">
                     <rect x="0" y="0" width="50" height="50" stroke="orange" stroke-width="3" fill="#db61e8" />
                 </svg>
                 <p>Player 1</p>
             </div>
-            <div>
-                <svg width="50" height="50">
+            <div class="columns columns-list">
+                <svg class="skin-icon">
                     <rect x="0" y="0" width="50" height="50" stroke="blue" stroke-width="3" fill="white" />
                 </svg>
                 <p>Player 2</p>
             </div>
-            <div>
-                <svg width="50" height="50">
+            <div class="columns columns-list">
+                <svg class="skin-icon">
                     <rect x="0" y="0" width="50" height="50" stroke="green" stroke-width="3" fill="yellow" />
                 </svg>
                 <p>Player 3</p>
@@ -93,9 +95,9 @@
             </table>
         </section>
         <!--Sidebar-->
-        <section>
-            <div>
-                <svg width="50" height="50">
+        <section class="columns-child sidebar">
+            <div class="columns columns-list">
+                <svg class="skin-icon">
                     <rect x="0" y="0" width="50" height="50" stroke="black" stroke-width="3" fill="#29e3d3" />
                 </svg>
                 <p>Your Name</p>
@@ -104,12 +106,12 @@
             <p>Time It: 00:03:22</p>
             <p>Time Not It: 00:13:32</p>
             <p>Pickups Used: 9</p>
-            <a href="profile.html">Leave Game</a>
+            <a class="outline-button" href="profile.html">Leave Game</a>
         </section>
     </main>
     <footer>
         <small>Authored by Howard Crawford</small>
-        <br/>
+        <br />
         <small><a href="https://github.com/Enohpolyx9078/Tag" target="_blank">Github</a></small>
     </footer>
 </body>
