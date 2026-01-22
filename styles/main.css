@@ -57,7 +57,11 @@ input {
 }
 
 .logo {
-    filter: invert(1);
+    width: 100px;
+}
+
+.logo-small {
+    width: 50px;
 }
 
 .main-button {
