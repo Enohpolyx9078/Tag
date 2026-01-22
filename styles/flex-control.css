@@ -18,3 +18,14 @@
     flex: 0 1 33.33%;
     margin: 0 0.5em
 }
+
+@media (max-width: 1000px) {
+  .columns {
+    flex-direction: column; /* Items stack vertically on small screens */
+  }
+
+  .third {
+    width: unset;
+    margin-bottom: 0.5em;
+  }
+}
