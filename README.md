@@ -99,12 +99,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Visually appealing colors and layout. No overflowing elements.** - I did not complete this part of the deliverable.
-- [ ] **Use of a CSS framework** - I did not complete this part of the deliverable.
-- [ ] **All visual elements styled using CSS** - I did not complete this part of the deliverable.
-- [ ] **Responsive to window resizing using flexbox and/or grid display** - I did not complete this part of the deliverable.
+- [x] **Visually appealing colors and layout. No overflowing elements.** - An AI helped me get a color pallette, and from there, I set everything up.
+- [x] **Use of a CSS framework** - I set up classes for my styles, and they're all contained in the stylesheets in the `styles/` directory.
+- [x] **All visual elements styled using CSS** - I got rid of the `<br/>` tags and things and made all the styling come from the stylesheets.
+- [x] **Responsive to window resizing using flexbox and/or grid display** - I used flexbox and media queiries to get things to resize when the screen becomes to small. Basically, cards stack and the game screen can swap between different sizes to stay visible.
 - [ ] **Use of a imported font** - I did not complete this part of the deliverable.
-- [ ] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I did not complete this part of the deliverable.
+- [x] **Use of different types of selectors including element, class, ID, and pseudo selectors** - I use class, element, id, and pseudo selectors across the different stylesheets.
 
 ## 🚀 React part 1: Routing deliverable
 
