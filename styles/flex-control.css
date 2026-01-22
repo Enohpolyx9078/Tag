@@ -47,7 +47,7 @@
     flex-direction: column;
   }
 
-  .third {
+  .third, .sidebar, .sidebar-thin {
     width: unset;
     margin-bottom: 0.5em;
   }

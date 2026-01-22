@@ -128,3 +128,10 @@ input {
     height: 100px;
     width: 100px;    
 }
+
+@media (max-width: 525px) {
+    .skin-big {
+        height: 50px;
+        width: 50px;
+    }
+}

@@ -5,3 +5,13 @@ table, td {
 td:empty {
     padding: 50px;
 }
+
+@media (max-width: 525px) {
+    table {
+        margin-bottom: 0.5em;
+    }
+    
+    td:empty {
+        padding: 25px;
+    }
+}
