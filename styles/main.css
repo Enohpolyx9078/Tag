@@ -8,6 +8,10 @@
     --primary-active: #E67E22;
 }
 
+#selected {
+    margin-right: 1em;
+}
+
 a {
     color: var(--primary);
     transition-duration: 0.33s;
@@ -120,8 +124,7 @@ input {
     width: 50px;
 }
 
-.skin-selected {
+.skin-big {
     height: 100px;
-    margin-right: 1em;
     width: 100px;    
 }
