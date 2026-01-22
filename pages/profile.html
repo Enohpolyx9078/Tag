@@ -5,6 +5,7 @@
     <title>Play Tag</title>
     <meta name="viewport" content="width=device-width, iniitial-scale=1.0" />
     <link rel="stylesheet" href="../styles/main.css" />
+    <link rel="stylesheet" href="../styles/flex-control.css" />
 </head>
 
 <body>
@@ -12,19 +13,19 @@
         <img class="logo" src="../img/go_play_tag.png" alt="Game logo" width="100px" />
         <h1>Play Tag</h1>
     </div>
-    <nav>
-        <a class="main-button" href="game.html">Create Game</a>
-        <a class="main-button" href="game.html">Join Game</a>
-        <a class="outline-button" href="../index.html">Logout</a>
-    </nav>
-    <main>
-        <section>
+    <main class="columns">
+        <nav class="columns-child">
+            <a class="main-button" href="game.html">Create Game</a>
+            <a class="main-button" href="game.html">Join Game</a>
+            <a class="outline-button" href="../index.html">Logout</a>
+        </nav>
+        <section class="columns-child">
             <svg width="100" height="100">
                 <rect x="0" y="0" width="100" height="100" stroke="black" stroke-width="6" fill="#29e3d3" />
             </svg>
             <h2>Your Name</h2>
         </section>
-        <section>
+        <section class="columns-child">
             <h3>Skins</h3>
             <div>
                 <svg width="50" height="50">
@@ -47,7 +48,7 @@
         <section>
             <a class="outline-button" href="#">Get Analysis</a>
             <p>
-                <strong>AI:</strong> 
+                <strong>AI:</strong>
                 <em>
                     During the last game, you spent 76% of the time as "It." Your average distance from "It"
                     while not "It" was 10 units. Try to stay further away from "It" to avoing being caught.
@@ -57,7 +58,7 @@
     </main>
     <footer>
         <small>Authored by Howard Crawford</small>
-        <br/>
+        <br />
         <small><a href="https://github.com/Enohpolyx9078/Tag" target="_blank">Github</a></small>
     </footer>
 </body>
