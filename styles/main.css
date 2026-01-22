@@ -16,6 +16,17 @@ body {
     background-color: var(--background);
     color: var(--primary-text);
     font-family: Arial, Helvetica, sans-serif;
+    padding: 1em;
+}
+
+footer {
+    display: flex;
+    flex-direction: column;
+    margin-top: 2em;
+}
+
+h1 {
+    text-align: center;
 }
 
 .card {
@@ -26,10 +37,19 @@ body {
     padding: 2em;
 }
 
+.centered {
+    text-align: center;
+}
+
+.logo {
+    filter: invert(1);
+}
+
 .main-button {
     background-color: var(--primary);
     border-radius: 0.5em;
     color: var(--background);
+    font-weight: bold;
     margin: 0.25em;
     padding: 0.25em;
     text-align: center;
