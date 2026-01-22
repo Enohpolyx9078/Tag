@@ -46,6 +46,15 @@ input {
     width: fit-content;
 }
 
+.card-thin {
+    background-color: var(--surface);
+    border-radius: 0.5em;
+    display: flex;
+    flex-direction: column;
+    padding: 2em;
+    width: min-content;
+}
+
 .centered {
     text-align: center;
 }
