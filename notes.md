@@ -27,7 +27,7 @@ The HTML holding the game screen is more or less a table. The player's position 
 
 ## CSS
 
-I used media queries to get the windows to be responsive to screen size. It's not perfect yet, but it is definitly more organic and useable now. Also, it turns out that LLMs do a decent job at getting color pallets. Nice.
+It turns out that LLMs do a decent job at getting color pallets. Nice. I also used Tailwind to handle responsive window stuff. Right now, it's deployed using their CDN, but I could switch to using Vita later.
 
 ## React Part 1: Routing
 
