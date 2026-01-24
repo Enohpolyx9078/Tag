@@ -6,19 +6,20 @@
     <link rel="icon" href="go_play_tag_icon.png" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link rel="stylesheet" href="styles/main.css" />
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
 <body>
-    <div class="centered">
-        <img class="logo" src="../img/go_play_tag.png" alt="Game logo" />
+    <div class="mx-auto max-w-sm">
+        <img class="logo mx-auto" src="../img/go_play_tag.png" alt="Game logo" />
     </div>
     <main class="flex-centered">
-        <h2>Login</h2>
-        <div class="card">
+        <h2 class="text-2xl font-semibold">Login</h2>
+        <div class="card md:w-100">
             <label for="username">Username</label>
-            <input id="username" />
+            <input class="border-2 border-white" id="username" />
             <label for="password">Password</label>
-            <input id="password" type="password" />
+            <input class="border-2 border-white" id="password" type="password" />
             <a class="main-button" href="pages/profile.html">Login</a>
             <div class="centered">
                 <small>
