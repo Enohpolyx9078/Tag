@@ -125,6 +125,7 @@ input {
 }
 
 .skin-icon {
+    display: inline;
     height: 50px;
     width: 50px;
 }
