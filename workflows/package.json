@@ -1,10 +1,11 @@
 {
   "name": "tag",
   "version": "0.3.0",
-  "description": "[ReadMe](../README.md)",
+  "description": "Source code for an online game of tag",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node _test.js",
+    "dev": "node index.js"
   },
   "repository": {
     "type": "git",
