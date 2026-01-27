@@ -1,3 +1,8 @@
-node_modules/
 *.sh
+
+node_modules/
+.vscode/
+img/
 workflows/_test.js
+
+!img/go_play_tag.png
