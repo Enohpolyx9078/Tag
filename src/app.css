@@ -23,7 +23,7 @@ a {
     transition-duration: 0.33s;
 }
 
-body {
+body, .body {
     background-color: var(--background);
     color: var(--primary-text);
     font-family: Oxanium, Arial, Helvetica, sans-serif;

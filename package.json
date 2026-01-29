@@ -1,24 +1,31 @@
 {
   "name": "tag",
-  "version": "0.3.0",
-  "description": "Source code for an online game of tag",
+  "version": "1.0.0",
+  "description": "[My Notes](notes.md)",
   "main": "index.js",
   "scripts": {
-    "test": "node _test.js",
-    "dev": "node index.js"
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
   },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Enohpolyx9078/Tag.git"
   },
-  "author": "Howard Crawford",
-  "license": "MIT",
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
   "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Enohpolyx9078/Tag/issues"
   },
   "homepage": "https://github.com/Enohpolyx9078/Tag#readme",
+  "devDependencies": {
+    "vite": "^7.3.1"
+  },
   "dependencies": {
-    "give-me-a-joke": "^0.5.1"
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "react-router-dom": "^7.13.0"
   }
 }
