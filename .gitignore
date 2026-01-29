@@ -2,7 +2,7 @@
 
 node_modules/
 .vscode/
-img/*.png
+public/img/*.png
 workflows/_test.js
 
 !img/go_play_tag.png
