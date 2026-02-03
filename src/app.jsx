@@ -13,9 +13,11 @@ export default function App() {
                 <div className="mx-auto max-w-sm">
                     <img className="logo mx-auto" src="../img/go_play_tag.png" alt="Game logo" />
                 </div>
-                <NavLink to="">Login</NavLink>
                 <Routes>
                     <Route path='/' element={<Login />} exact />
+                    <Route path='/profile' element={<Profile />}/>
+                    <Route path='/createAccount' element={<CreateAccount />}/>
+                    <Route path='*' element={<NotFound />} />
                 </Routes>
                 <footer>
                     <small>Authored by Howard Crawford</small>
@@ -27,5 +29,5 @@ export default function App() {
 }
 
 function NotFound() {
-    return <main className="container-fluid bg-secondary text-center">404: Return to sender. Address unknown.</main>;
+    return <main className="flex-centered">404: Well that's awkward... We couldn't find what you're looking for!</main>;
 }
