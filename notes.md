@@ -31,7 +31,7 @@ It turns out that LLMs do a decent job at getting color pallets. Nice. I also us
 
 ## React Part 1: Routing
 
-Setting up Vite and React was pretty simple. I had a bit of trouble because of conflicting CSS. This isn't as straight forward as you would find with Svelte or Vue, but I made it work in the end. If there was a ton of CSS it would be a real problem. It sure was nice to have the code structured in a more usable way.
+Setting up react took a hot sec because I forgot the import line at the top of my child components for react stuff smh. The good news is I finally go that figured out, so now the react stuff is working for routing.
 
 ## React Part 2: Reactivity
 

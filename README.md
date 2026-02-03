@@ -110,9 +110,9 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Bundled using Vite** - I did not complete this part of the deliverable.
-- [ ] **Components** - I did not complete this part of the deliverable.
-- [ ] **Router** - I did not complete this part of the deliverable.
+- [x] **Bundled using Vite** - Everything is resturcted with Vite and the dev enviornment is all working! Yay!
+- [x] **Components** - Everything has been componentized for each and every screen.
+- [x] **Router** - There's only one HTML page, so now everything is done by routing components.
 
 ## 🚀 React part 2: Reactivity deliverable
 
