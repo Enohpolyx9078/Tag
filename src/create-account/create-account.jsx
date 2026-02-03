@@ -10,7 +10,7 @@ export function CreateAccount() {
             <input className="border-2 border-white" id="username" />
             <label for="password">Password</label>
             <input className="border-2 border-white" id="password" type="password" />
-            <a className="main-button" href="profile.html">Create Account</a>
+            <NavLink className="main-button" to="/profile"> Create Account</NavLink>
             <div className="centered">
                 <small>
                     Already have an account?
