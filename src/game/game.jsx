@@ -6,7 +6,8 @@ export function Game() {
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-        <h2 className="centered text-2xl">Other Players</h2>
+        <h2 className="centered text-2xl">Room: ASDF-123</h2>
+        <h2 className="centered text-xl">Other Players</h2>
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
             <rect x="0" y="0" width="50" height="50" stroke="orange" stroke-width="3" fill="#db61e8" />
