@@ -1,4 +1,5 @@
 import React from 'react';
+import './game-screen.css';
 import { NavLink } from 'react-router-dom';
 
 export function Game() {
