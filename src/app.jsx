@@ -17,6 +17,7 @@ export default function App() {
                     <Route path='/' element={<Login />} exact />
                     <Route path='/profile' element={<Profile />}/>
                     <Route path='/createAccount' element={<CreateAccount />}/>
+                    <Route path='/game' element={<Game />}/>
                     <Route path='*' element={<NotFound />} />
                 </Routes>
                 <footer>
