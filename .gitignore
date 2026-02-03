@@ -5,4 +5,4 @@ node_modules/
 public/img/*.png
 workflows/_test.js
 
-!img/go_play_tag.png
+!public/img/go_play_tag.png
