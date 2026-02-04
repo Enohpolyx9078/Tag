@@ -7,6 +7,7 @@ import { Game } from './game/game';
 import { Profile } from './profile/profile';
 
 export default function App() {
+    const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
     return (
         <BrowserRouter>
             <div className="body">
@@ -14,7 +15,7 @@ export default function App() {
                     <img className="logo mx-auto" src="../img/go_play_tag.png" alt="Game logo" />
                 </div>
                 <Routes>
-                    <Route path='/' element={<Login />} exact />
+                    <Route path='/' element={<Login userName={ userName } setUserName={ setUserName }/>} exact />
                     <Route path='/profile' element={<Profile />}/>
                     <Route path='/createAccount' element={<CreateAccount />}/>
                     <Route path='/game' element={<Game />}/>
