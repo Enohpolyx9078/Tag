@@ -1,7 +1,9 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export function Login({ userName, setUserName }) {
+export function Login() {
+    const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
+    const [password, setPassword] = React.useState('');
 
     async function onLogin() {
         localStorage.setItem("tagStartup-userName", userName);
@@ -14,8 +16,8 @@ export function Login({ userName, setUserName }) {
                 <label for="username">Username</label>
                 <input className="border-2 border-white" id="username" defaultValue={ userName } onChange={(e) => setUserName(e.target.value)}/>
                 <label for="password">Password</label>
-                <input className="border-2 border-white" id="password" type="password" />
-                <NavLink onClick={ () => onLogin() } className="main-button" to="profile">Login</NavLink>
+                <input className="border-2 border-white" id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
+                <NavLink onClick={ () => onLogin() } className="main-button" to="profile" disabled={!userName || !password}>Login</NavLink>
                 <div className="centered">
                     <small>
                         New here?
