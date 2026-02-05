@@ -1,8 +1,9 @@
+@import "tailwindcss";
+
 @font-face {
   font-family: Oxanium; /* set name */
   src: url(../fonts/Oxanium-VariableFont_wght.ttf); /* url of the font */
 }
-
 
 :root {
     --background: #262626;
