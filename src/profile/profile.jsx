@@ -2,9 +2,23 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export function Profile({ userName }) {
-    //TODO define a thing to hold the skins
-
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
+
+    function getSkins() {
+        const skins = JSON.parse(localStorage.getItem("skins"));
+        const list = [];
+        for (const thing of skins.skins) {
+            let {id, outline, fill} = thing;
+            list.push(
+                (
+                    <svg key={ id } className="skin-icon mb-2 mr-2" cursor="pointer">
+                        <rect x="0" y="0" width="50" height="50" stroke={ outline } strokeWidth="3" fill={ fill } />
+                    </svg>
+                )
+            )
+        }
+        return list;
+    }
 
     async function getAnalysis(setAnalysis) {
         setAnalysis(
@@ -14,6 +28,7 @@ export function Profile({ userName }) {
                 </svg>
             </div>)
         );
+        // Placeholder for API call later
         setTimeout(() => {
             setAnalysis(
                 (<p>
@@ -24,12 +39,15 @@ export function Profile({ userName }) {
             )
         }, 3000);
     }
+
+    const skinList = getSkins();
+
     return (
         <main>
             <section className="md:grid md:grid-flow-col md:grid-cols-5 mb-4">
                 <div className="col-span-4 grid grid-flow-col grid-cols-5 justify-around items-center mb-4">
                     <svg id="selected" className="skin-big col-span-1">
-                        <rect x="0" y="0" width="100" height="100" stroke="black" stroke-width="6" fill="#29e3d3" />
+                        <rect x="0" y="0" width="100" height="100" stroke="black" strokeWidth="6" fill="#29e3d3" />
                     </svg>
                     <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{userName}</h2>
                 </div>
@@ -43,15 +61,7 @@ export function Profile({ userName }) {
                 <div className="col-span-1 card mb-4 md:mb-0">
                     <h3>Skins</h3>
                     <div>
-                        <svg className="skin-icon mr-2 mb-2">
-                            <rect x="0" y="0" width="50" height="50" stroke="orange" stroke-width="3" fill="#db61e8" />
-                        </svg>
-                        <svg className="skin-icon mr-2 mb-2">
-                            <rect x="0" y="0" width="50" height="50" stroke="blue" stroke-width="3" fill="white" />
-                        </svg>
-                        <svg className="skin-icon mr-2 mb-2">
-                            <rect x="0" y="0" width="50" height="50" stroke="green" stroke-width="3" fill="yellow" />
-                        </svg>
+                        { skinList }
                     </div>
                 </div>
                 <div className="col-span-1 card mb-4 md:mb-0">
