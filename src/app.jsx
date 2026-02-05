@@ -17,7 +17,7 @@ export default function App() {
                 </div>
                 <Routes>
                     <Route path='/' element={<Login userName={ userName} setUserName={ setUserName }/>} exact />
-                    <Route path='/profile' element={<Profile />}/>
+                    <Route path='/profile' element={<Profile userName={ userName }/>}/>
                     <Route path='/createAccount' element={<CreateAccount userName={ userName} setUserName={ setUserName }/>}/>
                     <Route path='/game' element={<Game />}/>
                     <Route path='*' element={<NotFound />} />
