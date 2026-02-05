@@ -1,8 +1,7 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
 
-export function Login() {
-    const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
+export function Login({ userName, setUserName }) {
     const [password, setPassword] = React.useState('');
 
     async function onLogin() {
