@@ -23,6 +23,11 @@ a {
     transition-duration: 0.33s;
 }
 
+a[disabled] {
+    pointer-events: none;
+    opacity: 0.4;
+}
+
 body, .body {
     background-color: var(--background);
     color: var(--primary-text);
@@ -45,6 +50,7 @@ h1 {
 input {
     border-radius: 0.5em;
     margin-bottom: 0.5em;
+    padding: 0.2em;
 }
 
 .card {
