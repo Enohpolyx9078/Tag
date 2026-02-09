@@ -30,7 +30,7 @@ export function Game({ userName, skin }) {
           <p>Player 3</p>
         </div>
       </section>
-      { <Arena /> }
+      { <Arena skin={ skin }/> }
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">

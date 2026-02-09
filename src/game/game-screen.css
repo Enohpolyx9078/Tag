@@ -6,6 +6,12 @@ td:empty {
     padding: 50px;
 }
 
+.arena {
+    border: 5px solid black;
+    height: 500px;
+    width: 500px;
+}
+
 @media (max-width: 525px) {
     table {
         margin-bottom: 0.5em;
