@@ -3,27 +3,52 @@ import './game-screen.css';
 
 export function Arena({ skin }) {
     const [position, setPosition] = React.useState({ x: 10, y: 10 });
-    const moveSpeed = 10;
     const size = 50;
 
+    const requestRef = React.useRef();
+    const keysPressed = React.useRef({});
+
     // Made with some help from Gemini 3
+
+    const animate = () => {
+        setPosition((prev) => {
+            let { x, y } = prev;
+            const speed = 5;
+            //TODO use delta Time for position change instead of move speed
+
+            if (keysPressed.current['ArrowUp']) y -= speed;
+            if (keysPressed.current['ArrowDown']) y += speed;
+            if (keysPressed.current['ArrowLeft']) x -= speed;
+            if (keysPressed.current['ArrowRight']) x += speed;
+
+            return { x, y };
+        });
+
+        requestRef.current = requestAnimationFrame(animate);
+    }
+
     React.useEffect(() => {
-        const handleKeyPress = (e) => {
+        requestRef.current = requestAnimationFrame(animate);
+        const down = (e) => {
             const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
             if (gameKeys.includes(e.key)) e.preventDefault();
-            setPosition((prev) => {
-                switch (e.key) {
-                    case 'ArrowUp': return { ...prev, y: prev.y - moveSpeed };
-                    case 'ArrowDown': return { ...prev, y: prev.y + moveSpeed };
-                    case 'ArrowLeft': return { ...prev, x: prev.x - moveSpeed };
-                    case 'ArrowRight': return { ...prev, x: prev.x + moveSpeed };
-                    default: return prev;
-                }
-            });
+            keysPressed.current[e.key] = true;
+        };
+        const up = (e) => {
+            const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+            if (gameKeys.includes(e.key)) e.preventDefault();
+            keysPressed.current[e.key] = false;
+        };
+
+        window.addEventListener('keydown', down);
+        window.addEventListener('keyup', up);
+
+        return () => {
+            cancelAnimationFrame(requestRef.current);
+            window.removeEventListener('keydown', down);
+            window.removeEventListener('keyup', up);
         }
-        window.addEventListener('keydown', handleKeyPress);
-        return () => window.removeEventListener('keydown', handleKeyPress);
-    }, []);
+    });
 
     return (
         <section className="arena relative mb-2 md:mb-0">
