@@ -4,8 +4,9 @@ import { NavLink } from 'react-router-dom';
 export function Profile({ userName }) {
     const skins = JSON.parse(localStorage.getItem("skins"));
     let currentSkin = JSON.parse(localStorage.getItem("currentSkin"));
+    currentSkin = currentSkin != null? currentSkin : skins.skin[0];
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
-    let [skin, setSkin] = React.useState(currentSkin != null ? currentSkin : skins.skins[0]);
+    let [skin, setSkin] = React.useState(currentSkin);
 
     function getSkins() {
         const list = [];
