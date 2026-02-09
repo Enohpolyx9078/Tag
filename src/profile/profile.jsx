@@ -8,12 +8,15 @@ export function Profile({ userName }) {
         const skins = JSON.parse(localStorage.getItem("skins"));
         const list = [];
         for (const thing of skins.skins) {
-            let {id, outline, fill} = thing;
+            let { id, outline, fill } = thing;
             list.push(
                 (
-                    <svg key={ id } className="skin-icon mb-2 mr-2" cursor="pointer">
-                        <rect x="0" y="0" width="50" height="50" stroke={ outline } strokeWidth="3" fill={ fill } />
-                    </svg>
+                    <div key={id} className="cursor-pointer skin-container mb-2">
+                        <svg className="skin-icon mr-2">
+                            <rect x="0" y="0" width="50" height="50" stroke={outline} strokeWidth="3" fill={fill} />
+                        </svg>
+                        <em>{ id }</em>
+                    </div>
                 )
             )
         }
@@ -57,20 +60,20 @@ export function Profile({ userName }) {
                     <NavLink className="outline-button" to="/">Logout</NavLink>
                 </div>
             </section>
-            <section className="md:grid md:grid-flow-col md:grid-cols-3 gap-4">
-                <div className="col-span-1 card mb-4 md:mb-0">
+            <section className="md:grid md:grid-flow-col md:grid-cols-3 gap-4 half-screen">
+                <div className="col-span-1 card mb-4 md:mb-0 max-h-1/3">
                     <h3>Skins</h3>
-                    <div>
-                        { skinList }
+                    <div className="overflow-x-auto">
+                        {skinList}
                     </div>
                 </div>
-                <div className="col-span-1 card mb-4 md:mb-0">
+                <div className="col-span-1 card mb-4 md:mb-0 max-h-1/3">
                     <h3>Stats</h3>
                     <p>Time It: 01:33:22</p>
                     <p>Time Not It: 22:33:32</p>
                     <p>Pickups Used: 223</p>
                 </div>
-                <div className="col-span-1 card mb-4 md:mb-0">
+                <div className="col-span-1 card mb-4 md:mb-0 max-h-1/3">
                     <h3>AI Analysis</h3>
                     {analysis}
                     <a className="outline-button" onClick={() => getAnalysis(setAnalysis)}>Get Analysis</a>

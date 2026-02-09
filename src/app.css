@@ -80,6 +80,10 @@ input {
     align-items: center;
 }
 
+.half-screen {
+    max-height: 50vh;
+}
+
 .logo {
     width: 150px;
 }
@@ -128,6 +132,12 @@ input {
 .outline-button:active {
     background-color: var(--primary-active);
     border: solid 2px var(--primary-active);
+}
+
+.skin-container:hover {
+    border: solid 3px black;
+    padding: 5px;
+    border-radius: 10px;
 }
 
 .skin-icon {
