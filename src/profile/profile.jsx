@@ -75,20 +75,20 @@ export function Profile({ userName }) {
                     <NavLink className="outline-button" to="/">Logout</NavLink>
                 </div>
             </section>
-            <section className="md:grid md:grid-flow-col md:grid-cols-3 gap-4 half-screen">
-                <div className="col-span-1 card mb-4 md:mb-0 max-h-1/3">
+            <section className="md:grid md:grid-flow-col md:grid-cols-3 gap-4">
+                <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>Skins</h3>
                     <div className="overflow-x-auto">
                         {skinList}
                     </div>
                 </div>
-                <div className="col-span-1 card mb-4 md:mb-0 max-h-1/3">
+                <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>Stats</h3>
                     <p>Time It: 01:33:22</p>
                     <p>Time Not It: 22:33:32</p>
                     <p>Pickups Used: 223</p>
                 </div>
-                <div className="col-span-1 card mb-4 md:mb-0 max-h-1/3">
+                <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>AI Analysis</h3>
                     {analysis}
                     <a className="outline-button" onClick={() => getAnalysis(setAnalysis)}>Get Analysis</a>
