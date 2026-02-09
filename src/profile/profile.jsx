@@ -78,7 +78,7 @@ export function Profile({ userName, skin, setSkin }) {
                     <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{userName}</h2>
                 </div>
                 <div className="col-span-1 grid grid-flow-col grid-rows-4">
-                    <input ref={ roomCode } className="border-2 border-white" id="roomCode" placeHolder="Room Code"/>
+                    <input ref={ roomCode } className="border-2 border-white" id="roomCode" placeholder="Room Code"/>
                     <NavLink onClick={ () => useCode() } className="main-button" to="/game">Join Game</NavLink>
                     <NavLink onClick={ () => createCode() }className="main-button" to="/game">Create Game</NavLink>
                     <NavLink className="outline-button" to="/">Logout</NavLink>
