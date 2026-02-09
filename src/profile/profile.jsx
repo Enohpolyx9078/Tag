@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
 export function Profile({ userName, skin, setSkin }) {
     const skins = JSON.parse(localStorage.getItem("skins"));
+    const roomCode = useRef(null);
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
 
     function getSkins() {
@@ -11,11 +12,11 @@ export function Profile({ userName, skin, setSkin }) {
             let { id, outline, fill } = thing;
             list.push(
                 (
-                    <div key={id} className="cursor-pointer skin-container mb-2" onClick={ () => defineSkin(id) }>
+                    <div key={id} className="cursor-pointer skin-container mb-2" onClick={() => defineSkin(id)}>
                         <svg className="skin-icon mr-2">
                             <rect x="0" y="0" width="50" height="50" stroke={outline} strokeWidth="3" fill={fill} />
                         </svg>
-                        <em>{ id }</em>
+                        <em>{id}</em>
                     </div>
                 )
             )
@@ -25,7 +26,7 @@ export function Profile({ userName, skin, setSkin }) {
 
     async function defineSkin(id) {
         let current;
-        for ( const thing of skins.skins) {
+        for (const thing of skins.skins) {
             if (id === thing.id) {
                 setSkin(thing);
                 current = thing;
@@ -33,6 +34,16 @@ export function Profile({ userName, skin, setSkin }) {
             }
         }
         if (current) localStorage.setItem("currentSkin", JSON.stringify(current));
+    }
+
+    async function useCode() {
+        localStorage.setItem("roomCode", roomCode.current.value);
+        //TODO check the room code to see if it exists
+    }
+
+    async function createCode() {
+        localStorage.setItem("roomCode", "ASDF-1234");
+        //TODO generate a room code
     }
 
     async function getAnalysis(setAnalysis) {
@@ -62,13 +73,14 @@ export function Profile({ userName, skin, setSkin }) {
             <section className="md:grid md:grid-flow-col md:grid-cols-5 mb-4">
                 <div className="col-span-4 grid grid-flow-col grid-cols-5 justify-around items-center mb-4">
                     <svg id="selected" className="skin-big col-span-1">
-                        <rect x="0" y="0" width="100" height="100" stroke={ skin.outline } strokeWidth="6" fill={ skin.fill } />
+                        <rect x="0" y="0" width="100" height="100" stroke={skin.outline} strokeWidth="6" fill={skin.fill} />
                     </svg>
                     <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{userName}</h2>
                 </div>
-                <div className="col-span-1 grid grid-flow-col grid-rows-3">
-                    <NavLink className="main-button" to="/game">Create Game</NavLink>
-                    <NavLink className="main-button" to="/game">Join Game</NavLink>
+                <div className="col-span-1 grid grid-flow-col grid-rows-4">
+                    <input ref={ roomCode } className="border-2 border-white" id="roomCode" placeHolder="Room Code"/>
+                    <NavLink onClick={ () => useCode() } className="main-button" to="/game">Join Game</NavLink>
+                    <NavLink onClick={ () => createCode() }className="main-button" to="/game">Create Game</NavLink>
                     <NavLink className="outline-button" to="/">Logout</NavLink>
                 </div>
             </section>
