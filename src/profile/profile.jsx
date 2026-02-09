@@ -2,16 +2,18 @@ import React from 'react';
 import { NavLink } from 'react-router-dom';
 
 export function Profile({ userName }) {
+    const skins = JSON.parse(localStorage.getItem("skins"));
+    let currentSkin = JSON.parse(localStorage.getItem("currentSkin"));
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
+    let [skin, setSkin] = React.useState(currentSkin != null ? currentSkin : skins.skins[0]);
 
     function getSkins() {
-        const skins = JSON.parse(localStorage.getItem("skins"));
         const list = [];
         for (const thing of skins.skins) {
             let { id, outline, fill } = thing;
             list.push(
                 (
-                    <div key={id} className="cursor-pointer skin-container mb-2">
+                    <div key={id} className="cursor-pointer skin-container mb-2" onClick={ () => defineSkin(id) }>
                         <svg className="skin-icon mr-2">
                             <rect x="0" y="0" width="50" height="50" stroke={outline} strokeWidth="3" fill={fill} />
                         </svg>
@@ -21,6 +23,18 @@ export function Profile({ userName }) {
             )
         }
         return list;
+    }
+
+    async function defineSkin(id) {
+        let current;
+        for ( const thing of skins.skins) {
+            if (id === thing.id) {
+                setSkin(thing);
+                current = thing;
+                break;
+            }
+        }
+        if (current) localStorage.setItem("currentSkin", JSON.stringify(current));
     }
 
     async function getAnalysis(setAnalysis) {
@@ -50,7 +64,7 @@ export function Profile({ userName }) {
             <section className="md:grid md:grid-flow-col md:grid-cols-5 mb-4">
                 <div className="col-span-4 grid grid-flow-col grid-cols-5 justify-around items-center mb-4">
                     <svg id="selected" className="skin-big col-span-1">
-                        <rect x="0" y="0" width="100" height="100" stroke="black" strokeWidth="6" fill="#29e3d3" />
+                        <rect x="0" y="0" width="100" height="100" stroke={ skin.outline } strokeWidth="6" fill={ skin.fill } />
                     </svg>
                     <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{userName}</h2>
                 </div>
