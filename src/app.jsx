@@ -8,6 +8,9 @@ import { Profile } from './profile/profile';
 
 export default function App() {
     const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
+    let currentSkin = JSON.parse(localStorage.getItem("currentSkin"));
+    currentSkin = currentSkin != null ? currentSkin : skins.skin[0];
+    let [skin, setSkin] = React.useState(currentSkin);
     async function setSkins() {
         const skins = {
             skins: [
@@ -41,9 +44,9 @@ export default function App() {
                 </div>
                 <Routes>
                     <Route path='/' element={<Login userName={userName} setUserName={setUserName} />} exact />
-                    <Route path='/profile' element={<Profile userName={userName} />} />
+                    <Route path='/profile' element={<Profile userName={userName} skin={skin} setSkin={setSkin} />} />
                     <Route path='/createAccount' element={<CreateAccount userName={userName} setUserName={setUserName} />} />
-                    <Route path='/game' element={<Game />} />
+                    <Route path='/game' element={<Game skin={skin}/>} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
                 <footer>
