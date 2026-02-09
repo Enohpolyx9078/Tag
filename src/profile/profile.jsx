@@ -87,8 +87,8 @@ export function Profile({ userName, skin, setSkin }) {
                 </div>
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>AI Analysis</h3>
+                    <a className="outline-button cursor-pointer" onClick={() => getAnalysis(setAnalysis)}>Get Analysis</a>
                     {analysis}
-                    <a className="outline-button" onClick={() => getAnalysis(setAnalysis)}>Get Analysis</a>
                 </div>
             </section>
         </main>
