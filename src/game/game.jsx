@@ -2,8 +2,8 @@ import React from 'react';
 import './game-screen.css';
 import { NavLink } from 'react-router-dom';
 
-export function Game() {
-  const [roomCode, setRoomCode] = React.useState(localStorage.getItem("roomCode"));
+export function Game({ userName, skin }) {
+  const roomCode = localStorage.getItem("roomCode");
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
@@ -73,9 +73,9 @@ export function Game() {
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
-            <rect x="0" y="0" width="50" height="50" stroke="black" strokeWidth="3" fill="#29e3d3" />
+            <rect x="0" y="0" width="50" height="50" stroke={ skin.outline } strokeWidth="3" fill={ skin.fill } />
           </svg>
-          <p>Your Name</p>
+          <p>{ userName }</p>
         </div>
         <h3 className="text-xl">Stats</h3>
         <div className="flex flex-col gap-2 mb-2">
