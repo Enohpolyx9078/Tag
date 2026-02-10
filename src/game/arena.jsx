@@ -1,7 +1,7 @@
 import React from 'react';
 import './game-screen.css';
 
-export function Arena({ skin }) {
+export function Arena({ skin, skin2 }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 430, y: 10, time: performance.now() });
     const size = 50;
@@ -90,8 +90,8 @@ export function Arena({ skin }) {
                 position: `absolute`
             }}></div>
             <div style={{
-                border: `solid 3px ${skin.outline}`,
-                backgroundColor: `${skin.fill}`,
+                border: `solid 3px ${skin2.outline}`,
+                backgroundColor: `${skin2.fill}`,
                 transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,
                 height: `${size}px`,
                 width: `${size}px`,

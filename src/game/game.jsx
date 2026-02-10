@@ -5,6 +5,8 @@ import { Arena } from './arena.jsx';
 
 export function Game({ userName, skin }) {
   const roomCode = localStorage.getItem("roomCode");
+  const skins = JSON.parse(localStorage.getItem("skins"));
+  const skin2 = skins.skins[0];
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
@@ -30,7 +32,7 @@ export function Game({ userName, skin }) {
           <p>Player 3</p>
         </div>
       </section>
-      { <Arena skin={ skin }/> }
+      { <Arena skin={skin} skin2={skin2}/> }
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
