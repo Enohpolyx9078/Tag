@@ -25,8 +25,9 @@ export function Arena({ skin, skin2 }) {
         let bottomEdge = Math.min(p1Position.y + size, p2Position.y + size);
         let yOverlap = bottomEdge - topEdge >= 0;
         // if both overlap, they collided
-        if (xOverlap && yOverlap) console.log("collision");
-        //TODO pass "it"
+        if (xOverlap && yOverlap) {
+            //TODO pass "it"
+        }
     }
 
     React.useEffect(() => checkCollisions, [p1Position, p2Position]);
