@@ -2,7 +2,8 @@ import React from 'react';
 import './game-screen.css';
 
 export function Arena({ skin }) {
-    const [position, setPosition] = React.useState({ x: 10, y: 10, time: performance.now() });
+    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
+    const [p2Position, setP2Position] = React.useState({ x: 430, y: 10, time: performance.now() });
     const size = 50;
     const fieldSize = 500;
     const padding = (3 * 2) + 5; // the border (3) of the character and the arena (5)
@@ -11,12 +12,15 @@ export function Arena({ skin }) {
     const requestRef = React.useRef();
     const keysPressed = React.useRef({});
 
+    const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+    const p2Keys = ['w', 's', 'a', 'd'];
+
     // Made with some help from Gemini 3
 
-    const animate = async () => {
-        setPosition((prev) => {
+    const animate = async (updateFrame, keys) => {
+        updateFrame((prev) => {
             let { x, y, time } = prev;
-            // use delta Time for position change instead of move speed
+            // use delta Time for p1Position change instead of move speed
             const deltaT = performance.now() - time;
             const speed = 0.4;
             const distance = speed * deltaT;
@@ -41,20 +45,21 @@ export function Arena({ skin }) {
                 else x += distance;
             }
 
-            if (keysPressed.current['ArrowUp']) moveUp();
-            if (keysPressed.current['ArrowDown']) moveDown();
-            if (keysPressed.current['ArrowLeft']) moveLeft();
-            if (keysPressed.current['ArrowRight']) moveRight();
+            if (keysPressed.current[keys[0]]) moveUp();
+            if (keysPressed.current[keys[1]]) moveDown();
+            if (keysPressed.current[keys[2]]) moveLeft();
+            if (keysPressed.current[keys[3]]) moveRight();
 
             return { x: x, y: y, time: performance.now() };
         });
 
-        requestRef.current = requestAnimationFrame(animate);
+        requestRef.current = requestAnimationFrame(() => animate(updateFrame, keys));
     }
 
     React.useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+        requestRef.current = requestAnimationFrame(() => animate(setP1Position, p1Keys));
+        requestRef.current = requestAnimationFrame(() => animate(setP2Position, p2Keys));
+        const gameKeys = p1Keys.concat(p2Keys);
         const down = (e) => {
             if (gameKeys.includes(e.key)) e.preventDefault();
             keysPressed.current[e.key] = true;
@@ -79,9 +84,18 @@ export function Arena({ skin }) {
             <div style={{
                 border: `solid 3px ${skin.outline}`,
                 backgroundColor: `${skin.fill}`,
-                transform: `translate(${position.x}px, ${position.y}px)`,
+                transform: `translate(${p1Position.x}px, ${p1Position.y}px)`,
                 height: `${size}px`,
-                width: `${size}px`
+                width: `${size}px`,
+                position: `absolute`
+            }}></div>
+            <div style={{
+                border: `solid 3px ${skin.outline}`,
+                backgroundColor: `${skin.fill}`,
+                transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,
+                height: `${size}px`,
+                width: `${size}px`,
+                position: `absolute`
             }}></div>
         </section>
     );
