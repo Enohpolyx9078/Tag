@@ -54,13 +54,12 @@ export function Arena({ skin }) {
 
     React.useEffect(() => {
         requestRef.current = requestAnimationFrame(animate);
+        const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
         const down = (e) => {
-            const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
             if (gameKeys.includes(e.key)) e.preventDefault();
             keysPressed.current[e.key] = true;
         };
         const up = (e) => {
-            const gameKeys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
             if (gameKeys.includes(e.key)) e.preventDefault();
             keysPressed.current[e.key] = false;
         };
