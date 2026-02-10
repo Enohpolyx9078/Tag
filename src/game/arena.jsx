@@ -13,7 +13,7 @@ export function Arena({ skin }) {
 
     // Made with some help from Gemini 3
 
-    const animate = () => {
+    const animate = async () => {
         setPosition((prev) => {
             let { x, y, time } = prev;
             // use delta Time for position change instead of move speed
@@ -72,7 +72,7 @@ export function Arena({ skin }) {
             window.removeEventListener('keydown', down);
             window.removeEventListener('keyup', up);
         }
-    });
+    }, []);
 
     return (
         <section className="arena relative mb-2 md:mb-0">
