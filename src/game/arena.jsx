@@ -15,8 +15,23 @@ export function Arena({ skin, skin2 }) {
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     const p2Keys = ['w', 's', 'a', 'd'];
 
-    // Made with some help from Gemini 3
+    const checkCollisions = async () => {
+        // check if x overlaps
+        let leftEdge = Math.max(p1Position.x, p2Position.x);
+        let rightEdge = Math.min(p1Position.x + size, p2Position.x + size);
+        let xOverlap = rightEdge - leftEdge >= 0;
+        // check if y overlaps
+        let topEdge = Math.max(p1Position.y, p2Position.y);
+        let bottomEdge = Math.min(p1Position.y + size, p2Position.y + size);
+        let yOverlap = bottomEdge - topEdge >= 0;
+        // if both overlap, they collided
+        if (xOverlap && yOverlap) console.log("collision");
+        //TODO pass "it"
+    }
 
+    React.useEffect(() => checkCollisions, [p1Position, p2Position]);
+
+    // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
         updateFrame((prev) => {
             let { x, y, time } = prev;
@@ -81,7 +96,7 @@ export function Arena({ skin, skin2 }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <div style={{
+            <div className="it" style={{
                 border: `solid 3px ${skin.outline}`,
                 backgroundColor: `${skin.fill}`,
                 transform: `translate(${p1Position.x}px, ${p1Position.y}px)`,
@@ -89,7 +104,7 @@ export function Arena({ skin, skin2 }) {
                 width: `${size}px`,
                 position: `absolute`
             }}></div>
-            <div style={{
+            <div className="" style={{
                 border: `solid 3px ${skin2.outline}`,
                 backgroundColor: `${skin2.fill}`,
                 transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,

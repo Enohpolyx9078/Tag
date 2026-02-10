@@ -15,28 +15,16 @@ export function Game({ userName, skin }) {
         <h2 className="centered text-xl">Other Players</h2>
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
-            <rect x="0" y="0" width="50" height="50" stroke="orange" strokeWidth="3" fill="#db61e8" />
-          </svg>
-          <p>Player 1</p>
-        </div>
-        <div className="flex flex-col flex-row flex-wrap items-center mb-4">
-          <svg className="skin-icon mr-4">
-            <rect x="0" y="0" width="50" height="50" stroke="blue" strokeWidth="3" fill="white" />
+            <rect x="0" y="0" width="50" height="50" stroke={ skin2.outline } strokeWidth="6" fill={ skin2.fill } />
           </svg>
           <p>Player 2</p>
-        </div>
-        <div className="flex flex-col flex-row flex-wrap items-center mb-4">
-          <svg className="skin-icon mr-4">
-            <rect x="0" y="0" width="50" height="50" stroke="green" strokeWidth="3" fill="yellow" />
-          </svg>
-          <p>Player 3</p>
         </div>
       </section>
       { <Arena skin={skin} skin2={skin2}/> }
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
-            <rect x="0" y="0" width="50" height="50" stroke={ skin.outline } strokeWidth="3" fill={ skin.fill } />
+            <rect x="0" y="0" width="50" height="50" stroke={ skin.outline } strokeWidth="6" fill={ skin.fill } />
           </svg>
           <p>{ userName }</p>
         </div>

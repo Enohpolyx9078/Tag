@@ -12,6 +12,11 @@ td:empty {
     width: 500px;
 }
 
+.it {
+    border: 6px solid red !important;
+    z-index: 1;
+}
+
 @media (max-width: 525px) {
     table {
         margin-bottom: 0.5em;
