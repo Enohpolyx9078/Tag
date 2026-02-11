@@ -38,7 +38,7 @@ export function Arena({ skin, skin2 }) {
 
     const itCooldown = async () => {
         setCanTag(false);
-        setTimeout(() => setCanTag(true), 3000);
+        setTimeout(() => setCanTag(true), 500);
     }
 
     React.useEffect(() => checkCollisions, [p1Position, p2Position]);

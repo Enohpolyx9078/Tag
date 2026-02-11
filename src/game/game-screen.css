@@ -1,9 +1,16 @@
-table, td {
-    border: solid black;
-}
+/* Pulse animation from Gemini 3.0 Pro */
+@keyframes redPulse {
+    0% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.9);
+    }
 
-td:empty {
-    padding: 50px;
+    70% {
+        box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+    }
+
+    100% {
+        box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
 }
 
 .arena {
@@ -13,16 +20,7 @@ td:empty {
 }
 
 .it {
-    border: 6px solid red !important;
+    border: 5px solid red !important;
+    animation: redPulse 1s infinite;
     z-index: 1;
-}
-
-@media (max-width: 525px) {
-    table {
-        margin-bottom: 0.5em;
-    }
-    
-    td:empty {
-        padding: 25px;
-    }
 }
