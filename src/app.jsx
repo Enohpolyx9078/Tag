@@ -7,11 +7,7 @@ import { Game } from './game/game';
 import { Profile } from './profile/profile';
 
 export default function App() {
-    const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
-    let currentSkin = JSON.parse(localStorage.getItem("currentSkin"));
-    currentSkin = currentSkin != null ? currentSkin : skins.skin[0];
-    let [skin, setSkin] = React.useState(currentSkin);
-    async function setSkins() {
+    function setSkins() {
         const skins = {
             skins: [
                 { id: "Grape", fill: "#9922FF", outline: "#BBB" },
@@ -33,8 +29,13 @@ export default function App() {
             ]
         }
         localStorage.setItem("skins", JSON.stringify(skins));
+        return skins
     }
-    setSkins();
+    const skins = setSkins();
+    const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
+    let currentSkin = JSON.parse(localStorage.getItem("currentSkin"));
+    currentSkin = currentSkin != null ? currentSkin : skins.skins[0];
+    let [skin, setSkin] = React.useState(currentSkin);
 
     return (
         <BrowserRouter>
