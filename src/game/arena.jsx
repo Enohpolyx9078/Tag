@@ -4,10 +4,13 @@ import './game-screen.css';
 export function Arena({ skin, skin2 }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 430, y: 10, time: performance.now() });
+    const [it, setIt] = React.useState(1);
+    const [canTag, setCanTag] = React.useState(true);
     const size = 50;
     const fieldSize = 500;
     const padding = (3 * 2) + 5; // the border (3) of the character and the arena (5)
     const edge = fieldSize - size - padding;
+    const speed = 0.4;
 
     const requestRef = React.useRef();
     const keysPressed = React.useRef({});
@@ -25,20 +28,28 @@ export function Arena({ skin, skin2 }) {
         let bottomEdge = Math.min(p1Position.y + size, p2Position.y + size);
         let yOverlap = bottomEdge - topEdge >= 0;
         // if both overlap, they collided
-        if (xOverlap && yOverlap) {
+        if (xOverlap && yOverlap && canTag) {
             //TODO pass "it"
+            console.log("Tag!");
+            if (it == 1) setIt(2);
+            else setIt(1);
         }
     }
 
+    const itCooldown = async () => {
+        setCanTag(false);
+        setTimeout(() => setCanTag(true), 3000);
+    }
+
     React.useEffect(() => checkCollisions, [p1Position, p2Position]);
+    React.useEffect(() => itCooldown, [it]);
 
     // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
         updateFrame((prev) => {
             let { x, y, time } = prev;
-            // use delta Time for p1Position change instead of move speed
+            // use delta Time for position change instead of move speed
             const deltaT = performance.now() - time;
-            const speed = 0.4;
             const distance = speed * deltaT;
 
             const moveUp = () => {
@@ -97,7 +108,7 @@ export function Arena({ skin, skin2 }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <div className="it" style={{
+            <div className={ it == 1 ? "it" : "" } style={{
                 border: `solid 3px ${skin.outline}`,
                 backgroundColor: `${skin.fill}`,
                 transform: `translate(${p1Position.x}px, ${p1Position.y}px)`,
@@ -105,7 +116,7 @@ export function Arena({ skin, skin2 }) {
                 width: `${size}px`,
                 position: `absolute`
             }}></div>
-            <div className="" style={{
+            <div className={ it == 2 ? "it" : "" } style={{
                 border: `solid 3px ${skin2.outline}`,
                 backgroundColor: `${skin2.fill}`,
                 transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,
