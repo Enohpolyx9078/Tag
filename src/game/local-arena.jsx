@@ -29,7 +29,6 @@ export function LocalArena({ skin, skin2 }) {
         let yOverlap = bottomEdge - topEdge >= 0;
         // if both overlap, they collided
         if (xOverlap && yOverlap && canTag) {
-            //TODO pass "it"
             console.log("Tag!");
             if (it == 1) setIt(2);
             else setIt(1);
