@@ -1,7 +1,8 @@
 import React from 'react';
 import './game-screen.css';
 import { NavLink, useSearchParams } from 'react-router-dom';
-import { LocalArena } from './arena.jsx';
+import { LocalArena } from './local-arena.jsx';
+import { Arena } from './arena.jsx';
 
 export function Game({ userName, skin }) {
   const roomCode = localStorage.getItem("roomCode");

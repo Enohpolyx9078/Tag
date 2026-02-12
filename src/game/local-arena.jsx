@@ -1,8 +1,7 @@
 import React from 'react';
 import './game-screen.css';
 
-export function Arena({ skin }) {
-    return <p>501: <em>Coming Soon!</em></p>
+export function LocalArena({ skin, skin2 }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
     const [it, setIt] = React.useState(1);
@@ -17,6 +16,7 @@ export function Arena({ skin }) {
     const keysPressed = React.useRef({});
 
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+    const p2Keys = ['w', 's', 'a', 'd'];
 
     const checkCollisions = async () => {
         // check if x overlaps
