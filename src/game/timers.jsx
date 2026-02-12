@@ -12,7 +12,7 @@ const formatTime = (seconds) => {
     return hourStr + ":" + minuteStr + ":" + secondStr;
 }
 
-export function Timer({ label, it }) {
+export function Timer({ label, it, id }) {
     const [time, setTime] = React.useState(0);
     const requestRef = React.useRef();
     const lastTime = React.useRef();
@@ -41,10 +41,10 @@ export function Timer({ label, it }) {
     React.useEffect(() => {
         console.log("checking");
         if (type == 'it') {
-            if (it == 1) setActive(true);
+            if (it == id) setActive(true);
             else setActive(false);
         } else {
-            if (it != 1) setActive(true);
+            if (it != id) setActive(true);
             else setActive(false);
         }
     }, [it]);
