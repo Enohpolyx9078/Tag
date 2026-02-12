@@ -3,6 +3,7 @@ import './game-screen.css';
 import { NavLink, useSearchParams } from 'react-router-dom';
 import { LocalArena } from './local-arena.jsx';
 import { Arena } from './arena.jsx';
+import { Timer } from './timers.jsx';
 
 export function Game({ userName, skin }) {
   const roomCode = localStorage.getItem("roomCode");
@@ -32,8 +33,8 @@ export function Game({ userName, skin }) {
         </div>
         <h3 className="text-xl">Stats</h3>
         <div className="flex flex-col gap-2 mb-2">
-          <p>Time It: 00:03:22</p>
-          <p>Time Not It: 00:13:32</p>
+          <Timer label="Time it:" />
+          <Timer label="Time not it:" />
           <p>Pickups Used: 9</p>
         </div>
         <NavLink className="outline-button" to="/profile">Leave Game</NavLink>
