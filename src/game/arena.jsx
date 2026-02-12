@@ -1,7 +1,7 @@
 import React from 'react';
 import './game-screen.css';
 
-export function Arena({ skin, skin2 }) {
+export function LocalArena({ skin, skin2 }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 430, y: 10, time: performance.now() });
     const [it, setIt] = React.useState(1);

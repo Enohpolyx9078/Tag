@@ -1,12 +1,13 @@
 import React from 'react';
 import './game-screen.css';
-import { NavLink } from 'react-router-dom';
-import { Arena } from './arena.jsx';
+import { NavLink, useSearchParams } from 'react-router-dom';
+import { LocalArena } from './arena.jsx';
 
 export function Game({ userName, skin }) {
   const roomCode = localStorage.getItem("roomCode");
   const skins = JSON.parse(localStorage.getItem("skins"));
   const skin2 = skins.skins[0];
+  const [request] = useSearchParams();
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
@@ -20,7 +21,7 @@ export function Game({ userName, skin }) {
           <p>Player 2</p>
         </div>
       </section>
-      { <Arena skin={skin} skin2={skin2}/> }
+      { request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2}/> : <Arena skin={skin} /> }
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
