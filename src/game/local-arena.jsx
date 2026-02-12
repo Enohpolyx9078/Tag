@@ -1,11 +1,11 @@
 import React from 'react';
 import './game-screen.css';
 
-export function LocalArena({ skin, skin2 }) {
+export function LocalArena({ skin, skin2, it }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
-    const [it, setIt] = React.useState(1);
-    const [canTag, setCanTag] = React.useState(true);
+    const tagTime = React.useRef(performance.now);
+    const canTag = React.useRef(true);
     const size = 50;
     const fieldSize = 500;
     const padding = (3 * 2) + 5; // the border (3) of the character and the arena (5)
@@ -18,6 +18,11 @@ export function LocalArena({ skin, skin2 }) {
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     const p2Keys = ['w', 's', 'a', 'd'];
 
+    const itCooldown = async () => {
+        canTag.current = false;
+        setTimeout(() => canTag.current = true, 500);
+    }
+
     const checkCollisions = async () => {
         // check if x overlaps
         let leftEdge = Math.max(p1Position.x, p2Position.x);
@@ -28,20 +33,16 @@ export function LocalArena({ skin, skin2 }) {
         let bottomEdge = Math.min(p1Position.y + size, p2Position.y + size);
         let yOverlap = bottomEdge - topEdge >= 0;
         // if both overlap, they collided
-        if (xOverlap && yOverlap && canTag) {
+        if (xOverlap && yOverlap && canTag.current) {
             console.log("Tag!");
-            if (it == 1) setIt(2);
-            else setIt(1);
+            if (it.current == 1) it.current = 2;
+            else it.current = 1;
+            canTag.current = false;
+            itCooldown();
         }
     }
 
-    const itCooldown = async () => {
-        setCanTag(false);
-        setTimeout(() => setCanTag(true), 500);
-    }
-
     React.useEffect(() => checkCollisions, [p1Position, p2Position]);
-    React.useEffect(() => itCooldown, [it]);
 
     // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
@@ -107,7 +108,7 @@ export function LocalArena({ skin, skin2 }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <div className={ it == 1 ? "it" : "" } style={{
+            <div className={ it.current == 1 ? "it" : "" } style={{
                 border: `solid 3px ${skin.outline}`,
                 backgroundColor: `${skin.fill}`,
                 transform: `translate(${p1Position.x}px, ${p1Position.y}px)`,
@@ -115,7 +116,7 @@ export function LocalArena({ skin, skin2 }) {
                 width: `${size}px`,
                 position: `absolute`
             }}></div>
-            <div className={ it == 2 ? "it" : "" } style={{
+            <div className={ it.current == 2 ? "it" : "" } style={{
                 border: `solid 3px ${skin2.outline}`,
                 backgroundColor: `${skin2.fill}`,
                 transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,

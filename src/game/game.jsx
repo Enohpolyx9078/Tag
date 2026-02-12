@@ -6,6 +6,7 @@ import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 
 export function Game({ userName, skin }) {
+  const it = React.useRef(1);
   const roomCode = localStorage.getItem("roomCode");
   const skins = JSON.parse(localStorage.getItem("skins"));
   const skin2 = skins.skins[0];
@@ -23,7 +24,7 @@ export function Game({ userName, skin }) {
           <p>Player 2</p>
         </div>
       </section>
-      { request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2}/> : <Arena skin={skin} /> }
+      { request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2} it={it}/> : <Arena skin={skin} it={it}/> }
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
