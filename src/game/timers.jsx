@@ -16,6 +16,7 @@ export function Timer( { label }) {
     const requestRef = React.useRef();
     const startRef = React.useRef();
 
+    // made with some help from Gemini 3
     const animate = async (now) => {
         if (!startRef.current) startRef.current = now;
         const deltaTime = now - startRef.current;
