@@ -6,7 +6,7 @@ import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 
 export function Game({ userName, skin }) {
-  const it = React.useRef(1);
+  const [it, setIt] = React.useState(1);
   const roomCode = localStorage.getItem("roomCode");
   const skins = JSON.parse(localStorage.getItem("skins"));
   const skin2 = skins.skins[0];
@@ -24,7 +24,7 @@ export function Game({ userName, skin }) {
           <p>Player 2</p>
         </div>
       </section>
-      { request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2} it={it}/> : <Arena skin={skin} it={it}/> }
+      { request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2} it={it} setIt={setIt}/> : <Arena skin={skin} it={it}/> }
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
@@ -34,8 +34,8 @@ export function Game({ userName, skin }) {
         </div>
         <h3 className="text-xl">Stats</h3>
         <div className="flex flex-col gap-2 mb-2">
-          <Timer label="Time it:" />
-          <Timer label="Time not it:" />
+          <Timer label="Time it:" it={ it }/>
+          <Timer label="Time not it:" it={ it }/>
           <p>Pickups Used: 9</p>
         </div>
         <NavLink className="outline-button" to="/profile">Leave Game</NavLink>

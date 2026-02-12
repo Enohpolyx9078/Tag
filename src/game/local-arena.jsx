@@ -1,7 +1,7 @@
 import React from 'react';
 import './game-screen.css';
 
-export function LocalArena({ skin, skin2, it }) {
+export function LocalArena({ skin, skin2, it, setIt }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
     const tagTime = React.useRef(performance.now);
@@ -35,8 +35,8 @@ export function LocalArena({ skin, skin2, it }) {
         // if both overlap, they collided
         if (xOverlap && yOverlap && canTag.current) {
             console.log("Tag!");
-            if (it.current == 1) it.current = 2;
-            else it.current = 1;
+            if (it == 1) setIt(2);
+            else setIt(1);
             canTag.current = false;
             itCooldown();
         }
@@ -108,7 +108,7 @@ export function LocalArena({ skin, skin2, it }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <div className={ it.current == 1 ? "it" : "" } style={{
+            <div className={ it == 1 ? "it" : "" } style={{
                 border: `solid 3px ${skin.outline}`,
                 backgroundColor: `${skin.fill}`,
                 transform: `translate(${p1Position.x}px, ${p1Position.y}px)`,
@@ -116,7 +116,7 @@ export function LocalArena({ skin, skin2, it }) {
                 width: `${size}px`,
                 position: `absolute`
             }}></div>
-            <div className={ it.current == 2 ? "it" : "" } style={{
+            <div className={ it == 2 ? "it" : "" } style={{
                 border: `solid 3px ${skin2.outline}`,
                 backgroundColor: `${skin2.fill}`,
                 transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,

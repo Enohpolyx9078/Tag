@@ -1,6 +1,7 @@
 import React from 'react';
 
 const formatTime = (seconds) => {
+    seconds = Math.floor(seconds / 1000);
     let minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
     let hours = Math.floor(minutes / 60);
@@ -11,23 +12,42 @@ const formatTime = (seconds) => {
     return hourStr + ":" + minuteStr + ":" + secondStr;
 }
 
-export function Timer( { label }) {
+export function Timer({ label, it }) {
     const [time, setTime] = React.useState(0);
     const requestRef = React.useRef();
-    const startRef = React.useRef();
+    const lastTime = React.useRef();
+    const type = label.indexOf('not') == -1 ? 'it' : 'not';
+    const [active, setActive] = React.useState((type == 'it'));
 
     // made with some help from Gemini 3
     const animate = async (now) => {
-        if (!startRef.current) startRef.current = now;
-        const deltaTime = now - startRef.current;
-        setTime(Math.floor(deltaTime / 1000));
+        if (lastTime.current != undefined) {
+            const deltaTime = now - lastTime.current;
+            setTime(prev => prev + deltaTime);
+        }
+        lastTime.current = now;
         requestRef.current = requestAnimationFrame(animate);
     }
 
     React.useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
+        if (active) requestRef.current = requestAnimationFrame(animate);
+        else {
+            cancelAnimationFrame(requestRef.current);
+            lastTime.current = undefined;
+        }
         return () => cancelAnimationFrame(requestRef.current);
-    }, []);
+    }, [active]);
 
-    return <p>{ label } {formatTime(time)}</p>
+    React.useEffect(() => {
+        console.log("checking");
+        if (type == 'it') {
+            if (it == 1) setActive(true);
+            else setActive(false);
+        } else {
+            if (it != 1) setActive(true);
+            else setActive(false);
+        }
+    }, [it]);
+
+    return <p>{label} {formatTime(time)}</p>
 }
