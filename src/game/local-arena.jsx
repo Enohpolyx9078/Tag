@@ -1,5 +1,6 @@
 import React from 'react';
 import './game-screen.css';
+import { Player } from './player.jsx';
 
 export function LocalArena({ skin, skin2, it, setIt }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
@@ -34,7 +35,6 @@ export function LocalArena({ skin, skin2, it, setIt }) {
         let yOverlap = bottomEdge - topEdge >= 0;
         // if both overlap, they collided
         if (xOverlap && yOverlap && canTag.current) {
-            console.log("Tag!");
             if (it == 1) setIt(2);
             else setIt(1);
             canTag.current = false;
@@ -108,22 +108,8 @@ export function LocalArena({ skin, skin2, it, setIt }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <div className={ it == 1 ? "it" : "" } style={{
-                border: `solid 3px ${skin.outline}`,
-                backgroundColor: `${skin.fill}`,
-                transform: `translate(${p1Position.x}px, ${p1Position.y}px)`,
-                height: `${size}px`,
-                width: `${size}px`,
-                position: `absolute`
-            }}></div>
-            <div className={ it == 2 ? "it" : "" } style={{
-                border: `solid 3px ${skin2.outline}`,
-                backgroundColor: `${skin2.fill}`,
-                transform: `translate(${p2Position.x}px, ${p2Position.y}px)`,
-                height: `${size}px`,
-                width: `${size}px`,
-                position: `absolute`
-            }}></div>
+            <Player id={ 1 } it={ it } position={ p1Position } skin={ skin } size={ size }/>
+            <Player id={ 2 } it={ it } position={ p2Position } skin={ skin2 } size={ size }/>
         </section>
     );
 }
