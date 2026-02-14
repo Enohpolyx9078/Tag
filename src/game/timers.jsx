@@ -1,7 +1,7 @@
 import React from 'react';
 
-const formatTime = (seconds) => {
-    seconds = Math.floor(seconds / 1000);
+const formatTime = (timeStamp) => {
+    let seconds = Math.floor(timeStamp / 1000);
     let minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
     let hours = Math.floor(minutes / 60);
@@ -39,7 +39,6 @@ export function Timer({ label, it, id }) {
     }, [active]);
 
     React.useEffect(() => {
-        console.log("checking");
         if (type == 'it') {
             if (it == id) setActive(true);
             else setActive(false);
