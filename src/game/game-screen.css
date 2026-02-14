@@ -17,11 +17,36 @@
     }
 }
 
+@keyframes explode {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0px #ef4444, 0 0 0 0px #ef4444;
+    opacity: 1;
+  }
+  50% {
+    /* Creating the illusion of flying particles using spread shadow */
+    box-shadow: 20px -20px 0 2px #ef4444, -20px 20px 0 2px #ef4444, 
+                20px 20px 0 2px #ef4444, -20px -20px 0 2px #ef4444;
+  }
+  100% {
+    transform: scale(1.5);
+    box-shadow: 40px -40px 0 0px rgba(239, 68, 68, 0), 
+                -40px 40px 0 0px rgba(239, 68, 68, 0), 
+                40px 40px 0 0px rgba(239, 68, 68, 0), 
+                -40px -40px 0 0px rgba(239, 68, 68, 0);
+    opacity: 0;
+  }
+}
+
 .arena {
     border: 5px solid black;
     height: 500px;
     width: 500px;
     z-index: 3;
+}
+
+.square-explode {
+  animation: explode 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
 }
 
 .it {

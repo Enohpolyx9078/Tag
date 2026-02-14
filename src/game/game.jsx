@@ -5,6 +5,7 @@ import { LocalArena } from './local-arena.jsx';
 import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 import { LocalLeft, OnlineLeft } from './left-bar.jsx';
+import { Controller } from './controller.jsx';
 
 export function Game({ userName, skin }) {
   const [it, setIt] = React.useState(1);
@@ -13,8 +14,12 @@ export function Game({ userName, skin }) {
   const skin2 = skins.skins[0];
   const [request] = useSearchParams();
 
+  //TODO add a Controller component to watch the game state
+  // make exploding tag (ie, if you're it at the wrong time, you're out)
+
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
+      <Controller it={ it } />
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
         {request.get('twoPlayer') == 'true' ? <LocalLeft skin={ skin2 } it={ it }/> : <OnlineLeft skin={ skin2 } roomCode={ roomCode }/> }
       </section>
