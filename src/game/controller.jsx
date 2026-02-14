@@ -1,16 +1,14 @@
 import React from 'react'
 
-export function Controller( { it }) {
-    const [time, setTime] = React.useState(0);
+export function Controller( { it, setPopping }) {
     let timer = 5000;
-    //TODO The controller must watch
-    // - player list
-    // - shot clock
-    // who's it
+    const [time, setTime] = React.useState(timer);
+    const out = [];
 
     React.useEffect(() => {
         if (time <= 0) {
-            console.log(it + " Has popped!");
+            setPopping(it);
+            out.push(it);
         }
     }, [time]);
 

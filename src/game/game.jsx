@@ -9,6 +9,7 @@ import { Controller } from './controller.jsx';
 
 export function Game({ userName, skin }) {
   const [it, setIt] = React.useState(1);
+  const [popping, setPopping] = React.useState(0);
   const roomCode = localStorage.getItem("roomCode");
   const skins = JSON.parse(localStorage.getItem("skins"));
   const skin2 = skins.skins[0];
@@ -19,11 +20,11 @@ export function Game({ userName, skin }) {
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
-      <Controller it={ it } />
+      <Controller it={ it } setPopping={ setPopping }/>
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
         {request.get('twoPlayer') == 'true' ? <LocalLeft skin={ skin2 } it={ it }/> : <OnlineLeft skin={ skin2 } roomCode={ roomCode }/> }
       </section>
-      {request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2} it={it} setIt={setIt} /> : <Arena skin={skin} it={it} />}
+      {request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2} it={it} setIt={setIt} popping={popping}/> : <Arena skin={skin} it={it} />}
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">

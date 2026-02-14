@@ -2,7 +2,7 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 
-export function LocalArena({ skin, skin2, it, setIt }) {
+export function LocalArena({ skin, skin2, it, setIt, popping }) {
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
     const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
     const tagTime = React.useRef(performance.now);
@@ -108,8 +108,8 @@ export function LocalArena({ skin, skin2, it, setIt }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <Player id={ 1 } it={ it } position={ p1Position } skin={ skin } size={ size }/>
-            <Player id={ 2 } it={ it } position={ p2Position } skin={ skin2 } size={ size }/>
+            <Player id={ 1 } it={ it } position={ p1Position } skin={ skin } size={ size } popping={ popping }/>
+            <Player id={ 2 } it={ it } position={ p2Position } skin={ skin2 } size={ size } popping={ popping }/>
         </section>
     );
 }
