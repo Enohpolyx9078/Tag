@@ -38,8 +38,8 @@
     }
 
     75% {
-        box-shadow: 10px -10px 0 2px #ef4444, -10px 10px 0 2px #ef4444,
-            10px 10px 0 2px #ef4444, -10px -10px 0 2px #ef4444;
+        box-shadow: 10px -10px 0 2px red, -10px 10px 0 2px red,
+            10px 10px 0 2px red, -10px -10px 0 2px red;
     }
 
     100% {
@@ -72,9 +72,10 @@
     z-index: 3;
 }
 
+/* .debris made by Gemini 3 */
 .debris {
     position: absolute;
-    background: #ef4444;
+    background: red;
     pointer-events: none;
     clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
     /* Start at the center, then fly to the random coordinates */
@@ -82,13 +83,13 @@
 }
 
 .explode {
-    background: #ef4444 !important;
-    border-color: #ef4444 !important;
+    background: red !important;
+    border-color: red !important;
     animation: explode 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
 }
 
 .it {
     border: 3px solid red !important;
-    animation: redPulse 1s infinite;
+    animation: redPulse 0.5s infinite;
     z-index: 1;
 }
