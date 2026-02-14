@@ -27,7 +27,6 @@ export function ShotClock({ timer, setTime }) {
         const deltaTime = now - startTime.current;
         const remaining = timer - deltaTime;
         setTime(remaining);
-        console.log("Time to pop: " + remaining);
         if (remaining > 0) requestRef.current = requestAnimationFrame(animate);
         else cancelAnimationFrame(requestRef.current);
     }

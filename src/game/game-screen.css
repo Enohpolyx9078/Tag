@@ -1,4 +1,4 @@
-/* Pulse animation from Gemini 3.0 Pro */
+/* Animations from Gemini 3.0 Pro */
 @keyframes redPulse {
     0% {
         box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.9);
@@ -18,24 +18,51 @@
 }
 
 @keyframes explode {
-  0% {
-    transform: scale(1);
-    box-shadow: 0 0 0 0px #ef4444, 0 0 0 0px #ef4444;
-    opacity: 1;
-  }
-  50% {
-    /* Creating the illusion of flying particles using spread shadow */
-    box-shadow: 20px -20px 0 2px #ef4444, -20px 20px 0 2px #ef4444, 
-                20px 20px 0 2px #ef4444, -20px -20px 0 2px #ef4444;
-  }
-  100% {
-    transform: scale(1.5);
-    box-shadow: 40px -40px 0 0px rgba(239, 68, 68, 0), 
-                -40px 40px 0 0px rgba(239, 68, 68, 0), 
-                40px 40px 0 0px rgba(239, 68, 68, 0), 
-                -40px -40px 0 0px rgba(239, 68, 68, 0);
-    opacity: 0;
-  }
+    0% {
+        transform: scale(1);
+        opacity: 1;
+    }
+
+    30% {
+        transform: scale(0.5);
+    }
+
+    50% {
+        transform: scale(0.5);
+    }
+
+    60% {
+        transform: scale(1);
+        box-shadow: none;
+        opacity: 1;
+    }
+
+    75% {
+        box-shadow: 10px -10px 0 2px #ef4444, -10px 10px 0 2px #ef4444,
+            10px 10px 0 2px #ef4444, -10px -10px 0 2px #ef4444;
+    }
+
+    100% {
+        transform: scale(1.25);
+        box-shadow: 20px -20px 0 0px rgba(239, 68, 68, 0),
+            -20px 20px 0 0px rgba(239, 68, 68, 0),
+            20px 20px 0 0px rgba(239, 68, 68, 0),
+            -20px -20px 0 0px rgba(239, 68, 68, 0);
+        opacity: 0;
+    }
+}
+
+@keyframes shatter {
+    60% {
+        transform: translate(0, 0) rotate(0deg);
+        opacity: 1;
+    }
+
+    100% {
+        /* tx and ty are the random offsets from our JS */
+        transform: translate(var(--tx), var(--ty)) rotate(var(--r));
+        opacity: 0;
+    }
 }
 
 .arena {
@@ -45,8 +72,19 @@
     z-index: 3;
 }
 
+.debris {
+    position: absolute;
+    background: #ef4444;
+    pointer-events: none;
+    clip-path: polygon(50% 0%, 0% 100%, 100% 100%);
+    /* Start at the center, then fly to the random coordinates */
+    animation: shatter 0.5s cubic-bezier(0.1, 0.8, 0.3, 1) forwards;
+}
+
 .explode {
-  animation: explode 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
+    background: #ef4444 !important;
+    border-color: #ef4444 !important;
+    animation: explode 0.5s cubic-bezier(0.17, 0.67, 0.83, 0.67) forwards;
 }
 
 .it {
