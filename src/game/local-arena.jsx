@@ -2,12 +2,23 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 
-export function LocalArena({ skin, skin2, it, setIt, popping }) {
-    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
-    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
-    const tagTime = React.useRef(performance.now);
-    const canTag = React.useRef(true);
-    const size = 50;
+export function LocalArena({ players, setters, skins, it, popping, size }) {
+    // players will be a list of Position objects
+    // [{x:1, y:1, time:1000}]
+    // setters will be a list of methods that is 1:1 to players
+    // [setter1, setter2]
+    // setters will be a list of Skin objects that is 1:1 to players
+    // [skin1, skin2]
+
+    // set up two players
+    const skin = skins[0];
+    const skin2 = skins[1];
+    const p1Position = players[0];
+    const p2Position = players[1];
+    const setP1Position = setters[0];
+    const setP2Position = setters[1];
+
+    // set up size constraints
     const fieldSize = 500;
     const padding = (3 * 2) + 5; // the border (3) of the character and the arena (5)
     const edge = fieldSize - size - padding;
@@ -18,31 +29,6 @@ export function LocalArena({ skin, skin2, it, setIt, popping }) {
 
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
     const p2Keys = ['w', 's', 'a', 'd'];
-
-    const itCooldown = async () => {
-        canTag.current = false;
-        setTimeout(() => canTag.current = true, 500);
-    }
-
-    const checkCollisions = async () => {
-        // check if x overlaps
-        let leftEdge = Math.max(p1Position.x, p2Position.x);
-        let rightEdge = Math.min(p1Position.x + size, p2Position.x + size);
-        let xOverlap = rightEdge - leftEdge >= 0;
-        // check if y overlaps
-        let topEdge = Math.max(p1Position.y, p2Position.y);
-        let bottomEdge = Math.min(p1Position.y + size, p2Position.y + size);
-        let yOverlap = bottomEdge - topEdge >= 0;
-        // if both overlap, they collided
-        if (xOverlap && yOverlap && canTag.current) {
-            if (it == 1) setIt(2);
-            else setIt(1);
-            canTag.current = false;
-            itCooldown();
-        }
-    }
-
-    React.useEffect(() => checkCollisions, [p1Position, p2Position]);
 
     // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
@@ -108,8 +94,8 @@ export function LocalArena({ skin, skin2, it, setIt, popping }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <Player id={ 1 } it={ it } position={ p1Position } skin={ skin } size={ size } popping={ popping }/>
-            <Player id={ 2 } it={ it } position={ p2Position } skin={ skin2 } size={ size } popping={ popping }/>
+            <Player id={1} it={it} position={p1Position} skin={skin} size={size} popping={popping} />
+            <Player id={2} it={it} position={p2Position} skin={skin2} size={size} popping={popping} />
         </section>
     );
 }

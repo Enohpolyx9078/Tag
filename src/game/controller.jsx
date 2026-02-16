@@ -1,6 +1,10 @@
 import React from 'react'
 
-export function Controller( { it, setPopping }) {
+export function Controller({ it, setIt, setPopping, players, size }) {
+    // players will be a list of Player objects:
+    // [{x:1, y:1, time:1000, skin:skin}, {}]
+
+    const canTag = React.useRef(true);
     let timer = 5000;
     const [time, setTime] = React.useState(timer);
     const out = [];
@@ -12,8 +16,41 @@ export function Controller( { it, setPopping }) {
         }
     }, [time]);
 
+    //TODO move collision checking from arena to Controller
+    const checkCollisions = async () => {
+        for (let i = 0; i < players.length - 1; i++) {
+            let p1Position = players[i];
+            for (let j = i + 1; j < players.length; j++) {
+                let p2Position = players[j];
+                // check if x overlaps
+                let leftEdge = Math.max(p1Position.x, p2Position.x);
+                let rightEdge = Math.min(p1Position.x + size, p2Position.x + size);
+                let xOverlap = rightEdge - leftEdge >= 0;
+                // check if y overlaps
+                let topEdge = Math.max(p1Position.y, p2Position.y);
+                let bottomEdge = Math.min(p1Position.y + size, p2Position.y + size);
+                let yOverlap = bottomEdge - topEdge >= 0;
+                // if both overlap, they collided
+                if (xOverlap && yOverlap && canTag.current) {
+                    //TODO allow more than two players
+                    if (it == 1) setIt(2);
+                    else setIt(1);
+                    canTag.current = false;
+                    itCooldown();
+                }
+            }
+        }
+    }
+
+    const itCooldown = async () => {
+        canTag.current = false;
+        setTimeout(() => canTag.current = true, 500);
+    }
+
+    React.useEffect(() => checkCollisions, [...players]);
+
     return (
-        <ShotClock timer={ timer } setTime={ setTime } />
+        <ShotClock timer={timer} setTime={setTime} />
     );
 }
 
@@ -21,7 +58,6 @@ export function ShotClock({ timer, setTime }) {
     const requestRef = React.useRef();
     const startTime = React.useRef();
 
-    // made with some help from Gemini 3
     const animate = async (now) => {
         if (!startTime.current) startTime.current = now;
         const deltaTime = now - startTime.current;

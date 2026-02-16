@@ -11,20 +11,25 @@ export function Game({ userName, skin }) {
   const [it, setIt] = React.useState(1);
   const [popping, setPopping] = React.useState(0);
   const roomCode = localStorage.getItem("roomCode");
-  const skins = JSON.parse(localStorage.getItem("skins"));
-  const skin2 = skins.skins[0];
   const [request] = useSearchParams();
 
-  //TODO add a Controller component to watch the game state
-  // make exploding tag (ie, if you're it at the wrong time, you're out)
+  // Placeholder for websocket features later
+  const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
+  const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
+  const skinList = JSON.parse(localStorage.getItem("skins"));
+  const skin2 = skinList.skins[0];
+  const players = [p1Position, p2Position];
+  const setters = [setP1Position, setP2Position];
+  const skins = [skin, skin2];
+  const size = 50; // player size
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
-      <Controller it={ it } setPopping={ setPopping }/>
+      <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} />
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-        {request.get('twoPlayer') == 'true' ? <LocalLeft skin={ skin2 } it={ it }/> : <OnlineLeft skin={ skin2 } roomCode={ roomCode }/> }
+        {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2} it={it} /> : <OnlineLeft skin={skin2} roomCode={roomCode} />}
       </section>
-      {request.get('twoPlayer') == 'true' ? <LocalArena skin={skin} skin2={skin2} it={it} setIt={setIt} popping={popping}/> : <Arena skin={skin} it={it} />}
+      {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} /> : <Arena skin={skin} it={it} />}
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
