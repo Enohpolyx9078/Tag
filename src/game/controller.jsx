@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass }) {
+export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass, setGameOver }) {
     // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
 
     const maxRound = 30000;
@@ -17,8 +17,9 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
             // check if the game is over
             if (out.current.size == players.length - 1) { // if there's only one player left
                 // if it is, load up the end screen
-                // if it's not, kick off a new timer
+                setGameOver(true);
             }
+            // if it's not, kick off a new timer
         }
         switch (itClass) {
             case "it":
@@ -31,7 +32,6 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
                 if (time <= timer / 10) setItClass("it-very-soon");
                 break;
         }
-        console.log(itClass);
     }, [time]);
 
     const checkCollisions = async () => {
@@ -87,7 +87,6 @@ export function ShotClock({ timer, setTime }) {
 
     React.useEffect(() => {
         requestRef.current = requestAnimationFrame(animate);
-        console.log(timer);
         return () => cancelAnimationFrame(requestRef.current);
     }, []);
 }

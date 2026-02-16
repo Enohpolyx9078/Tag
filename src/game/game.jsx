@@ -11,6 +11,7 @@ export function Game({ userName, skin }) {
   const [it, setIt] = React.useState(0);
   const [popping, setPopping] = React.useState(-1);
   const [itClass, setItClass] = React.useState("it");
+  const [gameOver, setGameOver] = React.useState(false);
   const [request] = useSearchParams();
   const roomCode = localStorage.getItem("roomCode");
   const size = 50; // player size
@@ -26,11 +27,11 @@ export function Game({ userName, skin }) {
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
-      <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass}/>
+      <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} setGameOver={setGameOver}/>
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-        {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2.current} it={it} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
+        {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
       </section>
-      {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} /> : <Arena skin={skin} it={it} />}
+      {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver}/> : <Arena skin={skin} it={it} />}
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">
@@ -40,8 +41,8 @@ export function Game({ userName, skin }) {
         </div>
         <h3 className="text-xl">Stats</h3>
         <div className="flex flex-col gap-2 mb-2">
-          <Timer label="Time it:" it={it} id={0} />
-          <Timer label="Time not it:" it={it} id={0} />
+          <Timer label="Time it:" it={it} id={0} gameOver={gameOver}/>
+          <Timer label="Time not it:" it={it} id={0} gameOver={gameOver}/>
           <p>Pickups Used: 9</p>
         </div>
         <NavLink className="outline-button" to="/profile">Leave Game</NavLink>

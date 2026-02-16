@@ -1,6 +1,6 @@
 import React from 'react';
 
-const formatTime = (timeStamp) => {
+function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
     let minutes = Math.floor(seconds / 60);
     seconds = seconds % 60;
@@ -12,7 +12,7 @@ const formatTime = (timeStamp) => {
     return hourStr + ":" + minuteStr + ":" + secondStr;
 }
 
-export function Timer({ label, it, id }) {
+export function Timer({ label, it, id, gameOver }) {
     const [time, setTime] = React.useState(0);
     const requestRef = React.useRef();
     const lastTime = React.useRef();
@@ -47,6 +47,20 @@ export function Timer({ label, it, id }) {
             else setActive(false);
         }
     }, [it]);
+
+    React.useEffect(() => {
+        if (gameOver) {
+            setActive(false);
+            //TODO only save player1's stats
+            if (id == 0) {
+                let times = localStorage.getItem("times");
+                times = times == null ? { it: 0, notIt: 200 } : JSON.parse(times);
+                if (type == 'it') times.it += time;
+                else times.notIt += time;
+                localStorage.setItem("times", JSON.stringify(times));
+            }
+        }
+    }, [gameOver]);
 
     return <p>{label} {formatTime(time)}</p>
 }
