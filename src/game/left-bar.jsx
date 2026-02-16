@@ -12,8 +12,8 @@ export function LocalLeft({ skin, it }) {
             </div>
             <h3 className="text-xl">Stats</h3>
             <div className="flex flex-col gap-2 mb-2">
-                <Timer label="Time it:" it={it} id={2} />
-                <Timer label="Time not it:" it={it} id={2} />
+                <Timer label="Time it:" it={it} id={1} />
+                <Timer label="Time not it:" it={it} id={1} />
                 <p>Pickups Used: 9</p>
             </div>
         </div>

@@ -35,8 +35,8 @@ export function Controller({ it, setIt, setPopping, players, size }) {
                 // if both overlap, they collided
                 if (xOverlap && yOverlap && canTag.current) {
                     //TODO allow more than two players
-                    if (it == 0) setIt(1);
-                    else setIt(0);
+                    if (it == j) setIt(i);
+                    else if (it == i) setIt(j);
                     canTag.current = false;
                     itCooldown();
                 }
