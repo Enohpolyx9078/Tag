@@ -10,8 +10,9 @@ import { Controller } from './controller.jsx';
 export function Game({ userName, skin }) {
   const [it, setIt] = React.useState(0);
   const [popping, setPopping] = React.useState(-1);
-  const roomCode = localStorage.getItem("roomCode");
   const [request] = useSearchParams();
+  const roomCode = localStorage.getItem("roomCode");
+  const size = 50; // player size
 
   // placeholder for websocket features later
   const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
@@ -21,7 +22,6 @@ export function Game({ userName, skin }) {
   const players = [p1Position, p2Position];
   const setters = [setP1Position, setP2Position];
   const skins = [skin, skin2.current];
-  const size = 50; // player size
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
