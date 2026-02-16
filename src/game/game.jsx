@@ -17,17 +17,17 @@ export function Game({ userName, skin }) {
   const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
   const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
   const skinList = JSON.parse(localStorage.getItem("skins"));
-  const skin2 = skinList.skins[0];
+  const skin2 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
   const players = [p1Position, p2Position];
   const setters = [setP1Position, setP2Position];
-  const skins = [skin, skin2];
+  const skins = [skin, skin2.current];
   const size = 50; // player size
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
       <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} />
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-        {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2} it={it} /> : <OnlineLeft skin={skin2} roomCode={roomCode} />}
+        {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2.current} it={it} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
       </section>
       {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} /> : <Arena skin={skin} it={it} />}
       <section className="md:grow-1 sidebar-thin card-thin">
