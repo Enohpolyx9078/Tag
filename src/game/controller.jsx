@@ -8,19 +8,21 @@ export function Controller({ it, setIt, setPopping, players, size }) {
     const canTag = React.useRef(true);
     let timer = Math.floor(Math.random() * (maxRound - minRound)) + minRound;
     const [time, setTime] = React.useState(timer);
-    const out = [];
+    const out = React.useRef([]);
 
     React.useEffect(() => {
         if (time <= 0) {
             setPopping(it);
-            out.push(it);
+            out.current.push(it);
         }
     }, [time]);
 
     const checkCollisions = async () => {
         for (let i = 0; i < players.length - 1; i++) {
+            if (out.current.indexOf(i) != -1) continue;
             let p1Position = players[i];
             for (let j = i + 1; j < players.length; j++) {
+                if (out.current.indexOf(j) != -1) continue;
                 let p2Position = players[j];
                 // check if x overlaps
                 let leftEdge = Math.max(p1Position.x, p2Position.x);
