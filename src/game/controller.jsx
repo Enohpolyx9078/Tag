@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Controller({ it, setIt, setPopping, players, size }) {
+export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass }) {
     // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
 
     const maxRound = 30000;
@@ -8,21 +8,38 @@ export function Controller({ it, setIt, setPopping, players, size }) {
     const canTag = React.useRef(true);
     let timer = Math.floor(Math.random() * (maxRound - minRound)) + minRound;
     const [time, setTime] = React.useState(timer);
-    const out = React.useRef([]);
+    const out = React.useRef(new Set());
 
     React.useEffect(() => {
         if (time <= 0) {
             setPopping(it);
-            out.current.push(it);
+            out.current.add(it);
+            // check if the game is over
+            if (out.current.size == players.length - 1) { // if there's only one player left
+                // if it is, load up the end screen
+                // if it's not, kick off a new timer
+            }
         }
+        switch (itClass) {
+            case "it":
+                if (time <= timer / 2) setItClass("it-halfway");
+                break;
+            case "it-halfway":
+                if (time <= timer / 4) setItClass("it-soon");
+                break;
+            case "it-soon":
+                if (time <= timer / 10) setItClass("it-very-soon");
+                break;
+        }
+        console.log(itClass);
     }, [time]);
 
     const checkCollisions = async () => {
         for (let i = 0; i < players.length - 1; i++) {
-            if (out.current.indexOf(i) != -1) continue;
+            if (out.current.has(i)) continue;
             let p1Position = players[i];
             for (let j = i + 1; j < players.length; j++) {
-                if (out.current.indexOf(j) != -1) continue;
+                if (out.current.has(j)) continue;
                 let p2Position = players[j];
                 // check if x overlaps
                 let leftEdge = Math.max(p1Position.x, p2Position.x);
@@ -34,7 +51,6 @@ export function Controller({ it, setIt, setPopping, players, size }) {
                 let yOverlap = bottomEdge - topEdge >= 0;
                 // if both overlap, they collided
                 if (xOverlap && yOverlap && canTag.current) {
-                    //TODO allow more than two players
                     if (it == j) setIt(i);
                     else if (it == i) setIt(j);
                     canTag.current = false;
@@ -71,6 +87,7 @@ export function ShotClock({ timer, setTime }) {
 
     React.useEffect(() => {
         requestRef.current = requestAnimationFrame(animate);
+        console.log(timer);
         return () => cancelAnimationFrame(requestRef.current);
     }, []);
 }

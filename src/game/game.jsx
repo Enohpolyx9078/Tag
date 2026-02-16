@@ -10,6 +10,7 @@ import { Controller } from './controller.jsx';
 export function Game({ userName, skin }) {
   const [it, setIt] = React.useState(0);
   const [popping, setPopping] = React.useState(-1);
+  const [itClass, setItClass] = React.useState("it");
   const [request] = useSearchParams();
   const roomCode = localStorage.getItem("roomCode");
   const size = 50; // player size
@@ -25,11 +26,11 @@ export function Game({ userName, skin }) {
 
   return (
     <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
-      <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} />
+      <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass}/>
       <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
         {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2.current} it={it} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
       </section>
-      {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} /> : <Arena skin={skin} it={it} />}
+      {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} /> : <Arena skin={skin} it={it} />}
       <section className="md:grow-1 sidebar-thin card-thin">
         <div className="flex flex-col flex-row flex-wrap items-center mb-4">
           <svg className="skin-icon mr-4">

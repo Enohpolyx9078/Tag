@@ -2,7 +2,7 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 
-export function LocalArena({ players, setters, skins, it, popping, size }) {
+export function LocalArena({ players, setters, skins, it, popping, size, itClass }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
     // setters will be a list of methods that is 1:1 to players      -> [setter1, setter2]
     // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]
@@ -15,7 +15,7 @@ export function LocalArena({ players, setters, skins, it, popping, size }) {
         const list = [];
         for (var i = 0; i < players.length; i++) {
             list.push(
-                    <Player key={i} id={i} it={it} position={players[i]} skin={skins[i]} size={size} popping={popping} />
+                    <Player key={i} id={i} it={it} position={players[i]} skin={skins[i]} size={size} popping={popping} itClass={itClass}/>
             )
         }
         return list;

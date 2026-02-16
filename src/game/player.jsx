@@ -1,6 +1,6 @@
 import React from 'react';
 
-export function Player({ id, it, position, skin, size, popping }) {
+export function Player({ id, it, position, skin, size, popping, itClass }) {
     const [out, setOut] = React.useState(false);
     const [pop, setPop] = React.useState(false);
     const [particles, setParticles] = React.useState([]);
@@ -16,7 +16,7 @@ export function Player({ id, it, position, skin, size, popping }) {
         setOut(true);
     }
 
-
+    // Made with help from Gemini 3
     const createExplosion = async () => {
         // Get coordinates to center the explosion
         const centerX = size / 2;
@@ -47,7 +47,7 @@ export function Player({ id, it, position, skin, size, popping }) {
     if (out) return null;
     return (
         <div style={{ transform: `translate(${position.x}px, ${position.y}px)`, position: `absolute` }}>
-            <div className={((it == id && !pop) ? "it" : "") + " " + (pop ? "explode" : "")} onAnimationEnd={handlePop} style={{
+            <div className={"player " + ((it == id && !pop) ? itClass : "") + " " + (pop ? "explode" : "")} onAnimationEnd={handlePop} style={{
                 border: `solid 3px ${skin.outline}`,
                 backgroundColor: `${skin.fill}`,
                 height: `${size}px`,
