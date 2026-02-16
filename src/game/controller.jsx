@@ -1,11 +1,12 @@
 import React from 'react'
 
 export function Controller({ it, setIt, setPopping, players, size }) {
-    // players will be a list of Player objects:
-    // [{x:1, y:1, time:1000, skin:skin}, {}]
+    // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
 
+    const maxRound = 30000;
+    const minRound = 10000
     const canTag = React.useRef(true);
-    let timer = 5000;
+    let timer = Math.floor(Math.random() * (maxRound - minRound)) + minRound;
     const [time, setTime] = React.useState(timer);
     const out = [];
 
@@ -16,7 +17,6 @@ export function Controller({ it, setIt, setPopping, players, size }) {
         }
     }, [time]);
 
-    //TODO move collision checking from arena to Controller
     const checkCollisions = async () => {
         for (let i = 0; i < players.length - 1; i++) {
             let p1Position = players[i];
@@ -33,8 +33,8 @@ export function Controller({ it, setIt, setPopping, players, size }) {
                 // if both overlap, they collided
                 if (xOverlap && yOverlap && canTag.current) {
                     //TODO allow more than two players
-                    if (it == 1) setIt(2);
-                    else setIt(1);
+                    if (it == 0) setIt(1);
+                    else setIt(0);
                     canTag.current = false;
                     itCooldown();
                 }

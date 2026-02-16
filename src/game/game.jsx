@@ -8,12 +8,12 @@ import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
 
 export function Game({ userName, skin }) {
-  const [it, setIt] = React.useState(1);
-  const [popping, setPopping] = React.useState(0);
+  const [it, setIt] = React.useState(0);
+  const [popping, setPopping] = React.useState(-1);
   const roomCode = localStorage.getItem("roomCode");
   const [request] = useSearchParams();
 
-  // Placeholder for websocket features later
+  // placeholder for websocket features later
   const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now() });
   const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now() });
   const skinList = JSON.parse(localStorage.getItem("skins"));

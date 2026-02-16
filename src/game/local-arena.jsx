@@ -3,20 +3,23 @@ import './game-screen.css';
 import { Player } from './player.jsx';
 
 export function LocalArena({ players, setters, skins, it, popping, size }) {
-    // players will be a list of Position objects
-    // [{x:1, y:1, time:1000}]
-    // setters will be a list of methods that is 1:1 to players
-    // [setter1, setter2]
-    // setters will be a list of Skin objects that is 1:1 to players
-    // [skin1, skin2]
+    // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
+    // setters will be a list of methods that is 1:1 to players      -> [setter1, setter2]
+    // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]
 
     // set up two players
-    const skin = skins[0];
-    const skin2 = skins[1];
-    const p1Position = players[0];
-    const p2Position = players[1];
     const setP1Position = setters[0];
     const setP2Position = setters[1];
+
+    const playerList = (() => {
+        const list = [];
+        for (var i = 0; i < players.length; i++) {
+            list.push(
+                    <Player key={i} id={i} it={it} position={players[i]} skin={skins[i]} size={size} popping={popping} />
+            )
+        }
+        return list;
+    })();
 
     // set up size constraints
     const fieldSize = 500;
@@ -94,8 +97,7 @@ export function LocalArena({ players, setters, skins, it, popping, size }) {
 
     return (
         <section className="arena relative mb-2 md:mb-0">
-            <Player id={1} it={it} position={p1Position} skin={skin} size={size} popping={popping} />
-            <Player id={2} it={it} position={p2Position} skin={skin2} size={size} popping={popping} />
+            { playerList }
         </section>
     );
 }
