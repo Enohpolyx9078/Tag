@@ -1,7 +1,20 @@
 import React, { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
 
+function formatTime(timeStamp) {
+    let seconds = Math.floor(timeStamp / 1000);
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds % 60;
+    let hours = Math.floor(minutes / 60);
+    minutes = minutes % 60;
+    const hourStr = hours < 10 ? "0" + hours : hours;
+    const minuteStr = minutes < 10 ? "0" + minutes : minutes;
+    const secondStr = seconds < 10 ? "0" + seconds : seconds;
+    return hourStr + ":" + minuteStr + ":" + secondStr;
+}
+
 export function Profile({ userName, skin, setSkin }) {
+    const times = localStorage.getItem("times") == null ? {it:0, notIt:0} : JSON.parse(localStorage.getItem("times"));
     const skins = JSON.parse(localStorage.getItem("skins"));
     const roomCode = useRef(null);
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
@@ -92,8 +105,8 @@ export function Profile({ userName, skin, setSkin }) {
                 </div>
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>Stats</h3>
-                    <p>Time It: 01:33:22</p>
-                    <p>Time Not It: 22:33:32</p>
+                    <p>Time It: {formatTime(times.it)}</p>
+                    <p>Time Not It: {formatTime(times.notIt)}</p>
                     <p>Pickups Used: 223</p>
                 </div>
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
