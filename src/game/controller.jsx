@@ -1,10 +1,9 @@
 import React from 'react'
 
-export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass, setGameOver }) {
+export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass, setGameOver, setWinner }) {
     // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
-
-    const maxRound = 30000;
-    const minRound = 10000
+    const maxRound = 5000;
+    const minRound = 3000
     const canTag = React.useRef(true);
     let timer = Math.floor(Math.random() * (maxRound - minRound)) + minRound;
     const [time, setTime] = React.useState(timer);
@@ -15,11 +14,13 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
             setPopping(it);
             out.current.add(it);
             // check if the game is over
-            if (out.current.size == players.length - 1) { // if there's only one player left
-                // if it is, load up the end screen
+            if (out.current.size == players.length - 1) {
                 setGameOver(true);
+                for (let i = 0; i < players.length; i++) {
+                    if (!out.current.has(i)) setWinner(i);
+                }
             }
-            // if it's not, kick off a new timer
+            // TODO if it's not, kick off a new timer
         }
         switch (itClass) {
             case "it":

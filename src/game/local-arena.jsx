@@ -2,10 +2,12 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 
-export function LocalArena({ players, setters, skins, it, popping, size, itClass, gameOver }) {
+export function LocalArena({ players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
     // setters will be a list of methods that is 1:1 to players      -> [setter1, setter2]
     // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]
+
+    const [finalScreen, setFinalScreen] = React.useState(false);
 
     // set up two players
     const setP1Position = setters[0];
@@ -15,7 +17,7 @@ export function LocalArena({ players, setters, skins, it, popping, size, itClass
         const list = [];
         for (var i = 0; i < players.length; i++) {
             list.push(
-                    <Player key={i} id={i} it={it} position={players[i]} skin={skins[i]} size={size} popping={popping} itClass={itClass}/>
+                <Player key={i} id={i} it={it} position={players[i]} skin={skins[i]} size={size} popping={popping} itClass={itClass} />
             )
         }
         return list;
@@ -95,9 +97,17 @@ export function LocalArena({ players, setters, skins, it, popping, size, itClass
         }
     }, []);
 
+    React.useEffect(() => {
+        if (gameOver) {
+            setTimeout(() => {
+                setFinalScreen(true);
+            }, 3000);
+        }
+    }, [gameOver]);
+
     return (
-        <section className="arena relative mb-2 md:mb-0">
-            { playerList }
-        </section>
+        <div className="arena relative mb-2 md:mb-0">
+            {finalScreen ? "Game Over. " + players[winner].name + " won!" : playerList}
+        </div>
     );
 }
