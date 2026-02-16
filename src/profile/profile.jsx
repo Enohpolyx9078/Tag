@@ -6,7 +6,7 @@ export function Profile({ userName, skin, setSkin }) {
     const roomCode = useRef(null);
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
 
-    function getSkins() {
+    const skinList = (() => {
         const list = [];
         for (const thing of skins.skins) {
             let { id, outline, fill } = thing;
@@ -22,7 +22,7 @@ export function Profile({ userName, skin, setSkin }) {
             )
         }
         return list;
-    }
+    })();
 
     async function defineSkin(id) {
         let current;
@@ -65,8 +65,6 @@ export function Profile({ userName, skin, setSkin }) {
             )
         }, 3000);
     }
-
-    const skinList = getSkins();
 
     return (
         <main>
