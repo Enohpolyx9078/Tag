@@ -12,7 +12,7 @@ function formatTime(timeStamp) {
     return hourStr + ":" + minuteStr + ":" + secondStr;
 }
 
-export function Timer({ you, label, it, id, gameOver }) {
+export function Timer({ you, label, it, id, gameOver, popping }) {
     const [time, setTime] = React.useState(0);
     const requestRef = React.useRef();
     const lastTime = React.useRef();
@@ -48,19 +48,27 @@ export function Timer({ you, label, it, id, gameOver }) {
         }
     }, [it]);
 
-    //TODO stop timer when the attached player dies
+    const saveStats = async () => {
+        // only save player1's stats
+        if (id == you.current) {
+            let times = localStorage.getItem("times");
+            times = times == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(times);
+            if (type == 'it') times.it += time;
+            else times.notIt += time;
+            localStorage.setItem("times", JSON.stringify(times));
+        }
+    }
+
+    // stop timer when the attached player dies
+    React.useEffect(() => {
+        if (popping == id) setActive(false);
+        saveStats();
+    }, [popping]);
 
     React.useEffect(() => {
         if (gameOver) {
             setActive(false);
-            // only save player1's stats
-            if (id == you.current) {
-                let times = localStorage.getItem("times");
-                times = times == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(times);
-                if (type == 'it') times.it += time;
-                else times.notIt += time;
-                localStorage.setItem("times", JSON.stringify(times));
-            }
+            saveStats();
         }
     }, [gameOver]);
 
