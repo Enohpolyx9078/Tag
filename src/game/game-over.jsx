@@ -11,7 +11,7 @@ export function GameOver({ players, skins, winner }) {
                     <svg id="selected" className="skin-big">
                         <rect x="0" y="0" width="100" height="100" stroke={skins[winner].outline} strokeWidth="12" fill={skins[winner].fill} />
                     </svg>
-                    <h2 className="text-2xl md:text-5xl font-semibold col-span-4 mx-4">{players[winner].name} won!</h2>
+                    <h2 className="text-2xl md:text-5xl font-semibold">{players[winner].name} won!</h2>
                 </div>
             </div>
         </div>
