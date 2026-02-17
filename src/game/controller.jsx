@@ -2,7 +2,7 @@ import React from 'react'
 
 export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass, setGameOver, setWinner }) {
     // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
-    const maxRound = 5000;
+    const maxRound = 3000;
     const minRound = 3000
     const canTag = React.useRef(true);
     let timer = Math.floor(Math.random() * (maxRound - minRound)) + minRound;

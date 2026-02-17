@@ -1,6 +1,7 @@
 import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
+import { GameOver } from './game-over.jsx';
 
 export function LocalArena({ players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
@@ -38,7 +39,7 @@ export function LocalArena({ players, setters, skins, it, popping, size, itClass
     // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
         updateFrame((prev) => {
-            let { x, y, time } = prev;
+            let { x, y, time, name } = prev;
             // use delta Time for position change instead of move speed
             const deltaT = performance.now() - time;
             const distance = speed * deltaT;
@@ -68,7 +69,7 @@ export function LocalArena({ players, setters, skins, it, popping, size, itClass
             if (keysPressed.current[keys[2]]) moveLeft();
             if (keysPressed.current[keys[3]]) moveRight();
 
-            return { x: x, y: y, time: performance.now() };
+            return { x: x, y: y, time: performance.now(), name: name };
         });
 
         requestRef.current = requestAnimationFrame(() => animate(updateFrame, keys));
@@ -101,13 +102,13 @@ export function LocalArena({ players, setters, skins, it, popping, size, itClass
         if (gameOver) {
             setTimeout(() => {
                 setFinalScreen(true);
-            }, 3000);
+            }, 2000);
         }
     }, [gameOver]);
 
     return (
         <div className="arena relative mb-2 md:mb-0">
-            {finalScreen ? "Game Over. " + players[winner].name + " won!" : playerList}
+            {finalScreen ? <GameOver players={ players } skins={ skins } winner={ winner }/> : playerList}
         </div>
     );
 }

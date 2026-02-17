@@ -18,7 +18,7 @@ export function Game({ userName, skin }) {
 
     // placeholder for websocket features later
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: userName});
-    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name:"Player 2"});
+    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name:"Guest"});
     const [winner, setWinner] = React.useState(-1);
     const skinList = JSON.parse(localStorage.getItem("skins"));
     const skin2 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
