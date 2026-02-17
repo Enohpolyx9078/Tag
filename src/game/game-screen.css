@@ -107,10 +107,10 @@
     transform: translateX(0) rotate(0deg);
     opacity: 1;
   }
-  20% { transform: translateX(-15px) rotate(45deg); }
-  40% { transform: translateX(15px) rotate(90deg); }
-  60% { transform: translateX(-15px) rotate(135deg); }
-  80% { transform: translateX(15px) rotate(180deg); }
+  20% { transform: translateX(var(--wobble-neg)) rotate(45deg); }
+  40% { transform: translateX(var(--wobble)) rotate(90deg); }
+  60% { transform: translateX(var(--wobble-neg)) rotate(135deg); }
+  80% { transform: translateX(var(--wobble)) rotate(180deg); }
   100% {
     top: 110%;
     transform: translateX(0) rotate(225deg);
