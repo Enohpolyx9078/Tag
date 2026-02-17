@@ -1,7 +1,7 @@
 import React from 'react';
 import { Timer } from './timers.jsx';
 
-export function LocalLeft({ skin, it, gameOver }) {
+export function LocalLeft({ you, skin, it, gameOver }) {
     return (
         <div>
             <div className="flex flex-col flex-row flex-wrap items-center mb-4">
@@ -12,9 +12,8 @@ export function LocalLeft({ skin, it, gameOver }) {
             </div>
             <h3 className="text-xl">Stats</h3>
             <div className="flex flex-col gap-2 mb-2">
-                <Timer label="Time it:" it={it} id={1} gameOver={gameOver}/>
-                <Timer label="Time not it:" it={it} id={1} gameOver={gameOver}/>
-                <p>Pickups Used: 9</p>
+                <Timer label="Time it:" you={you} it={it} id={1} gameOver={gameOver}/>
+                <Timer label="Time not it:" you={you} it={it} id={1} gameOver={gameOver}/>
             </div>
         </div>
     )

@@ -3,7 +3,7 @@ import './game-screen.css';
 import { Player } from './player.jsx';
 import { GameOver } from './game-over.jsx';
 
-export function LocalArena({ players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
+export function LocalArena({ you, players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
     // setters will be a list of methods that is 1:1 to players      -> [setter1, setter2]
     // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]
@@ -102,13 +102,19 @@ export function LocalArena({ players, setters, skins, it, popping, size, itClass
         if (gameOver) {
             setTimeout(() => {
                 setFinalScreen(true);
+                if (winner == you.current) {
+                    let times = localStorage.getItem("times");
+                    times = times == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(times);
+                    times.wins += 1;
+                    localStorage.setItem("times", JSON.stringify(times));
+                }
             }, 2000);
         }
     }, [gameOver]);
 
     return (
         <div className="arena relative mb-2 md:mb-0">
-            {finalScreen ? <GameOver players={ players } skins={ skins } winner={ winner }/> : playerList}
+            {finalScreen ? <GameOver players={players} skins={skins} winner={winner} /> : playerList}
         </div>
     );
 }

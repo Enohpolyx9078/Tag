@@ -17,6 +17,7 @@ export function Game({ userName, skin }) {
     const size = 50; // player size
 
     // placeholder for websocket features later
+    const you = React.useRef(0);
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: userName});
     const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name:"Guest"});
     const [winner, setWinner] = React.useState(-1);
@@ -30,10 +31,10 @@ export function Game({ userName, skin }) {
         <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
             <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} setGameOver={setGameOver} setWinner={setWinner}/>
             <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-                {request.get('twoPlayer') == 'true' ? <LocalLeft skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
+                {request.get('twoPlayer') == 'true' ? <LocalLeft you={you} skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
             </section>
             <section>
-                {request.get('twoPlayer') == 'true' ? <LocalArena players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner}/> : <Arena skin={skin} it={it} />}
+                {request.get('twoPlayer') == 'true' ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner}/> : <Arena skin={skin} it={it} />}
             </section>
             <section className="md:grow-1 sidebar-thin card-thin">
                 <div className="flex flex-col flex-row flex-wrap items-center mb-4">
@@ -44,9 +45,8 @@ export function Game({ userName, skin }) {
                 </div>
                 <h3 className="text-xl">Stats</h3>
                 <div className="flex flex-col gap-2 mb-2">
-                    <Timer label="Time it:" it={it} id={0} gameOver={gameOver} />
-                    <Timer label="Time not it:" it={it} id={0} gameOver={gameOver} />
-                    <p>Pickups Used: 9</p>
+                    <Timer label="Time it:" you={you} it={it} id={0} gameOver={gameOver} />
+                    <Timer label="Time not it:" you={you} it={it} id={0} gameOver={gameOver} />
                 </div>
                 <NavLink className="outline-button" to="/profile">Leave Game</NavLink>
             </section>
