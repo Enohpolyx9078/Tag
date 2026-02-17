@@ -61,7 +61,7 @@ export function Profile({ userName, skin, setSkin }) {
     async function createCode() {
         //TODO use WebSocket to serve room codes
         // Room code logic generated with help from Gemini 3
-        const alphabet = '23456789ABCDEFGHJKLMNPQRSTVWXYZ';
+        const alphabet = '23456789ABCDEFGHJKNPQRSTVWXYZ';
         const generateRoomCode = customAlphabet(alphabet, 6);
         localStorage.setItem("roomCode", generateRoomCode());
     }
