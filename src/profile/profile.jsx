@@ -51,9 +51,11 @@ export function Profile({ userName, skin, setSkin }) {
     }
 
     async function useCode() {
-        localStorage.setItem("roomCode", roomCode.current.value);
+        let val = roomCode.current.value;
+        localStorage.setItem("roomCode", val);
+        const msg = (val == "" || val == null) ? "You forgot to enter the room code!" : 'Room "' + roomCode.current.value + '" does not exist.';
         //TODO use WebSocket to check the room code
-        alert('Sorry, online functionality isn\'t yet fully operational.\nRoom "' + roomCode.current.value + '" does not exist.');
+        alert('Sorry, online functionality isn\'t yet fully operational.\n'+msg);
     }
 
     async function createCode() {
