@@ -1,5 +1,6 @@
 import React, { useRef } from 'react';
 import { NavLink } from 'react-router-dom';
+import { customAlphabet } from 'nanoid';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -14,7 +15,7 @@ function formatTime(timeStamp) {
 }
 
 export function Profile({ userName, skin, setSkin }) {
-    const times = localStorage.getItem("times") == null ? {it:0, notIt:0, wins:0} : JSON.parse(localStorage.getItem("times"));
+    const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(localStorage.getItem("times"));
     const skins = JSON.parse(localStorage.getItem("skins"));
     const roomCode = useRef(null);
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
@@ -51,12 +52,16 @@ export function Profile({ userName, skin, setSkin }) {
 
     async function useCode() {
         localStorage.setItem("roomCode", roomCode.current.value);
-        //TODO check the room code to see if it exists
+        //TODO use WebSocket to check the room code
+        alert('Sorry, online functionality isn\'t yet fully operational.\nRoom "' + roomCode.current.value + '" does not exist.');
     }
 
     async function createCode() {
-        localStorage.setItem("roomCode", "ASDF-1234");
-        //TODO generate a room code
+        //TODO use WebSocket to serve room codes
+        // Room code logic generated with help from Gemini 3
+        const alphabet = '23456789ABCDEFGHJKLMNPQRSTVWXYZ';
+        const generateRoomCode = customAlphabet(alphabet, 6);
+        localStorage.setItem("roomCode", generateRoomCode());
     }
 
     async function getAnalysis(setAnalysis) {
@@ -89,9 +94,9 @@ export function Profile({ userName, skin, setSkin }) {
                     <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{userName}</h2>
                 </div>
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
-                    <input ref={ roomCode } className="border-2 border-white" id="roomCode" placeholder="Room Code"/>
-                    <NavLink onClick={ () => useCode() } className="main-button" to="/game">Join Game</NavLink>
-                    <NavLink onClick={ () => createCode() }className="main-button" to="/game">Create Game</NavLink>
+                    <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
+                    <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
+                    <NavLink onClick={() => createCode()} className="main-button" to="/game">Create Game</NavLink>
                     <NavLink className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
                     <NavLink className="outline-button" to="/">Logout</NavLink>
                 </div>
