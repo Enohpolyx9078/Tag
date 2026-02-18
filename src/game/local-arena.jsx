@@ -102,12 +102,11 @@ export function LocalArena({ you, players, setters, skins, it, popping, size, it
         if (gameOver) {
             setTimeout(() => {
                 setFinalScreen(true);
-                if (winner == you.current) {
-                    let times = localStorage.getItem("times");
-                    times = times == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(times);
-                    times.wins = (times.wins == null) ? 1 : (times.wins + 1);
-                    localStorage.setItem("times", JSON.stringify(times));
-                }
+                let times = localStorage.getItem("times");
+                times = times == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(times);
+                if (winner == you.current) times.wins = (times.wins == null) ? 1 : (times.wins + 1);
+                else times.losses = (times.losses == null) ? 1 : (times.losses + 1);
+                localStorage.setItem("times", JSON.stringify(times));
             }, 2000);
         }
     }, [gameOver]);

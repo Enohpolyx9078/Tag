@@ -15,7 +15,7 @@ function formatTime(timeStamp) {
 }
 
 export function Profile({ userName, skin, setSkin }) {
-    const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(localStorage.getItem("times"));
+    const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(localStorage.getItem("times"));
     const skins = JSON.parse(localStorage.getItem("skins"));
     const roomCode = useRef(null);
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
@@ -114,7 +114,7 @@ export function Profile({ userName, skin, setSkin }) {
                     <h3>Stats</h3>
                     <p>Time It: {formatTime(times.it)}</p>
                     <p>Time Not It: {formatTime(times.notIt)}</p>
-                    <p>Wins: {times.wins}</p>
+                    <p>Win to Loss: {times.wins} - {times.losses}</p>
                 </div>
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>AI Analysis</h3>

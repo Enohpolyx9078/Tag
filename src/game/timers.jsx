@@ -52,7 +52,7 @@ export function Timer({ you, label, it, id, gameOver, popping }) {
         // only save player1's stats
         if (id == you.current) {
             let times = localStorage.getItem("times");
-            times = times == null ? { it: 0, notIt: 0, wins: 0 } : JSON.parse(times);
+            times = times == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(times);
             if (type == 'it') times.it += time;
             else times.notIt += time;
             localStorage.setItem("times", JSON.stringify(times));
