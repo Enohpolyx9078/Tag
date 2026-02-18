@@ -40,7 +40,7 @@ export function Game({ userName, skin }) {
         <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
             <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} setWinner={setWinner} />
             <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-                {request.get('twoPlayer') == 'true' ? <LocalLeft you={you} skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} />}
+                {request.get('twoPlayer') == 'true' ? <LocalLeft you={you} skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} it={it} itClass={itClass} />}
             </section>
             <section>
                 {request.get('twoPlayer') == 'true' ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}

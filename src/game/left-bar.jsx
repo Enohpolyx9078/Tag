@@ -19,7 +19,7 @@ export function LocalLeft({ you, skin, it, gameOver }) {
     )
 }
 
-export function OnlineLeft({ players, skins, roomCode }) {
+export function OnlineLeft({ players, skins, roomCode, it, itClass }) {
 
     const playerList = (() => {
         const list = [];
@@ -28,7 +28,7 @@ export function OnlineLeft({ players, skins, roomCode }) {
             let skin = skins[i];
             list.push(
                 (
-                    <div key={i} className="flex flex-col flex-row flex-wrap items-center mb-4">
+                    <div key={i} className={"flex flex-col flex-row flex-wrap items-center mb-4 " + (it == i ? itClass + " p-1" : "")}>
                         <svg className="skin-icon mr-4">
                             <rect x="0" y="0" width="50" height="50" stroke={skin.outline} strokeWidth="6" fill={skin.fill} />
                         </svg>

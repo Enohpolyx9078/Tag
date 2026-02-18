@@ -23,7 +23,7 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
                     if (!out.current.has(i)) setWinner(i);
                 }
             }
-            // TODO if it's not, choose a new it and kick off a new timer
+            // if it's not, choose a new it and kick off a new timer
             if (!end) {
                 let choice = it;
                 while (out.current.has(choice)) choice = Math.floor(Math.random() * 4);
