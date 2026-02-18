@@ -18,23 +18,32 @@ export function Game({ userName, skin }) {
 
     // placeholder for websocket features later
     const you = React.useRef(0);
-    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: userName});
-    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name:"Guest"});
+    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: userName });
+    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name: "Guest" });
+    const [p3Position, setP3Position] = React.useState({ x: 429, y: 10, time: performance.now(), name: "BoweryMoney3250" });
+    const [p4Position, setP4Position] = React.useState({ x: 10, y: 429, time: performance.now(), name: "MandyCandy" });
     const [winner, setWinner] = React.useState(-1);
     const skinList = JSON.parse(localStorage.getItem("skins"));
     const skin2 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
+    const skin3 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
+    const skin4 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
     const players = [p1Position, p2Position];
     const setters = [setP1Position, setP2Position];
     const skins = [skin, skin2.current];
+    if (request.get('twoPlayer') != 'true') {
+        players.push(...[p3Position, p4Position]);
+        setters.push(...[setP3Position, setP4Position]);
+        skins.push(...[skin3.current, skin4.current]);
+    }
 
     return (
         <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
-            <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} setGameOver={setGameOver} setWinner={setWinner}/>
+            <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} setGameOver={setGameOver} setWinner={setWinner} />
             <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
-                {request.get('twoPlayer') == 'true' ? <LocalLeft you={you} skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft skin={skin2.current} roomCode={roomCode} />}
+                {request.get('twoPlayer') == 'true' ? <LocalLeft you={you} skin={skin2.current} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} />}
             </section>
             <section>
-                {request.get('twoPlayer') == 'true' ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner}/> : <Arena skin={skin} it={it} />}
+                {request.get('twoPlayer') == 'true' ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}
             </section>
             <section className="md:grow-1 sidebar-thin card-thin">
                 <div className="flex flex-col flex-row flex-wrap items-center mb-4">
@@ -45,8 +54,8 @@ export function Game({ userName, skin }) {
                 </div>
                 <h3 className="text-xl">Stats</h3>
                 <div className="flex flex-col gap-2 mb-2">
-                    <Timer label="Time it:" you={you} it={it} id={0} gameOver={gameOver} />
-                    <Timer label="Time not it:" you={you} it={it} id={0} gameOver={gameOver} />
+                    <Timer label="Time it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping}/>
+                    <Timer label="Time not it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping}/>
                 </div>
                 <NavLink className="outline-button" to="/profile">Leave Game</NavLink>
             </section>
