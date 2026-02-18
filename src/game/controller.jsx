@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass, setGameOver, setWinner }) {
+export function Controller({ it, setIt, setPopping, players, size, itClass, setItClass, gameOver, setGameOver, setWinner }) {
     // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
     const maxRound = 9000;
     const minRound = 3000;
@@ -10,17 +10,26 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
     const out = React.useRef(new Set());
 
     React.useEffect(() => {
+        let end = false;
         if (time <= 0) {
+            console.log("Time: " + time);
             setPopping(it);
             out.current.add(it);
             // check if the game is over
             if (out.current.size == players.length - 1) {
-                setGameOver(true);
+                end = true;
+                setGameOver(end);
                 for (let i = 0; i < players.length; i++) {
                     if (!out.current.has(i)) setWinner(i);
                 }
             }
-            // TODO if it's not, kick off a new timer
+            // TODO if it's not, choose a new it and kick off a new timer
+            if (!end) {
+                let choice = it;
+                while (out.current.has(choice)) choice = Math.floor(Math.random() * 4);
+                setIt(choice);
+                setItClass("it");
+            }
         }
         switch (itClass) {
             case "it":
@@ -69,7 +78,7 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
     React.useEffect(() => checkCollisions, [...players]);
 
     return (
-        <ShotClock timer={timer} setTime={setTime} />
+        gameOver ? null : <ShotClock timer={timer} setTime={setTime} />
     );
 }
 
@@ -83,7 +92,11 @@ export function ShotClock({ timer, setTime }) {
         const remaining = timer - deltaTime;
         setTime(remaining);
         if (remaining > 0) requestRef.current = requestAnimationFrame(animate);
-        else cancelAnimationFrame(requestRef.current);
+        else {
+            console.log("Continuing");
+            startTime.current = now;
+            requestRef.current = requestAnimationFrame(animate);
+        }
     }
 
     React.useEffect(() => {

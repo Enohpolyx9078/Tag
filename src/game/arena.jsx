@@ -102,7 +102,7 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
             }
 
             if (count % wait == 0) {
-                dir = Math.min(Math.round(Math.random() * 3), 3);
+                dir = Math.floor(Math.random() * 4);
                 wait = Math.round(Math.random() * 120);
             }
 
