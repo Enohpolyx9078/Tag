@@ -11,7 +11,7 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
     // made with help from Gemini 3
     React.useEffect(() => {
         const timeouts = [];
-        setPlayerInit([]);
+        setPlayerInit([{name: userName, skin: skin}]);
 
         const addPlayer = (name, delay) => {
             const id = setTimeout(() => {
@@ -38,12 +38,6 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
             <h2 className="centered text-2xl">Room: {roomCode}</h2>
             <div className="card md:w-100">
                 <h2 className="centered text-xl">Players</h2>
-                <div className={"flex flex-col flex-row flex-wrap items-center mb-4 "}>
-                    <svg className="skin-icon mr-4">
-                        <rect x="0" y="0" width="50" height="50" stroke={skin.outline} strokeWidth="6" fill={skin.fill} />
-                    </svg>
-                    <p>{userName}</p>
-                </div>
                 {/* Map loop made with help from Gemini 3 */}
                 {playerInit.map((player, index) => (
                     <div key={index} className="flex flex-col flex-row flex-wrap items-center mb-4">

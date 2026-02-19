@@ -7,33 +7,53 @@ import { Timer } from './timers.jsx';
 import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
 
-export function Game({ userName, skin }) {
+export function Game({ userName, playerInit }) {
     const [it, setIt] = React.useState(0);
     const [popping, setPopping] = React.useState(-1);
     const [itClass, setItClass] = React.useState("it");
     const [gameOver, setGameOver] = React.useState(false);
+    const [winner, setWinner] = React.useState(-1);
     const [request] = useSearchParams();
     const roomCode = localStorage.getItem("roomCode");
+    const skinList = JSON.parse(localStorage.getItem("skins"));
     const size = 50; // player size
 
+    // playerInit will hold these objects {name: String, skin: skin}
     // placeholder for websocket features later
     const you = React.useRef(0);
-    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: userName });
-    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name: "Guest" });
-    const [p3Position, setP3Position] = React.useState({ x: 429, y: 10, time: performance.now(), name: "BoweryMoney3250" });
-    const [p4Position, setP4Position] = React.useState({ x: 10, y: 429, time: performance.now(), name: "MandyCandy" });
-    const [winner, setWinner] = React.useState(-1);
-    const skinList = JSON.parse(localStorage.getItem("skins"));
-    const skin2 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
-    const skin3 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
-    const skin4 = React.useRef(skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1]);
-    const players = [p1Position, p2Position];
-    const setters = [setP1Position, setP2Position];
-    const skins = [skin, skin2.current];
-    if (request.get('twoPlayer') != 'true') {
-        players.push(...[p3Position, p4Position]);
-        setters.push(...[setP3Position, setP4Position]);
-        skins.push(...[skin3.current, skin4.current]);
+    const numPlayers = React.useRef(playerInit.length);
+    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: playerInit[you].name });
+    const [p2Position, setP2Position] = React.useState({});
+    const [p3Position, setP3Position] = React.useState({});
+    const [p4Position, setP4Position] = React.useState({});
+    const skin = playerInit[you].skin;
+    const skin2 = React.useRef({});
+    const skin3 = React.useRef({});
+    const skin4 = React.useRef({});
+    const players = [p1Position];
+    const setters = [setP1Position];
+    const skins = [skin];
+
+    if (numPlayers >= 2) {
+        setP2Position({ x: 429, y: 429, time: performance.now(), name: playerInit[1].name });
+        skin2.current = skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1];
+        players.push(p2Position);
+        setters.push(setP2Position);
+        skins.push(skin2.current);
+    }
+    if (numPlayers >= 3) {
+        setP3Position({ x: 429, y: 10, time: performance.now(), name: playerInit[2].name });
+        skin3.current = skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1];
+        players.push(p3Position);
+        setters.push(setP3Position);
+        skins.push(skin3.current);
+    }
+    if (numPlayers >= 4) {
+        setP4Position({ x: 10, y: 429, time: performance.now(), name: playerInit[3].name });
+        skin4.current = skinList.skins[Math.floor(Math.random() * skinList.skins.length) - 1];
+        players.push(p4Position);
+        setters.push(setP4Position);
+        skins.push(skin4.current);
     }
 
     return (
@@ -54,8 +74,8 @@ export function Game({ userName, skin }) {
                 </div>
                 <h3 className="text-xl">Stats</h3>
                 <div className="flex flex-col gap-2 mb-2">
-                    <Timer label="Time it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping}/>
-                    <Timer label="Time not it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping}/>
+                    <Timer label="Time it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping} />
+                    <Timer label="Time not it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping} />
                 </div>
                 <NavLink className="outline-button" to="/profile">Leave Game</NavLink>
             </section>

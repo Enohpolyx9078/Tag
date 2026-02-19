@@ -49,7 +49,7 @@ export default function App() {
                     <Route path='/' element={<Login userName={userName} setUserName={setUserName} />} exact />
                     <Route path='/profile' element={<Profile userName={userName} skin={skin} setSkin={setSkin} />} />
                     <Route path='/createAccount' element={<CreateAccount userName={userName} setUserName={setUserName} />} />
-                    <Route path='/game' element={<Game userName={userName} skin={skin}/>} />
+                    <Route path='/game' element={<Game userName={userName} skin={skin} playerInit={playerInit}/>} />
                     <Route path='/createGame' element={<CreateGame userName={userName} skin={skin} playerInit={playerInit} setPlayerInit={setPlayerInit} />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
