@@ -5,6 +5,7 @@ import { Login } from './login/login';
 import { CreateAccount } from './create-account/create-account';
 import { Game } from './game/game';
 import { Profile } from './profile/profile';
+import { CreateGame } from './create-game/create-game';
 
 export default function App() {
     function setSkins() {
@@ -36,6 +37,7 @@ export default function App() {
     let currentSkin = JSON.parse(localStorage.getItem("currentSkin"));
     currentSkin = currentSkin != null ? currentSkin : skins.skins[0];
     let [skin, setSkin] = React.useState(currentSkin);
+    const [playerInit, setPlayerInit] = React.useState([]);
 
     return (
         <BrowserRouter>
@@ -48,6 +50,7 @@ export default function App() {
                     <Route path='/profile' element={<Profile userName={userName} skin={skin} setSkin={setSkin} />} />
                     <Route path='/createAccount' element={<CreateAccount userName={userName} setUserName={setUserName} />} />
                     <Route path='/game' element={<Game userName={userName} skin={skin}/>} />
+                    <Route path='/createGame' element={<CreateGame userName={userName} skin={skin} playerInit={playerInit} setPlayerInit={setPlayerInit} />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
                 <footer>

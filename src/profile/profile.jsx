@@ -98,7 +98,7 @@ export function Profile({ userName, skin, setSkin }) {
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
                     <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
-                    <NavLink onClick={() => createCode()} className="main-button" to="/game">Create Game</NavLink>
+                    <NavLink onClick={() => createCode()} className="main-button" to="/createGame">Create Game</NavLink>
                     <NavLink className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
                     <NavLink className="outline-button" to="/">Logout</NavLink>
                 </div>
