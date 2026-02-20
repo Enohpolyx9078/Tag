@@ -1,12 +1,24 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 
 export function CreateAccount({ userName, setUserName }) {
     const [password, setPassword] = React.useState('');
+    const nav = useNavigate();
 
     async function onLogin() {
         localStorage.setItem("tagStartup-userName", userName);
     }
+
+    React.useEffect(() => {
+        const submit = (e) => {
+            if (e.key == "Enter" && (userName && password)) {
+                onLogin();
+                nav('/profile');
+            }
+        }
+
+        window.addEventListener('keydown', submit);
+    });
 
     return (
         <main className="flex-centered">
