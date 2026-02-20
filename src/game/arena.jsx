@@ -119,9 +119,9 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
 
     React.useEffect(() => {
         requestRef.current = requestAnimationFrame(() => animate(setP1Position, p1Keys));
-        requestRef.current = requestAnimationFrame(() => animateBot(setP2Position, 0, 0, 60));
-        requestRef.current = requestAnimationFrame(() => animateBot(setP3Position, 0, 0, 120));
-        requestRef.current = requestAnimationFrame(() => animateBot(setP4Position, 0, 0, 30));
+        if (players.length >= 2) requestRef.current = requestAnimationFrame(() => animateBot(setP2Position, 0, 0, 60));
+        if (players.length >= 3) requestRef.current = requestAnimationFrame(() => animateBot(setP3Position, 0, 0, 120));
+        if (players.length >= 4) requestRef.current = requestAnimationFrame(() => animateBot(setP4Position, 0, 0, 30));
         const gameKeys = p1Keys;
         const down = (e) => {
             if (gameKeys.includes(e.key)) e.preventDefault();
