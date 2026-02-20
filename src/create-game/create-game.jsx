@@ -11,17 +11,21 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
     // made with help from Gemini 3
     React.useEffect(() => {
         const timeouts = [];
-        setPlayerInit([{name: userName, skin: skin}]);
+        setPlayerInit([{ name: userName, skin: skin }]);
 
         const addPlayer = (name, delay) => {
             const id = setTimeout(() => {
-                setPlayerInit(prev => [
-                    ...prev,
-                    {
-                        name: name,
-                        skin: skins.skins[Math.floor(Math.random() * skins.skins.length)]
-                    }
-                ]);
+                setPlayerInit((prev) => {
+                    const newList = [
+                        ...prev,
+                        {
+                            name: name,
+                            skin: skins.skins[Math.floor(Math.random() * skins.skins.length)]
+                        }
+                    ]
+                    localStorage.setItem("playerInit", JSON.stringify(newList));
+                    return newList;
+                });
             }, delay);
             timeouts.push(id);
         };

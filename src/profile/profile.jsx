@@ -66,6 +66,13 @@ export function Profile({ userName, skin, setSkin }) {
         localStorage.setItem("roomCode", generateRoomCode());
     }
 
+    async function prepTwoPlayer() {
+        const player1 = {name: userName, skin: skin}
+        const player2 = {name: "Guest", skin: skins.skins[Math.floor(Math.random() * skins.skins.length)]}
+        const playerInit = [player1, player2];
+        localStorage.setItem("playerInit", JSON.stringify(playerInit));
+    }
+
     async function getAnalysis(setAnalysis) {
         setAnalysis(
             (<div class="animate-pulse m-4">
@@ -99,7 +106,7 @@ export function Profile({ userName, skin, setSkin }) {
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
                     <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
                     <NavLink onClick={() => createCode()} className="main-button" to="/createGame">Create Game</NavLink>
-                    <NavLink className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
+                    <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
                     <NavLink className="outline-button" to="/">Logout</NavLink>
                 </div>
             </section>
