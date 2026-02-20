@@ -41,7 +41,7 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
         <section className="flex-centered">
             <h2 className="centered text-2xl">Room: {roomCode}</h2>
             <div className="card md:w-100">
-                <h2 className="centered text-xl">Players</h2>
+                <h2 className="centered text-xl">Players: {playerInit.length}/4</h2>
                 {/* Map loop made with help from Gemini 3 */}
                 {playerInit.map((player, index) => (
                     <div key={index} className="flex flex-col flex-row flex-wrap items-center mb-4">
@@ -56,7 +56,7 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
                         <p>{player.name}</p>
                     </div>
                 ))}
-                <NavLink className="main-button" to="/game">Start Game</NavLink>
+                <NavLink className="main-button" to="/game" disabled={playerInit.length < 2}>Start Game</NavLink>
                 <NavLink className="outline-button" to="/profile">Leave</NavLink>
             </div>
         </section>
