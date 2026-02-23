@@ -118,8 +118,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **All functionality implemented or mocked out** - I did not complete this part of the deliverable.
-- [ ] **Hooks** - I did not complete this part of the deliverable.
+- [x] **All functionality implemented or mocked out** - Every critical component works! The websocket stuff is all mocked out for now (as noted by comments in the code), but as a stand in, it looks good.
+- [x] **Hooks** - Everything is running off of react hooks, which ended up being a nice way to implement a game controller.
 
 ## 🚀 Service deliverable
 

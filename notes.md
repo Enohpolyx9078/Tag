@@ -34,27 +34,5 @@ It turns out that LLMs do a decent job at getting color pallets. Nice. I also us
 Setting up react took a hot sec because I forgot the import line at the top of my child components for react stuff smh. The good news is I finally go that figured out, so now the react stuff is working for routing.
 
 ## React Part 2: Reactivity
-
-This was a lot of fun to see it all come together. I had to keep remembering to use React state instead of just manipulating the DOM directly.
-
-Handling the toggling of the checkboxes was particularly interesting.
-
-```jsx
-<div className="input-group sound-button-container">
-  {calmSoundTypes.map((sound, index) => (
-    <div key={index} className="form-check form-switch">
-      <input
-        className="form-check-input"
-        type="checkbox"
-        value={sound}
-        id={sound}
-        onChange={() => togglePlay(sound)}
-        checked={selectedSounds.includes(sound)}
-      ></input>
-      <label className="form-check-label" htmlFor={sound}>
-        {sound}
-      </label>
-    </div>
-  ))}
-</div>
-```
+ 
+I was able to get all the needed functionality working! There's a few quality of life improvements that I'll implement later if there's time, but the whole thing works now. As a side note, AI clutched up big to help me debug janky react state stuff and generate some impromptu CSS I needed. Good stuff!
