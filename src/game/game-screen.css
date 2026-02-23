@@ -129,6 +129,12 @@
     z-index: 3;
 }
 
+@media ((max-width: 600px) or (max-height: 600px)) {
+  .arena {
+    transform: scale(0.75);
+  }
+}
+
 /* .debris made by Gemini 3 */
 .debris {
     position: absolute;
