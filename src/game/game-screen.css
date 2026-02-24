@@ -129,12 +129,6 @@
     z-index: 3;
 }
 
-@media ((max-width: 600px) or (max-height: 600px)) {
-  .arena {
-    transform: scale(0.75);
-  }
-}
-
 /* .debris made by Gemini 3 */
 .debris {
     position: absolute;
@@ -177,4 +171,38 @@
 
 .player {
     transition-duration: 0.25s;
+}
+.touch-controls {
+    display: none;
+}
+
+/* media query made with help from Gemini 3 */
+@media ((max-width: 600px) or (max-height: 600px)) {
+  .arena {
+    transform: scale(0.75);
+    transform-origin: 0 0;
+  }
+  .arena-wrapper {
+    width: 375px;  /* 500 * 0.75 */
+    height: 375px;
+    overflow: visible; 
+  }
+
+  .touch-button {
+    align-items: center;
+    display: flex;
+    height: 75px;
+    justify-content: center;
+    width: 75px;
+  }
+
+  .touch-button-small {
+    height: 50px !important;
+    width: 50px !important;
+  }
+
+  .touch-controls {
+    display: block !important;
+    height: min-content;
+  }
 }

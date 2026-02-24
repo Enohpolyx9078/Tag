@@ -155,9 +155,41 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
         }
     }, [gameOver]);
 
+    async function buttonDown(btn) {
+        for (let i = 0; i < btn.length; i++) keysPressed.current[btn[i]] = true;
+    }
+
+    async function buttonUp(btn) {
+        for (let i = 0; i < btn.length; i++) keysPressed.current[btn[i]] = false;
+    }
+
     return (
-        <div className="arena relative mb-2 md:mb-0">
-            {finalScreen ? <GameOver players={players} skins={skins} winner={winner} /> : playerList}
+        <div className="flex flex-row items-center">
+            <div className="arena-wrapper grow-0 mb-2 md:mb-0">
+                <div className="arena relative mb-2 md:mb-0">
+                    {finalScreen ? <GameOver players={players} skins={skins} winner={winner} /> : playerList}
+                </div>
+            </div>
+            <div className="grow-1 touch-controls mb-2">
+                <div className="flex justify-center">
+                    <div className="flex flex-row items-end">
+                        <div className="touch-button touch-button-small main-button" onPointerDown={() => buttonDown(['ArrowUp', 'ArrowLeft'])} onPointerUp={() => buttonUp(['ArrowUp', 'ArrowLeft'])}>&#x2196;</div>
+                        <div className="touch-button main-button" onPointerDown={() => buttonDown(['ArrowUp'])} onPointerUp={() => buttonUp(['ArrowUp'])}>&#x2191;</div>
+                        <div className="touch-button touch-button-small main-button" onPointerDown={() => buttonDown(['ArrowUp', 'ArrowRight'])} onPointerUp={() => buttonUp(['ArrowUp', 'ArrowRight'])}>&#x2197;</div>
+                    </div>
+                </div>
+                <div className="flex justify-around">
+                    <div className="touch-button main-button" onPointerDown={() => buttonDown(['ArrowLeft'])} onPointerUp={() => buttonUp(['ArrowLeft'])}>&#x2190;</div>
+                    <div className="touch-button main-button" onPointerDown={() => buttonDown(['ArrowRight'])} onPointerUp={() => buttonUp(['ArrowRight'])}>&#x2192;</div>
+                </div>
+                <div className="flex justify-around">
+                    <div className="flex flex-row items-start">
+                        <div className="touch-button touch-button-small main-button" onPointerDown={() => buttonDown(['ArrowDown', 'ArrowLeft'])} onPointerUp={() => buttonUp(['ArrowDown', 'ArrowLeft'])}>&#x2199;</div>
+                        <div className="touch-button main-button" onPointerDown={() => buttonDown(['ArrowDown'])} onPointerUp={() => buttonUp(['ArrowDown'])}>&#x2193;</div>
+                        <div className="touch-button touch-button-small main-button" onPointerDown={() => buttonDown(['ArrowDown', 'ArrowRight'])} onPointerUp={() => buttonUp(['ArrowDown', 'ArrowRight'])}>&#x2198;</div>
+                    </div>
+                </div>
+            </div>
         </div>
     );
 }
