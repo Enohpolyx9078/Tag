@@ -204,5 +204,12 @@
   .touch-controls {
     display: block !important;
     height: min-content;
+    touch-action: none;
+  }
+
+  .touch-spacer {
+    width: 75px;
+    height: 75px;
+    margin: 0.25em;
   }
 }

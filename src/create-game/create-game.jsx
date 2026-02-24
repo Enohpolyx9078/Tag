@@ -56,7 +56,7 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
                         <p>{player.name}</p>
                     </div>
                 ))}
-                <NavLink className="main-button" to="/game" disabled={playerInit.length < 2}>Start Game</NavLink>
+                <NavLink className="main-button" to="/game#arena" disabled={playerInit.length < 2}>Start Game</NavLink>
                 <NavLink className="outline-button" to="/profile">Leave</NavLink>
             </div>
         </section>
