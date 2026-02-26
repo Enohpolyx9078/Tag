@@ -102,24 +102,37 @@
 }
 
 @keyframes fall {
-  0% {
-    top: -10%;
-    transform: translateX(0) rotate(0deg);
-    opacity: 1;
-  }
-  20% { transform: translateX(var(--wobble-neg)) rotate(45deg); }
-  40% { transform: translateX(var(--wobble)) rotate(90deg); }
-  60% { transform: translateX(var(--wobble-neg)) rotate(135deg); }
-  80% { transform: translateX(var(--wobble)) rotate(180deg); }
-  100% {
-    top: 110%;
-    transform: translateX(0) rotate(225deg);
-    opacity: 0;
-  }
+    0% {
+        top: -10%;
+        transform: translateX(0) rotate(0deg);
+        opacity: 1;
+    }
+
+    20% {
+        transform: translateX(var(--wobble-neg)) rotate(45deg);
+    }
+
+    40% {
+        transform: translateX(var(--wobble)) rotate(90deg);
+    }
+
+    60% {
+        transform: translateX(var(--wobble-neg)) rotate(135deg);
+    }
+
+    80% {
+        transform: translateX(var(--wobble)) rotate(180deg);
+    }
+
+    100% {
+        top: 110%;
+        transform: translateX(0) rotate(225deg);
+        opacity: 0;
+    }
 }
 
 .animate-fall {
-  animation: fall linear infinite;
+    animation: fall linear infinite;
 }
 
 .arena {
@@ -172,44 +185,51 @@
 .player {
     transition-duration: 0.25s;
 }
+
 .touch-controls {
     display: none;
 }
 
 /* media query made with help from Gemini 3 */
 @media ((max-width: 600px) or (max-height: 600px)) {
-  .arena {
-    transform: scale(0.75);
-    transform-origin: 0 0;
-  }
-  .arena-wrapper {
-    width: 375px;  /* 500 * 0.75 */
-    height: 375px;
-    overflow: visible; 
-  }
+    .arena {
+        transform: scale(0.75);
+        transform-origin: 0 0;
+    }
 
-  .touch-button {
-    align-items: center;
-    display: flex;
-    height: 75px;
-    justify-content: center;
-    width: 75px;
-  }
+    .arena-wrapper {
+        width: 375px;
+        /* 500 * 0.75 */
+        height: 375px;
+        overflow: visible;
+    }
 
-  .touch-button-small {
-    height: 50px !important;
-    width: 50px !important;
-  }
+    .touch-button {
+        align-items: center;
+        display: flex;
+        height: 75px;
+        justify-content: center;
+        width: 75px;
+        -webkit-user-select: none;
+        -ms-user-select: none;
+        user-select: none;
+        -webkit-touch-callout: none;
+    }
 
-  .touch-controls {
-    display: block !important;
-    height: min-content;
-    touch-action: none;
-  }
+    .touch-button-small {
+        height: 50px !important;
+        width: 50px !important;
+    }
 
-  .touch-spacer {
-    width: 75px;
-    height: 75px;
-    margin: 0.25em;
-  }
+    .touch-controls {
+        display: block !important;
+        height: min-content;
+        touch-action: none;
+    }
+
+    .touch-spacer {
+        width: 75px;
+        height: 75px;
+        margin: 0.25em;
+    }
 }
