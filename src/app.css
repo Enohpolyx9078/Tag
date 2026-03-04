@@ -24,9 +24,10 @@ a {
     transition-duration: 0.33s;
 }
 
-a[disabled] {
+a[disabled], button[disabled] {
     pointer-events: none;
     opacity: 0.4;
+    transition-duration: 0.25s;
 }
 
 body, .body {

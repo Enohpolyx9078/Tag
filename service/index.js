@@ -10,10 +10,10 @@ const apiRouter = express.Router();
 
 const users = []; // eventually, this will be stored in a database, not in memory
 
-async function createUser(email, password) {
+async function createUser(userName, password) {
     const passwordHash = await bcrypt.hash(password, 10);
     const user = {
-        email: email,
+        userName: userName,
         password: passwordHash,
     };
     users.push(user);
@@ -64,34 +64,34 @@ app.use(`/api`, apiRouter);
 
 // Create Account
 app.post('/api/auth', async (req, res) => {
-  if (await getUser('email', req.body.email)) {
-    res.status(409).send({ msg: 'Existing user' });
-  } else {
-    const user = await createUser(req.body.email, req.body.password);
-    setAuthCookie(res, user);
-    res.send({ email: user.email });
-  }
+    if (await getUser('userName', req.body.userName)) {
+        res.status(409).send({ msg: 'Existing user' });
+    } else {
+        const user = await createUser(req.body.userName, req.body.password);
+        setAuthCookie(res, user);
+        res.send({ userName: user.userName });
+    }
 });
 
 // Login
 app.put('/api/auth', async (req, res) => {
-  const user = await getUser('email', req.body.email);
-  if (user && (await bcrypt.compare(req.body.password, user.password))) {
-    setAuthCookie(res, user);
-    res.send({ email: user.email });
-  } else {
-    res.status(401).send({ msg: 'Unauthorized' });
-  }
+    const user = await getUser('userName', req.body.userName);
+    if (user && (await bcrypt.compare(req.body.password, user.password))) {
+        setAuthCookie(res, user);
+        res.send({ userName: user.userName });
+    } else {
+        res.status(401).send({ msg: 'Unauthorized' });
+    }
 });
 
 // Logout
 app.delete('/api/auth', async (req, res) => {
-  const token = req.cookies['token'];
-  const user = await getUser('token', token);
-  if (user) {
-    clearAuthCookie(res, user);
-  }
-  res.send({});
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    if (user) {
+        clearAuthCookie(res, user);
+    }
+    res.send({});
 });
 
 app.listen(port, () => {
