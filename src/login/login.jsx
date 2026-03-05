@@ -6,7 +6,18 @@ export function Login({ userName, setUserName }) {
     const nav = useNavigate();
 
     async function onLogin() {
-        localStorage.setItem("tagStartup-userName", userName);
+        const res = await fetch('api/auth', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ userName, password }),
+        });
+        await res.json();
+        if (res.ok) {
+            //TODO fetch the user info instead of localstorage
+            nav('/profile');
+        } else {
+            alert('Authentication failed');
+        }
     }
 
     React.useEffect(() => {
@@ -28,7 +39,7 @@ export function Login({ userName, setUserName }) {
                 <input className="border-2 border-white" id="username" defaultValue={userName} onChange={(e) => setUserName(e.target.value)} />
                 <label htmlFor="password">Password</label>
                 <input className="border-2 border-white" id="password" type="password" onChange={(e) => setPassword(e.target.value)} />
-                <NavLink onClick={() => onLogin()} className="main-button" to="profile" disabled={!userName || !password}>Login</NavLink>
+                <button onClick={() => onLogin()} className="main-button" to="profile" disabled={!userName || !password}>Login</button>
                 <div className="centered">
                     <small>
                         New here?
