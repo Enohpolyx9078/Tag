@@ -19,17 +19,6 @@ export function CreateAccount({ userName, setUserName }) {
         }
     }
 
-    React.useEffect(() => {
-        const submit = (e) => {
-            if (e.key == "Enter" && (userName && password)) {
-                onLogin();
-                nav('/profile');
-            }
-        }
-
-        window.addEventListener('keydown', submit);
-    });
-
     return (
         <main className="flex-centered">
             <h2 className="text-2xl font-semibold">Create Account</h2>
