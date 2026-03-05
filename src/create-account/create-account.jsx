@@ -15,7 +15,7 @@ export function CreateAccount({ userName, setUserName }) {
         if (res.ok) {
             //TODO fetch the user info instead of localstorage
             localStorage.setItem("tagStartup-userName", userName);
-            navigate('/profile');
+            nav('/profile');
         } else {
             alert('Authentication failed');
         }
