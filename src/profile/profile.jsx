@@ -1,5 +1,5 @@
 import React, { useRef } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
 import { customAlphabet } from 'nanoid';
 
 function formatTime(timeStamp) {
@@ -19,6 +19,7 @@ export function Profile({ userName, skin, setSkin }) {
     const skins = JSON.parse(localStorage.getItem("skins"));
     const roomCode = useRef(null);
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
+    const nav = useNavigate();
 
     const skinList = (() => {
         const list = [];
@@ -55,7 +56,7 @@ export function Profile({ userName, skin, setSkin }) {
         localStorage.setItem("roomCode", val);
         const msg = (val == "" || val == null) ? "You forgot to enter the room code!" : 'Room "' + roomCode.current.value + '" does not exist.';
         //TODO use WebSocket to check the room code
-        alert('Sorry, online functionality isn\'t yet fully operational.\n'+msg);
+        alert('Sorry, online functionality isn\'t yet fully operational.\n' + msg);
     }
 
     async function createCode() {
@@ -67,8 +68,8 @@ export function Profile({ userName, skin, setSkin }) {
     }
 
     async function prepTwoPlayer() {
-        const player1 = {name: userName, skin: skin}
-        const player2 = {name: "Guest", skin: skins.skins[Math.floor(Math.random() * skins.skins.length)]}
+        const player1 = { name: userName, skin: skin }
+        const player2 = { name: "Guest", skin: skins.skins[Math.floor(Math.random() * skins.skins.length)] }
         const playerInit = [player1, player2];
         localStorage.setItem("playerInit", JSON.stringify(playerInit));
     }
@@ -93,6 +94,19 @@ export function Profile({ userName, skin, setSkin }) {
         }, 3000);
     }
 
+    async function onLogout() {
+        const res = await fetch('api/auth', {
+            method: 'DELETE',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        await res.json();
+        if (res.ok) {
+            nav('/');
+        } else {
+            alert('Something went wrong. Logout was NOT successful');
+        }
+    }
+
     return (
         <main>
             <section className="md:grid md:grid-flow-col md:grid-cols-5 mb-4">
@@ -107,7 +121,7 @@ export function Profile({ userName, skin, setSkin }) {
                     <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
                     <NavLink onClick={() => createCode()} className="main-button" to="/createGame">Create Game</NavLink>
                     <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
-                    <NavLink className="outline-button" to="/">Logout</NavLink>
+                    <button onClick={() => onLogout()} className="outline-button">Logout</button>
                 </div>
             </section>
             <section className="md:grid md:grid-flow-col md:grid-cols-3 gap-4">

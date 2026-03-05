@@ -85,11 +85,9 @@ app.put('/api/auth', async (req, res) => {
 
 // Logout
 app.delete('/api/auth', async (req, res) => {
-    const token = req.cookies['token'];
-    const user = await getUser('token', token);
-    if (user) {
-        clearAuthCookie(res, user);
-    }
+    const token = req.cookies[tokenName];
+    const user = await getUser(tokenName, token);
+    if (user) clearAuthCookie(res, user);
     res.send({});
 });
 
