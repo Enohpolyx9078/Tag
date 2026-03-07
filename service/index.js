@@ -50,9 +50,6 @@ app.use(`/api`, apiRouter);
 
 /*
     TODO: Set up the endpoints
-    Login (PUT)
-    Logout (DELETE)
-    Create Account(POST)
     Change Skin (PUT)
     Join Game (GET)
     Create Game (POST)
@@ -89,6 +86,18 @@ app.delete('/api/auth', async (req, res) => {
     const user = await getUser(tokenName, token);
     if (user) clearAuthCookie(res, user);
     res.send({});
+});
+
+// Get User
+//TODO abscract securing this endpoint
+app.get('/api/user', async (req, res) => {
+  const token = req.cookies['token'];
+  const user = await getUser('token', token);
+  if (user) {
+    res.send({ userName: user.userName });
+  } else {
+    res.status(401).send({ msg: 'Unauthorized' });
+  }
 });
 
 app.listen(port, () => {

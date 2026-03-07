@@ -14,12 +14,32 @@ function formatTime(timeStamp) {
     return hourStr + ":" + minuteStr + ":" + secondStr;
 }
 
-export function Profile({ userName, skin, setSkin }) {
+export function Profile({ skin, setSkin }) {
+    let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
+    const [user, setUser] = React.useState('');
     const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(localStorage.getItem("times"));
     const skins = JSON.parse(localStorage.getItem("skins"));
     const roomCode = useRef(null);
-    let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
     const nav = useNavigate();
+
+    React.useEffect(async () => {
+        const data = await fetchUser();
+        setUser(data);
+    }, []);
+
+    async function fetchUser() {
+        const res = await fetch('api/user', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+        if (res.ok) {
+            return data;
+        } else {
+            alert('Authentication failed');
+        }
+        return {};
+    }
 
     const skinList = (() => {
         const list = [];
@@ -68,7 +88,7 @@ export function Profile({ userName, skin, setSkin }) {
     }
 
     async function prepTwoPlayer() {
-        const player1 = { name: userName, skin: skin }
+        const player1 = { name: user.userName, skin: skin }
         const player2 = { name: "Guest", skin: skins.skins[Math.floor(Math.random() * skins.skins.length)] }
         const playerInit = [player1, player2];
         localStorage.setItem("playerInit", JSON.stringify(playerInit));
@@ -114,7 +134,7 @@ export function Profile({ userName, skin, setSkin }) {
                     <svg id="selected" className="skin-big col-span-1">
                         <rect x="0" y="0" width="100" height="100" stroke={skin.outline} strokeWidth="12" fill={skin.fill} />
                     </svg>
-                    <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{userName}</h2>
+                    <h2 className="text-2xl md:text-5xl font-semibold col-span-4">{user.userName}</h2>
                 </div>
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />

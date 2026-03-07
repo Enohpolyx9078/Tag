@@ -13,7 +13,6 @@ export function Login({ userName, setUserName }) {
         });
         await res.json();
         if (res.ok) {
-            //TODO fetch the user info instead of localstorage
             nav('/profile');
         } else {
             alert('Authentication failed');
