@@ -8,27 +8,27 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const apiRouter = express.Router();
 
 // eventually, these will be stored in a database, not in memory
-const users = []; 
+const users = [];
 const skins = {
-            list: [
-                { id: "Grape", fill: "#9922FF", outline: "#BBB" },
-                { id: "Magma", fill: "#FF4500", outline: "#330000" },
-                { id: "Bonsai", fill: "#4A5D23", outline: "#D2B48C" },
-                { id: "Glacier", fill: "#E0FFFF", outline: "#4682B4" },
-                { id: "Abyss", fill: "#000015", outline: "#00FFFF" },
-                { id: "Marigold", fill: "#FFB800", outline: "#7B3F00" },
-                { id: "Bubblegum", fill: "#FF85D1", outline: "#B02E82" },
-                { id: "Minty", fill: "#AAF0D1", outline: "#16A085" },
-                { id: "Voltage", fill: "#FFFF00", outline: "#000" },
-                { id: "Titanium", fill: "#D1D1D1", outline: "#FFF" },
-                { id: "Hazard", fill: "#FC0", outline: "#222" },
-                { id: "Blueprint", fill: "#0047AB", outline: "#E0E0E0" },
-                { id: "Carbon", fill: "#2B2B2B", outline: "#555" },
-                { id: "Nebula", fill: "#2E0854", outline: "#F0F" },
-                { id: "Supernova", fill: "#FFF", outline: "#FFA500" },
-                { id: "Ghost", fill: "#FFF", outline: "#ABC123" },
-            ]
-        }
+    list: [
+        { id: "Grape", fill: "#9922FF", outline: "#BBB" },
+        { id: "Magma", fill: "#FF4500", outline: "#330000" },
+        { id: "Bonsai", fill: "#4A5D23", outline: "#D2B48C" },
+        { id: "Glacier", fill: "#E0FFFF", outline: "#4682B4" },
+        { id: "Abyss", fill: "#000015", outline: "#00FFFF" },
+        { id: "Marigold", fill: "#FFB800", outline: "#7B3F00" },
+        { id: "Bubblegum", fill: "#FF85D1", outline: "#B02E82" },
+        { id: "Minty", fill: "#AAF0D1", outline: "#16A085" },
+        { id: "Voltage", fill: "#FFFF00", outline: "#000" },
+        { id: "Titanium", fill: "#D1D1D1", outline: "#FFF" },
+        { id: "Hazard", fill: "#FC0", outline: "#222" },
+        { id: "Blueprint", fill: "#0047AB", outline: "#E0E0E0" },
+        { id: "Carbon", fill: "#2B2B2B", outline: "#555" },
+        { id: "Nebula", fill: "#2E0854", outline: "#F0F" },
+        { id: "Supernova", fill: "#FFF", outline: "#FFA500" },
+        { id: "Ghost", fill: "#FFF", outline: "#ABC123" },
+    ]
+}
 
 async function createUser(userName, password) {
     const passwordHash = await bcrypt.hash(password, 10);
@@ -68,7 +68,7 @@ const protect = async (req, res, next) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
     if (user) next();
-    else res.status(401).send({ msg: 'Unauthorized'});
+    else res.status(401).send({ msg: 'Unauthorized' });
 }
 
 app.use(express.json());
@@ -118,14 +118,14 @@ app.delete('/api/auth', async (req, res) => {
 
 // Get User
 app.get('/api/user', protect, async (req, res) => {
-  const token = req.cookies['token'];
-  const user = await getUser('token', token);
-  if (user) {
-    const {password, token, ...data} = user;    // remove password and token from the response
-    res.send(data);
-  } else {
-    res.status(400).send({msg: 'Bad Request'});
-  }
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    if (user) {
+        const { password, token, ...data } = user;    // remove password and token from the response
+        res.send(data);
+    } else {
+        res.status(400).send({ msg: 'Bad Request' });
+    }
 });
 
 // Get Skins
@@ -134,8 +134,15 @@ app.get('/api/skins', protect, async (req, res) => {
 });
 
 // Change Skin
-app.get('/api/skins', protect, async (req, res) => {
-    //TODO
+app.put('/api/skins', protect, async (req, res) => {
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    if (user) {
+        user.skin = req.body.skin;
+        res.status(201);
+    } else {
+        res.status(400).send({ msg: 'Bad Request' });
+    }
 });
 
 app.listen(port, () => {
