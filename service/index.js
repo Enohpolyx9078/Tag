@@ -4,17 +4,38 @@ const express = require('express');
 const uuid = require('uuid');
 const app = express();
 
-const tokenName = 'token';
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const apiRouter = express.Router();
 
-const users = []; // eventually, this will be stored in a database, not in memory
+// eventually, these will be stored in a database, not in memory
+const users = []; 
+const skins = {
+            list: [
+                { id: "Grape", fill: "#9922FF", outline: "#BBB" },
+                { id: "Magma", fill: "#FF4500", outline: "#330000" },
+                { id: "Bonsai", fill: "#4A5D23", outline: "#D2B48C" },
+                { id: "Glacier", fill: "#E0FFFF", outline: "#4682B4" },
+                { id: "Abyss", fill: "#000015", outline: "#00FFFF" },
+                { id: "Marigold", fill: "#FFB800", outline: "#7B3F00" },
+                { id: "Bubblegum", fill: "#FF85D1", outline: "#B02E82" },
+                { id: "Minty", fill: "#AAF0D1", outline: "#16A085" },
+                { id: "Voltage", fill: "#FFFF00", outline: "#000" },
+                { id: "Titanium", fill: "#D1D1D1", outline: "#FFF" },
+                { id: "Hazard", fill: "#FC0", outline: "#222" },
+                { id: "Blueprint", fill: "#0047AB", outline: "#E0E0E0" },
+                { id: "Carbon", fill: "#2B2B2B", outline: "#555" },
+                { id: "Nebula", fill: "#2E0854", outline: "#F0F" },
+                { id: "Supernova", fill: "#FFF", outline: "#FFA500" },
+                { id: "Ghost", fill: "#FFF", outline: "#ABC123" },
+            ]
+        }
 
 async function createUser(userName, password) {
     const passwordHash = await bcrypt.hash(password, 10);
     const user = {
-        userName: userName,
         password: passwordHash,
+        userName: userName,
+        skin: skins.list[0]
     };
     users.push(user);
     return user;
@@ -30,7 +51,7 @@ function getUser(field, value) {
 // Create a token for the user and send a cookie containing the token
 function setAuthCookie(res, user) {
     user.token = uuid.v4();
-    res.cookie(tokenName, user.token, {
+    res.cookie('token', user.token, {
         secure: true,
         httpOnly: true,
         sameSite: 'strict',
@@ -40,7 +61,14 @@ function setAuthCookie(res, user) {
 // Delete the current token from the user and the browser cookie
 function clearAuthCookie(res, user) {
     delete user.token;
-    res.clearCookie(tokenName);
+    res.clearCookie('token');
+}
+
+const protect = async (req, res, next) => {
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    if (user) next();
+    else res.status(401).send({ msg: 'Unauthorized'});
 }
 
 app.use(express.json());
@@ -82,22 +110,32 @@ app.put('/api/auth', async (req, res) => {
 
 // Logout
 app.delete('/api/auth', async (req, res) => {
-    const token = req.cookies[tokenName];
-    const user = await getUser(tokenName, token);
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
     if (user) clearAuthCookie(res, user);
     res.send({});
 });
 
 // Get User
-//TODO abscract securing this endpoint
-app.get('/api/user', async (req, res) => {
+app.get('/api/user', protect, async (req, res) => {
   const token = req.cookies['token'];
   const user = await getUser('token', token);
   if (user) {
-    res.send(user);
+    const {password, token, ...data} = user;    // remove password and token from the response
+    res.send(data);
   } else {
-    res.status(401).send({ msg: 'Unauthorized' });
+    res.status(400).send({msg: 'Bad Request'});
   }
+});
+
+// Get Skins
+app.get('/api/skins', protect, async (req, res) => {
+    res.send(skins);
+});
+
+// Change Skin
+app.get('/api/skins', protect, async (req, res) => {
+    //TODO
 });
 
 app.listen(port, () => {

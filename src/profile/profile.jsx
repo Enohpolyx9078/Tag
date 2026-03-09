@@ -14,18 +14,22 @@ function formatTime(timeStamp) {
     return hourStr + ":" + minuteStr + ":" + secondStr;
 }
 
-export function Profile({ skin, setSkin }) {
+export function Profile() {
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
     const [user, setUser] = React.useState('');
+    const [skin, setSkin] = React.useState({});
+    const [skins, setSkins] = React.useState({list:[]});
     const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(localStorage.getItem("times"));
-    const skins = JSON.parse(localStorage.getItem("skins"));
     const roomCode = useRef(null);
     const nav = useNavigate();
 
     React.useEffect(() => {
         async function effectHelper() {
-            const data = await fetchUser();
-            setUser(data);
+            const user = await fetchUser();
+            setUser(user);
+            setSkin(user.skin);
+            const skins = await fetchSkins();
+            setSkins(skins);
         }
         effectHelper();
     }, []);
@@ -36,17 +40,25 @@ export function Profile({ skin, setSkin }) {
             headers: { 'Content-Type': 'application/json' },
         });
         const data = await res.json();
-        if (res.ok) {
-            return data;
-        } else {
-            alert('Authentication failed');
-        }
+        if (res.ok) return data;
+        else alert('Authentication failed');
+        return {};
+    }
+
+    async function fetchSkins() {
+        const res = await fetch('api/skins', {
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+        if (res.ok) return data;
+        else alert('Authentication failed');
         return {};
     }
 
     const skinList = (() => {
         const list = [];
-        for (const thing of skins.skins) {
+        for (const thing of skins.list) {
             let { id, outline, fill } = thing;
             list.push(
                 (
@@ -60,11 +72,11 @@ export function Profile({ skin, setSkin }) {
             )
         }
         return list;
-    })();
+    });
 
     async function defineSkin(id) {
         let current;
-        for (const thing of skins.skins) {
+        for (const thing of skins.list) {
             if (id === thing.id) {
                 setSkin(thing);
                 current = thing;
@@ -92,7 +104,7 @@ export function Profile({ skin, setSkin }) {
 
     async function prepTwoPlayer() {
         const player1 = { name: user.userName, skin: skin }
-        const player2 = { name: "Guest", skin: skins.skins[Math.floor(Math.random() * skins.skins.length)] }
+        const player2 = { name: "Guest", skin: skins.list[Math.floor(Math.random() * skins.list.length)] }
         const playerInit = [player1, player2];
         localStorage.setItem("playerInit", JSON.stringify(playerInit));
     }
@@ -151,7 +163,7 @@ export function Profile({ skin, setSkin }) {
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>Skins</h3>
                     <div className="overflow-x-auto">
-                        {skinList}
+                        {skinList()}
                     </div>
                 </div>
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
