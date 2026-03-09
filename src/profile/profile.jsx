@@ -22,9 +22,12 @@ export function Profile({ skin, setSkin }) {
     const roomCode = useRef(null);
     const nav = useNavigate();
 
-    React.useEffect(async () => {
-        const data = await fetchUser();
-        setUser(data);
+    React.useEffect(() => {
+        async function effectHelper() {
+            const data = await fetchUser();
+            setUser(data);
+        }
+        effectHelper();
     }, []);
 
     async function fetchUser() {

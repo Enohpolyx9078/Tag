@@ -94,7 +94,7 @@ app.get('/api/user', async (req, res) => {
   const token = req.cookies['token'];
   const user = await getUser('token', token);
   if (user) {
-    res.send({ userName: user.userName });
+    res.send(user);
   } else {
     res.status(401).send({ msg: 'Unauthorized' });
   }
