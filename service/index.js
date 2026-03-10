@@ -179,15 +179,21 @@ app.post('/api/rooms', protect, async (req, res) => {
     const user = await getUser('token', token);
     const newRoom = {
         code: newCode,
-        playerInit: [
-            { name: user.userName, skin: user.skin }
-        ]
+        playerInit: []
     }
     rooms.push(newRoom);
     res.send({code: newCode });
 });
 
 // Get Room
+app.get('/api/rooms/:code', protect, async (req, res) => {
+    const room = rooms.find((r) => r['code'] === req.params.code);
+    if (!room) {
+        res.status(404).send({msg: "Could not find room"});
+    } else res.send(room);
+});
+
+// Join Room
 app.put('/api/rooms', protect, async (req, res) => {
     const room = rooms.find((r) => r['code'] === req.body.code);
     if (!room) {

@@ -21,9 +21,9 @@ export async function fetchSkins() {
 }
 
 export async function fetchRoom(code) {
-    const res = await fetch('api/rooms', {
-        method: 'PUT',
-        headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ 'code': code })
+    const res = await fetch('api/rooms/' + code, {
+        method: 'GET',
+        headers: { 'Content-Type': 'application/json' }
     });
     const data = await res.json();
     if (res.ok) return data;

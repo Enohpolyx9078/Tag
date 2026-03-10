@@ -17,7 +17,7 @@ export function CreateGame() {
 
     // placeholder stuff for WebSocket features later
     // made with help from Gemini 3
-    React.useEffect(() => {
+    /* React.useEffect(() => {
         const timeouts = [];
 
         const addPlayer = (name, delay) => {
@@ -42,7 +42,7 @@ export function CreateGame() {
         addPlayer("MandyCandy", 7000);
 
         return () => timeouts.forEach(id => clearTimeout(id)); // Prevent memory leaks
-    }, [setPlayerInit]); // Include setter in dependencies
+    }, [setPlayerInit]); // Include setter in dependencies */
 
     return (
         <section className="flex-centered">

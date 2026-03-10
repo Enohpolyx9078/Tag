@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { fetchUser, fetchSkins } from '../lib/lib-requests';
+import { fetchUser, fetchSkins, fetchRoom } from '../lib/lib-requests';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -69,10 +69,11 @@ export function Profile() {
 
     async function useCode() {
         let val = roomCode.current.value;
-        localStorage.setItem("roomCode", val);
-        const msg = (val == "" || val == null) ? "You forgot to enter the room code!" : 'Room "' + val + '" does not exist.';
-        //TODO use WebSocket to check the room code
-        alert('Sorry, online functionality isn\'t yet fully operational.\n' + msg);
+        if (!val || val === '') val = "empty";
+        const data = await fetchRoom(val);
+        localStorage.setItem("roomCode", data.code);
+        //TODO nav to game with info
+        console.log(data);
     }
 
     async function getCode() {
