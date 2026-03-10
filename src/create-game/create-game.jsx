@@ -17,8 +17,7 @@ export function CreateGame() {
     }, []);
 
     async function leave() {
-        const data = await leaveRoom(roomCode.current);
-        console.log(data);
+        await leaveRoom(roomCode.current);
         nav('/profile');
     }
 
