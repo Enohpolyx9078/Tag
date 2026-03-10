@@ -6,8 +6,10 @@ import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
+import { fetchUser } from '../lib/lib-user.js';
 
-export function Game({ userName }) {
+export function Game() {
+    const [user, setUser] = React.useState({});
     const [it, setIt] = React.useState(0);
     const [popping, setPopping] = React.useState(-1);
     const [itClass, setItClass] = React.useState("it");
@@ -55,6 +57,14 @@ export function Game({ userName }) {
         skins.push(skin4);
     }
 
+    React.useEffect(() => {
+        async function effectHelper() {
+            const data = await fetchUser();
+            setUser(data);
+        }
+        effectHelper();
+    }, []);
+
     return (
         <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
             <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} setWinner={setWinner} />
@@ -69,7 +79,7 @@ export function Game({ userName }) {
                     <svg className="skin-icon mr-4">
                         <rect x="0" y="0" width="50" height="50" stroke={skin.outline} strokeWidth="6" fill={skin.fill} />
                     </svg>
-                    <p>{userName}</p>
+                    <p>{user.userName}</p>
                 </div>
                 <h3 className="text-xl">Stats</h3>
                 <div className="flex flex-col gap-2 mb-2">

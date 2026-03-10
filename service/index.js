@@ -78,7 +78,6 @@ app.use(`/api`, apiRouter);
 
 /*
     TODO: Set up the endpoints
-    Change Skin (PUT)
     Join Game (GET)
     Create Game (POST)
     2 Player Game (POST)
