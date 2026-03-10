@@ -84,6 +84,7 @@ export function Profile() {
         const data = await res.json();
         if (res.ok) {
             localStorage.setItem("roomCode", data.code);
+            nav('/createGame');
         } else {
             alert('Authentication failed');
         }
@@ -141,7 +142,7 @@ export function Profile() {
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
                     <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
-                    <NavLink onClick={() => getCode()} className="main-button" to="/createGame">Create Game</NavLink>
+                    <button onClick={() => getCode()} className="main-button">Create Game</button>
                     <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
                     <button onClick={() => onLogout()} className="outline-button">Logout</button>
                 </div>

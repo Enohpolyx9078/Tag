@@ -1,17 +1,24 @@
 import React from 'react';
 import { NavLink } from 'react-router-dom';
+import { fetchRoom } from '../lib/lib-requests';
 
-export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
-
+export function CreateGame() {
     // playerInit will hold these objects {name: String, skin: skin}
-    const roomCode = localStorage.getItem("roomCode");
-    const skins = JSON.parse(localStorage.getItem("skins"));
+    const [playerInit, setPlayerInit] = React.useState([]);
+    const roomCode = React.useRef(localStorage.getItem("roomCode"));
+
+    React.useEffect(() => {
+        async function effectHelper() {
+            const init = await fetchRoom(roomCode.current);
+            setPlayerInit(init.playerInit);
+        }
+        effectHelper();
+    }, []);
 
     // placeholder stuff for WebSocket features later
     // made with help from Gemini 3
     React.useEffect(() => {
         const timeouts = [];
-        setPlayerInit([{ name: userName, skin: skin }]);
 
         const addPlayer = (name, delay) => {
             const id = setTimeout(() => {
@@ -20,7 +27,7 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
                         ...prev,
                         {
                             name: name,
-                            skin: skins.skins[Math.floor(Math.random() * skins.skins.length)]
+                            skin: { id: "Bot", fill: "#000000", outline: "#ffffff" }
                         }
                     ]
                     localStorage.setItem("playerInit", JSON.stringify(newList));
@@ -30,8 +37,8 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
             timeouts.push(id);
         };
 
-        addPlayer("Guest", 1000);
-        addPlayer("BoweryMoney3250", 3000);
+        addPlayer("Guest", 3000);
+        addPlayer("BoweryMoney3250", 5000);
         addPlayer("MandyCandy", 7000);
 
         return () => timeouts.forEach(id => clearTimeout(id)); // Prevent memory leaks
@@ -39,7 +46,7 @@ export function CreateGame({ userName, skin, playerInit, setPlayerInit }) {
 
     return (
         <section className="flex-centered">
-            <h2 className="centered text-2xl">Room: {roomCode}</h2>
+            <h2 className="centered text-2xl">Room: {roomCode.current}</h2>
             <div className="card md:w-100">
                 <h2 className="centered text-xl">Players: {playerInit.length}/4</h2>
                 {/* Map loop made with help from Gemini 3 */}

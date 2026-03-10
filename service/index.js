@@ -169,7 +169,6 @@ app.post('/api/rooms', protect, async (req, res) => {
     let codeUsed;
     do {
         codeUsed = false;
-        console.log("checking for code" + newCode);
         if (rooms.find((room) => room['code'] === newCode)) {
             console.log("Code in use");
             codeUsed = true;
@@ -188,9 +187,12 @@ app.post('/api/rooms', protect, async (req, res) => {
     res.send({code: newCode });
 });
 
-// Join Room
-app.put('api/rooms', protect, async (req, res) => {
-    //TODO
+// Get Room
+app.put('/api/rooms', protect, async (req, res) => {
+    const room = rooms.find((r) => r['code'] === req.body.code);
+    if (!room) {
+        res.status(404).send({msg: "Could not find room " + req.body.code});
+    } else res.send(room);
 });
 
 app.listen(port, () => {
