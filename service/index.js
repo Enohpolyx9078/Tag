@@ -10,13 +10,6 @@ const apiRouter = express.Router();
 
 // eventually, these will be stored in a database, not in memory
 const users = [];
-/*
-TODO rooms will hold something like this
-{
-    "code": "abc123",
-    "playerInit": {...}
-}
-*/
 const rooms = [];
 const skins = {
     list: [

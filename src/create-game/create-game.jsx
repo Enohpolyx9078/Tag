@@ -21,6 +21,11 @@ export function CreateGame() {
         nav('/profile');
     }
 
+    async function start() {
+        localStorage.setItem("playerInit", JSON.stringify(playerInit));
+        nav('/game');
+    }
+
     // placeholder stuff for WebSocket features later
     async function refresh() {
         const init = await fetchRoom(roomCode.current);
@@ -75,7 +80,7 @@ export function CreateGame() {
                         <p>{player.name}</p>
                     </div>
                 ))}
-                <NavLink className="main-button" to="/game#arena" disabled={playerInit.length < 2}>Start Game</NavLink>
+                <button onClick={() => start()} className="main-button" disabled={playerInit.length < 2}>Start Game</button>
                 <button onClick={() => leave()} className="outline-button">Leave</button>
             </div>
         </section>
