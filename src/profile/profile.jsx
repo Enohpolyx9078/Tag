@@ -1,7 +1,7 @@
 import React, { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { customAlphabet } from 'nanoid';
-import { fetchUser, fetchSkins } from  '../lib/lib-user';
+import { fetchUser, fetchSkins } from '../lib/lib-user';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -71,17 +71,23 @@ export function Profile() {
     async function useCode() {
         let val = roomCode.current.value;
         localStorage.setItem("roomCode", val);
-        const msg = (val == "" || val == null) ? "You forgot to enter the room code!" : 'Room "' + roomCode.current.value + '" does not exist.';
+        const msg = (val == "" || val == null) ? "You forgot to enter the room code!" : 'Room "' + val + '" does not exist.';
         //TODO use WebSocket to check the room code
         alert('Sorry, online functionality isn\'t yet fully operational.\n' + msg);
     }
 
-    async function createCode() {
-        //TODO use WebSocket to serve room codes
-        // Room code logic generated with help from Gemini 3
-        const alphabet = '23456789ABCDEFGHJKNPQRSTVWXYZ';
-        const generateRoomCode = customAlphabet(alphabet, 6);
-        localStorage.setItem("roomCode", generateRoomCode());
+    async function getCode() {
+        localStorage.removeItem("roomCode");
+        const res = await fetch('api/rooms', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+        });
+        const data = await res.json();
+        if (res.ok) {
+            localStorage.setItem("roomCode", data.code);
+        } else {
+            alert('Authentication failed');
+        }
     }
 
     async function prepTwoPlayer() {
@@ -136,7 +142,7 @@ export function Profile() {
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
                     <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
-                    <NavLink onClick={() => createCode()} className="main-button" to="/createGame">Create Game</NavLink>
+                    <NavLink onClick={() => getCode()} className="main-button" to="/createGame">Create Game</NavLink>
                     <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
                     <button onClick={() => onLogout()} className="outline-button">Logout</button>
                 </div>

@@ -2,6 +2,7 @@ const cookieMonster = require('cookie-parser');
 const bcrypt = require('bcryptjs');
 const express = require('express');
 const uuid = require('uuid');
+const nanoid = require('nanoid');
 const app = express();
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
@@ -9,6 +10,14 @@ const apiRouter = express.Router();
 
 // eventually, these will be stored in a database, not in memory
 const users = [];
+/*
+TODO rooms will hold something like this
+{
+    "code": "abc123",
+    "playerInit": {...}
+}
+*/
+const rooms = [];
 const skins = {
     list: [
         { id: "Grape", fill: "#9922FF", outline: "#BBB" },
@@ -150,6 +159,38 @@ app.put('/api/skins', protect, async (req, res) => {
     } else {
         res.status(400).send({ msg: 'Bad Request' });
     }
+});
+
+// Create Room
+app.post('/api/rooms', protect, async (req, res) => {
+    const alphabet = '23456789ABCDEFGHJKNPQRSTVWXYZ';
+    const generateRoomCode = nanoid.customAlphabet(alphabet, 6);
+    const newCode = generateRoomCode();
+    let codeUsed;
+    do {
+        codeUsed = false;
+        console.log("checking for code" + newCode);
+        if (rooms.find((room) => room['code'] === newCode)) {
+            console.log("Code in use");
+            codeUsed = true;
+            newCode = generateRoomCode();
+        }
+    } while (codeUsed);
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    const newRoom = {
+        code: newCode,
+        playerInit: [
+            { name: user.userName, skin: user.skin }
+        ]
+    }
+    rooms.push(newRoom);
+    res.send({code: newCode });
+});
+
+// Join Room
+app.put('api/rooms', protect, async (req, res) => {
+    //TODO
 });
 
 app.listen(port, () => {
