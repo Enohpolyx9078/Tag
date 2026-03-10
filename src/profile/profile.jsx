@@ -1,7 +1,6 @@
 import React, { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { customAlphabet } from 'nanoid';
-import { fetchUser, fetchSkins } from '../lib/lib-user';
+import { fetchUser, fetchSkins } from '../lib/lib-requests';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
