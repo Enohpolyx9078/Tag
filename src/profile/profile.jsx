@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { fetchUser, fetchSkins, fetchRoom } from '../lib/lib-requests';
+import { fetchUser, fetchSkins, fetchRoom, joinRoom } from '../lib/lib-requests';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -67,16 +67,18 @@ export function Profile() {
         }
     }
 
-    async function useCode() {
+    async function joinRoom() {
         let val = roomCode.current.value;
         if (!val || val === '') val = "empty";
         const data = await fetchRoom(val);
         localStorage.setItem("roomCode", data.code);
-        //TODO nav to game with info
-        console.log(data);
+        if (data) {
+            localStorage.setItem("roomCode", data.code);
+            nav('/createGame');
+        }
     }
 
-    async function getCode() {
+    async function createRoom() {
         localStorage.removeItem("roomCode");
         const res = await fetch('api/rooms', {
             method: 'POST',
@@ -142,8 +144,8 @@ export function Profile() {
                 </div>
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
-                    <button type="button" onClick={() => useCode()} className="main-button" to="/game">Join Game</button>
-                    <button onClick={() => getCode()} className="main-button">Create Game</button>
+                    <button type="button" onClick={() => joinRoom()} className="main-button" to="/game">Join Game</button>
+                    <button onClick={() => createRoom()} className="main-button">Create Game</button>
                     <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
                     <button onClick={() => onLogout()} className="outline-button">Logout</button>
                 </div>

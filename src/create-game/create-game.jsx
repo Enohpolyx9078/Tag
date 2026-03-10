@@ -1,19 +1,26 @@
 import React from 'react';
-import { NavLink } from 'react-router-dom';
-import { fetchRoom } from '../lib/lib-requests';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { joinRoom, leaveRoom } from '../lib/lib-requests';
 
 export function CreateGame() {
     // playerInit will hold these objects {name: String, skin: skin}
     const [playerInit, setPlayerInit] = React.useState([]);
     const roomCode = React.useRef(localStorage.getItem("roomCode"));
+    const nav = useNavigate();
 
     React.useEffect(() => {
         async function effectHelper() {
-            const init = await fetchRoom(roomCode.current);
+            const init = await joinRoom(roomCode.current);
             setPlayerInit(init.playerInit);
         }
         effectHelper();
     }, []);
+
+    async function leave() {
+        const data = await leaveRoom(roomCode.current);
+        console.log(data);
+        nav('/profile');
+    }
 
     // placeholder stuff for WebSocket features later
     // made with help from Gemini 3
@@ -64,7 +71,7 @@ export function CreateGame() {
                     </div>
                 ))}
                 <NavLink className="main-button" to="/game#arena" disabled={playerInit.length < 2}>Start Game</NavLink>
-                <NavLink className="outline-button" to="/profile">Leave</NavLink>
+                <button onClick={() => leave()} className="outline-button">Leave</button>
             </div>
         </section>
     );

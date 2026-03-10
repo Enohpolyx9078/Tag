@@ -175,30 +175,52 @@ app.post('/api/rooms', protect, async (req, res) => {
             newCode = generateRoomCode();
         }
     } while (codeUsed);
-    const token = req.cookies['token'];
-    const user = await getUser('token', token);
     const newRoom = {
         code: newCode,
         playerInit: []
     }
     rooms.push(newRoom);
-    res.send({code: newCode });
+    res.send({ code: newCode });
 });
 
 // Get Room
 app.get('/api/rooms/:code', protect, async (req, res) => {
     const room = rooms.find((r) => r['code'] === req.params.code);
-    if (!room) {
-        res.status(404).send({msg: "Could not find room"});
-    } else res.send(room);
+    if (!room) res.status(404).send({ msg: "Could not find room" });
+    else res.send(room);
 });
 
 // Join Room
 app.put('/api/rooms', protect, async (req, res) => {
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
     const room = rooms.find((r) => r['code'] === req.body.code);
-    if (!room) {
-        res.status(404).send({msg: "Could not find room " + req.body.code});
-    } else res.send(room);
+    if (!room) res.status(404).send({ msg: "Could not find room " + req.body.code });
+    else {
+        if (room.playerInit.length < 4) {
+            //TODO prevent the same user from joining the room twice
+            room.playerInit.push({ name: user.userName, skin: user.skin });
+            res.send(room);
+        } else res.status(409).send({ msg: "Room is full"});
+    };
+});
+
+// Leave Room
+app.delete('/api/rooms', protect, async (req, res) => {
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    const room = rooms.find((r) => r['code'] === req.body.code);
+    if (!room) res.status(404).send({ msg: "Could not find room " + req.body.code });
+    else {
+        for (let i = 0; i < room.playerInit.length; i++) {
+            let current = room.playerInit[i];
+            if (current.name === user.userName) {
+                room.playerInit.splice(i, 1);
+                break;
+            }
+        }
+        res.send({ msg: "Left room" });
+    };
 });
 
 app.listen(port, () => {
