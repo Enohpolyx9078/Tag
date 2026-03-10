@@ -1,6 +1,7 @@
 import React, { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
 import { customAlphabet } from 'nanoid';
+import { fetchUser, fetchSkins } from  '../lib/lib-user';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -33,28 +34,6 @@ export function Profile() {
         }
         effectHelper();
     }, []);
-
-    async function fetchUser() {
-        const res = await fetch('api/user', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await res.json();
-        if (res.ok) return data;
-        else alert('Authentication failed');
-        return {};
-    }
-
-    async function fetchSkins() {
-        const res = await fetch('api/skins', {
-            method: 'GET',
-            headers: { 'Content-Type': 'application/json' },
-        });
-        const data = await res.json();
-        if (res.ok) return data;
-        else alert('Authentication failed');
-        return {};
-    }
 
     const skinList = (() => {
         const list = [];
