@@ -138,8 +138,16 @@ app.put('/api/skins', protect, async (req, res) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
     if (user) {
-        user.skin = req.body.skin;
-        res.status(201);
+        const id = req.body.id;
+        let current;
+        for (const thing of skins.list) {
+            if (id === thing.id) {
+                current = thing;
+                break;
+            }
+        }
+        user.skin = current;
+        res.send(current);
     } else {
         res.status(400).send({ msg: 'Bad Request' });
     }

@@ -18,7 +18,7 @@ export function Profile() {
     let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
     const [user, setUser] = React.useState('');
     const [skin, setSkin] = React.useState({});
-    const [skins, setSkins] = React.useState({list:[]});
+    const [skins, setSkins] = React.useState({ list: [] });
     const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(localStorage.getItem("times"));
     const roomCode = useRef(null);
     const nav = useNavigate();
@@ -75,15 +75,18 @@ export function Profile() {
     });
 
     async function defineSkin(id) {
-        let current;
-        for (const thing of skins.list) {
-            if (id === thing.id) {
-                setSkin(thing);
-                current = thing;
-                break;
-            }
+        const res = await fetch('api/skins', {
+            method: 'PUT',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ id }),
+        });
+        const data = await res.json();
+        if (res.ok) {
+            console.log(data);
+            setSkin(data);
+        } else {
+            alert('Authentication failed');
         }
-        if (current) localStorage.setItem("currentSkin", JSON.stringify(current));
     }
 
     async function useCode() {
