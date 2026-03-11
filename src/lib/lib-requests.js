@@ -52,3 +52,13 @@ export async function leaveRoom(code) {
     if (res.ok) return data;
     else alert("Room not found");
 }
+
+export async function sendStats(data) {
+    const res = await fetch('api/stats', {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data),
+    });
+    await res.json();
+    if (!res.ok) alert('Authentication failed');
+}

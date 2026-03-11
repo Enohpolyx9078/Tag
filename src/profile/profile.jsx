@@ -19,7 +19,7 @@ export function Profile() {
     const [user, setUser] = React.useState('');
     const [skin, setSkin] = React.useState({});
     const [skins, setSkins] = React.useState({ list: [] });
-    const times = localStorage.getItem("times") == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(localStorage.getItem("times"));
+    const [times, setTimes] = React.useState({});
     const roomCode = useRef(null);
     const nav = useNavigate();
 
@@ -28,6 +28,7 @@ export function Profile() {
             const user = await fetchUser();
             setUser(user);
             setSkin(user.skin);
+            setTimes(user.times);
             const skins = await fetchSkins();
             setSkins(skins);
         }

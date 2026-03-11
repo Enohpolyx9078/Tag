@@ -39,7 +39,8 @@ async function createUser(userName, password) {
     const user = {
         password: passwordHash,
         userName: userName,
-        skin: skins.list[0]
+        skin: skins.list[0],
+        times: { it: 0, notIt: 0, wins: 0, losses: 0 }
     };
     users.push(user);
     return user;
@@ -81,12 +82,6 @@ app.use(express.json());
 app.use(cookieMonster());
 app.use(express.static('public'));
 app.use(`/api`, apiRouter);
-
-/*
-    TODO: Set up the endpoints
-    Start Game (GET)
-    Leave Game (DELETE)
-*/
 
 // Create Account
 app.post('/api/auth', async (req, res) => {
@@ -215,6 +210,25 @@ app.delete('/api/rooms', protect, async (req, res) => {
         }
         res.send({ msg: "Left room" });
     };
+});
+
+// Save Stats
+app.put('/api/stats', protect, async (req, res) => {
+    const token = req.cookies['token'];
+    const user = await getUser('token', token);
+    const time = req.body.time;
+    const type = req.body.curType;
+    let msg;
+    if (type != null) {
+        if (type === 'it') user.times.it += time;
+        else user.times.notIt += time;
+        msg = 'Saved times';
+    } else {
+        if (req.body.win === true) user.times.wins += 1;
+        else user.times.losses += 1;
+        msg = 'Saved win/loss';
+    }
+    res.send(JSON.stringify({msg}));
 });
 
 app.listen(port, () => {

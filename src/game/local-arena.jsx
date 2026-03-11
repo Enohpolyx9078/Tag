@@ -2,6 +2,7 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 import { GameOver } from './game-over.jsx';
+import { sendStats } from '../lib/lib-requests.js';
 
 export function LocalArena({ you, players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
@@ -99,14 +100,15 @@ export function LocalArena({ you, players, setters, skins, it, popping, size, it
     }, []);
 
     React.useEffect(() => {
+        async function effectHelper() {
+            let data = { win: false };
+            if (winner === 0) data = { win: true };
+            await sendStats(data);
+        }
         if (gameOver) {
             setTimeout(() => {
                 setFinalScreen(true);
-                let times = localStorage.getItem("times");
-                times = times == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(times);
-                if (winner == you.current) times.wins = (times.wins == null) ? 1 : (times.wins + 1);
-                else times.losses = (times.losses == null) ? 1 : (times.losses + 1);
-                localStorage.setItem("times", JSON.stringify(times));
+                effectHelper();
             }, 2000);
         }
     }, [gameOver]);

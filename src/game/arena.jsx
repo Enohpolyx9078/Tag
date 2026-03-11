@@ -2,6 +2,7 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 import { GameOver } from './game-over.jsx';
+import { sendStats } from '../lib/lib-requests.js';
 
 export function Arena({ you, players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
@@ -144,14 +145,15 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
     }, []);
 
     React.useEffect(() => {
+        async function effectHelper() {
+            let data = {win: false};
+            if (winner == you.current) data = {win: true};
+            await sendStats(data);
+        }
         if (gameOver) {
             setTimeout(() => {
                 setFinalScreen(true);
-                let times = localStorage.getItem("times");
-                times = times == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(times);
-                if (winner == you.current) times.wins = (times.wins == null) ? 1 : (times.wins + 1);
-                else times.losses = (times.losses == null) ? 1 : (times.losses + 1);
-                localStorage.setItem("times", JSON.stringify(times));
+                effectHelper();
             }, 2000);
         }
     }, [gameOver]);
@@ -194,14 +196,14 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
                 <div className="flex justify-center">
                     <div className="touch-button main-button" onPointerDown={() => buttonDown(['ArrowLeft'])} onPointerUp={() => buttonUp(['ArrowLeft'])} onPointerLeave={() => buttonUp(['ArrowLeft'])}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-caret-up-fill rotate-270" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                            </svg>
+                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                        </svg>
                     </div>
                     <div className="touch-spacer"></div>
                     <div className="touch-button main-button" onPointerDown={() => buttonDown(['ArrowRight'])} onPointerUp={() => buttonUp(['ArrowRight'])} onPointerLeave={() => buttonUp(['ArrowRight'])}>
                         <svg xmlns="http://www.w3.org/2000/svg" width="50" height="50" fill="currentColor" className="bi bi-caret-up-fill rotate-90" viewBox="0 0 16 16">
-                                <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
-                            </svg>
+                            <path d="m7.247 4.86-4.796 5.481c-.566.647-.106 1.659.753 1.659h9.592a1 1 0 0 0 .753-1.659l-4.796-5.48a1 1 0 0 0-1.506 0z" />
+                        </svg>
                     </div>
                 </div>
                 <div className="flex justify-around">

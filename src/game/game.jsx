@@ -61,7 +61,7 @@ export function Game() {
     }, []);
 
     async function leaveGame() {
-        await leaveRoom(roomCode);
+        if (!twoPlayer.current) await leaveRoom(roomCode);
         nav('/profile');
     }
 

@@ -1,4 +1,5 @@
 import React from 'react';
+import { sendStats } from '../lib/lib-requests';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -16,8 +17,8 @@ export function Timer({ you, label, it, id, gameOver, popping }) {
     const [time, setTime] = React.useState(0);
     const requestRef = React.useRef();
     const lastTime = React.useRef();
-    const type = label.indexOf('not') == -1 ? 'it' : 'not';
-    const [active, setActive] = React.useState((type == 'it'));
+    const type = React.useRef(label.indexOf('not') == -1 ? 'it' : 'not');
+    const [active, setActive] = React.useState((type.current == 'it'));
 
     // made with some help from Gemini 3
     const animate = async (now) => {
@@ -39,7 +40,7 @@ export function Timer({ you, label, it, id, gameOver, popping }) {
     }, [active]);
 
     React.useEffect(() => {
-        if (type == 'it') {
+        if (type.current == 'it') {
             if (it == id) setActive(true);
             else setActive(false);
         } else {
@@ -49,20 +50,16 @@ export function Timer({ you, label, it, id, gameOver, popping }) {
     }, [it]);
 
     const saveStats = async () => {
-        // only save player1's stats
-        if (id == you.current) {
-            let times = localStorage.getItem("times");
-            times = times == null ? { it: 0, notIt: 0, wins: 0, losses: 0 } : JSON.parse(times);
-            if (type == 'it') times.it += time;
-            else times.notIt += time;
-            localStorage.setItem("times", JSON.stringify(times));
+        // only save player1's stats in a 2 player game
+        if (id === you.current) {
+            const curType = type.current;
+            await sendStats({curType, time});
         }
     }
 
     // stop timer when the attached player dies
     React.useEffect(() => {
-        if (popping == id) setActive(false);
-        saveStats();
+        if (popping === id) setActive(false);
     }, [popping]);
 
     React.useEffect(() => {
