@@ -3,3 +3,4 @@
 node_modules/
 .vscode/
 workflows/_test.js
+service/.env
