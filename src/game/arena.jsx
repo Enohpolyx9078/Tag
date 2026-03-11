@@ -11,7 +11,8 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
     const [finalScreen, setFinalScreen] = React.useState(false);
 
     // set up players
-    const [setP1Position, setP2Position, setP3Position, setP4Position] = setters;
+    //const [setP1Position, setP2Position, setP3Position, setP4Position] = setters;
+    const setPlayerPosition = setters.splice(you, 1)[0];
 
     const playerList = (() => {
         const list = [];
@@ -118,10 +119,10 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
     }
 
     React.useEffect(() => {
-        requestRef.current = requestAnimationFrame(() => animate(setP1Position, p1Keys));
-        if (players.length >= 2) requestRef.current = requestAnimationFrame(() => animateBot(setP2Position, 0, 0, 60));
-        if (players.length >= 3) requestRef.current = requestAnimationFrame(() => animateBot(setP3Position, 0, 0, 120));
-        if (players.length >= 4) requestRef.current = requestAnimationFrame(() => animateBot(setP4Position, 0, 0, 30));
+        requestRef.current = requestAnimationFrame(() => animate(setPlayerPosition, p1Keys));
+        if (players.length >= 2) requestRef.current = requestAnimationFrame(() => animateBot(setters[0], 0, 0, 60));
+        if (players.length >= 3) requestRef.current = requestAnimationFrame(() => animateBot(setters[1], 0, 0, 120));
+        if (players.length >= 4) requestRef.current = requestAnimationFrame(() => animateBot(setters[2], 0, 0, 30));
         const gameKeys = p1Keys;
         const down = (e) => {
             if (gameKeys.includes(e.key)) e.preventDefault();

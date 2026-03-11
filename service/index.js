@@ -191,12 +191,10 @@ app.put('/api/rooms', protect, async (req, res) => {
     const room = rooms.find((r) => r['code'] === req.body.code);
     if (!room) res.status(404).send({ msg: "Could not find room " + req.body.code });
     else {
-        console.log("[DEBUG/PUT] PlayerInit: " + room.playerInit.toString());
         if (room.playerInit.length < 4) {
             //TODO prevent the same user from joining the room twice
             room.playerInit.push({ name: user.userName, skin: user.skin });
             const you = room.playerInit.length - 1;
-            console.log("[DEBUG/PUT] You: " + you);
             res.send({ ...room, you: you });
         } else res.status(409).send({ msg: "Room is full" });
     };

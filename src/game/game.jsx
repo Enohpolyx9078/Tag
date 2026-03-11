@@ -26,25 +26,20 @@ export function Game() {
     const you = React.useRef(localStorage.getItem("you") ?? 0);
     const numPlayers = React.useRef(playerInit.length);
 
-    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: playerInit[you.current].name });
-    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name: playerInit[1]?.name });
+    const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: playerInit[0].name });
+    const [p2Position, setP2Position] = React.useState({ x: 429, y: 429, time: performance.now(), name: playerInit[1].name });
     const [p3Position, setP3Position] = React.useState({ x: 429, y: 10, time: performance.now(), name: playerInit[2]?.name });
     const [p4Position, setP4Position] = React.useState({ x: 10, y: 429, time: performance.now(), name: playerInit[3]?.name });
 
-    const skin = playerInit[you.current].skin;
-    const skin2 = playerInit[1]?.skin;
+    const skin = playerInit[0].skin;
+    const skin2 = playerInit[1].skin;
     const skin3 = playerInit[2]?.skin;
     const skin4 = playerInit[3]?.skin;
 
-    const players = [p1Position];
-    const setters = [setP1Position];
-    const skins = [skin];
+    const players = [p1Position, p2Position];
+    const setters = [setP1Position, setP2Position];
+    const skins = [skin, skin2];
 
-    if (numPlayers.current >= 2) {
-        players.push(p2Position);
-        setters.push(setP2Position);
-        skins.push(skin2);
-    }
     if (numPlayers.current >= 3) {
         players.push(p3Position);
         setters.push(setP3Position);
@@ -71,12 +66,12 @@ export function Game() {
                 {twoPlayer.current ? <LocalLeft you={you} skin={skin2} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} it={it} itClass={itClass} />}
             </section>
             <section>
-                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}
+                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}
             </section>
             <section className="md:grow-1 sidebar-thin card-thin">
                 <div className="flex flex-col flex-row flex-wrap items-center mb-4">
                     <svg className="skin-icon mr-4">
-                        <rect x="0" y="0" width="50" height="50" stroke={skin.outline} strokeWidth="6" fill={skin.fill} />
+                        <rect x="0" y="0" width="50" height="50" stroke={playerInit[you.current].skin.outline} strokeWidth="6" fill={playerInit[you.current].skin.fill} />
                     </svg>
                     <p>{user.userName}</p>
                 </div>
