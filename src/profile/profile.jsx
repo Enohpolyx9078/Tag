@@ -97,6 +97,7 @@ export function Profile() {
         const player2 = { name: "Guest", skin: skins.list[Math.floor(Math.random() * skins.list.length)] }
         const playerInit = [player1, player2];
         localStorage.setItem("playerInit", JSON.stringify(playerInit));
+        localStorage.setItem("you", 0);
     }
 
     async function getAnalysis(setAnalysis) {
