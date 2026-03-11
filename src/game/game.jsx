@@ -1,12 +1,12 @@
 import React from 'react';
 import './game-screen.css';
-import { NavLink, useSearchParams } from 'react-router-dom';
+import { useNavigate, useSearchParams } from 'react-router-dom';
 import { LocalArena } from './local-arena.jsx';
 import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
-import { fetchUser } from '../lib/lib-requests.js';
+import { fetchUser, leaveRoom } from '../lib/lib-requests.js';
 
 export function Game() {
     const [user, setUser] = React.useState({});
@@ -19,6 +19,7 @@ export function Game() {
     const roomCode = localStorage.getItem("roomCode");
     const twoPlayer = React.useRef(request.get("twoPlayer") == 'true');
     const size = 50; // player size
+    const nav = useNavigate();
 
     // placeholder stuff made with help from Gemini 3
     // placeholder for websocket features later
@@ -59,6 +60,11 @@ export function Game() {
         effectHelper();
     }, []);
 
+    async function leaveGame() {
+        await leaveRoom(roomCode);
+        nav('/profile');
+    }
+
     return (
         <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
             <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} setWinner={setWinner} />
@@ -80,7 +86,7 @@ export function Game() {
                     <Timer label="Time it:" you={you} it={it} id={you.current} gameOver={gameOver} popping={popping} />
                     <Timer label="Time not it:" you={you} it={it} id={you.current} gameOver={gameOver} popping={popping} />
                 </div>
-                <NavLink className="outline-button" to="/profile">Leave Game</NavLink>
+                <button onClick={() => leaveGame()} className="outline-button" to="/profile">Leave Game</button>
             </section>
         </main>
     );
