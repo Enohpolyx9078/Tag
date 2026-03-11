@@ -54,9 +54,7 @@ function getUser(field, value) {
 
 // Create a token for the user and send a cookie containing the token
 function setAuthCookie(res, user) {
-    console.log(devMode);
     user.token = uuid.v4();
-    console.log("Created token: " + user.token);
     res.cookie('token', user.token, {
         path: '/',
         secure: !devMode,
@@ -74,7 +72,6 @@ function clearAuthCookie(res, user) {
 
 const protect = async (req, res, next) => {
     const token = req.cookies['token'];
-    console.log(token);
     const user = await getUser('token', token);
     if (user) next();
     else res.status(401).send({ msg: 'Unauthorized' });
@@ -87,8 +84,6 @@ app.use(`/api`, apiRouter);
 
 /*
     TODO: Set up the endpoints
-    Join Game (GET)
-    Create Game (POST)
     2 Player Game (POST)
     Start Game (GET)
     Leave Game (GET)
@@ -170,7 +165,6 @@ app.post('/api/rooms', protect, async (req, res) => {
     do {
         codeUsed = false;
         if (rooms.find((room) => room['code'] === newCode)) {
-            console.log("Code in use");
             codeUsed = true;
             newCode = generateRoomCode();
         }
@@ -224,5 +218,5 @@ app.delete('/api/rooms', protect, async (req, res) => {
 });
 
 app.listen(port, () => {
-    console.log(`Listening on port ${port}`);
+    if (devMode) console.log(`Listening on port ${port}`);
 });
