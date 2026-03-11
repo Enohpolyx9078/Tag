@@ -33,34 +33,6 @@ export function CreateGame() {
         setPlayerInit(init.playerInit);
     }
 
-    // made with help from Gemini 3
-    /* React.useEffect(() => {
-        const timeouts = [];
-
-        const addPlayer = (name, delay) => {
-            const id = setTimeout(() => {
-                setPlayerInit((prev) => {
-                    const newList = [
-                        ...prev,
-                        {
-                            name: name,
-                            skin: { id: "Bot", fill: "#000000", outline: "#ffffff" }
-                        }
-                    ]
-                    localStorage.setItem("playerInit", JSON.stringify(newList));
-                    return newList;
-                });
-            }, delay);
-            timeouts.push(id);
-        };
-
-        addPlayer("Guest", 3000);
-        addPlayer("BoweryMoney3250", 5000);
-        addPlayer("MandyCandy", 7000);
-
-        return () => timeouts.forEach(id => clearTimeout(id)); // Prevent memory leaks
-    }, [setPlayerInit]); // Include setter in dependencies */
-
     return (
         <section className="flex-centered">
             <h2 className="centered text-2xl">Room: {roomCode.current}</h2>

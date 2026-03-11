@@ -84,9 +84,8 @@ app.use(`/api`, apiRouter);
 
 /*
     TODO: Set up the endpoints
-    2 Player Game (POST)
     Start Game (GET)
-    Leave Game (GET)
+    Leave Game (DELETE)
 */
 
 // Create Account
