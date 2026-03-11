@@ -12,7 +12,6 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
     React.useEffect(() => {
         let end = false;
         if (time <= 0) {
-            console.log("Time: " + time);
             setPopping(it);
             out.current.add(it);
             // check if the game is over
@@ -26,7 +25,7 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
             // if it's not, choose a new it and kick off a new timer
             if (!end) {
                 let choice = it;
-                while (out.current.has(choice)) choice = Math.floor(Math.random() * 4);
+                while (out.current.has(choice)) choice = Math.floor(Math.random() * players.length);
                 setIt(choice);
                 setItClass("it");
             }
@@ -93,7 +92,6 @@ export function ShotClock({ timer, setTime }) {
         setTime(remaining);
         if (remaining > 0) requestRef.current = requestAnimationFrame(animate);
         else {
-            console.log("Continuing");
             startTime.current = now;
             requestRef.current = requestAnimationFrame(animate);
         }
