@@ -71,7 +71,6 @@ export function Profile() {
         let val = roomCode.current.value;
         if (!val || val === '') val = "empty";
         const data = await fetchRoom(val);
-        localStorage.setItem("roomCode", data.code);
         if (data) {
             localStorage.setItem("roomCode", data.code);
             nav('/createGame');

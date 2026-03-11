@@ -22,9 +22,8 @@ export function Game() {
 
     // placeholder stuff made with help from Gemini 3
     // placeholder for websocket features later
-
     const playerInit = JSON.parse(localStorage.getItem("playerInit"));
-    const you = React.useRef(0);
+    const you = React.useRef(localStorage.getItem("you") ?? 0);
     const numPlayers = React.useRef(playerInit.length);
 
     const [p1Position, setP1Position] = React.useState({ x: 10, y: 10, time: performance.now(), name: playerInit[you.current].name });

@@ -12,6 +12,7 @@ export function CreateGame() {
         async function effectHelper() {
             const init = await joinRoom(roomCode.current);
             setPlayerInit(init.playerInit);
+            localStorage.setItem("you", init.you);
         }
         effectHelper();
     }, []);
