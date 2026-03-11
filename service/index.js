@@ -4,9 +4,11 @@ const express = require('express');
 const uuid = require('uuid');
 const nanoid = require('nanoid');
 const app = express();
+require('dotenv').config();
 
-const port = process.argv.length > 2 ? process.argv[2] : 4000;
+const port = process.env.PORT;
 const apiRouter = express.Router();
+const devMode = process.env.NODE_ENV;
 
 // eventually, these will be stored in a database, not in memory
 const users = [];
@@ -52,11 +54,15 @@ function getUser(field, value) {
 
 // Create a token for the user and send a cookie containing the token
 function setAuthCookie(res, user) {
+    console.log(devMode);
     user.token = uuid.v4();
+    console.log("Created token: " + user.token);
     res.cookie('token', user.token, {
-        secure: true,
+        path: '/',
+        secure: !devMode,
         httpOnly: true,
-        sameSite: 'strict',
+        sameSite: devMode ? 'lax' : 'strict',
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours in milliseconds
     });
 }
 
@@ -68,6 +74,7 @@ function clearAuthCookie(res, user) {
 
 const protect = async (req, res, next) => {
     const token = req.cookies['token'];
+    console.log(token);
     const user = await getUser('token', token);
     if (user) next();
     else res.status(401).send({ msg: 'Unauthorized' });
