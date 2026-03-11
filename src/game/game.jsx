@@ -77,8 +77,8 @@ export function Game() {
                 </div>
                 <h3 className="text-xl">Stats</h3>
                 <div className="flex flex-col gap-2 mb-2">
-                    <Timer label="Time it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping} />
-                    <Timer label="Time not it:" you={you} it={it} id={0} gameOver={gameOver} popping={popping} />
+                    <Timer label="Time it:" you={you} it={it} id={you.current} gameOver={gameOver} popping={popping} />
+                    <Timer label="Time not it:" you={you} it={it} id={you.current} gameOver={gameOver} popping={popping} />
                 </div>
                 <NavLink className="outline-button" to="/profile">Leave Game</NavLink>
             </section>
