@@ -148,8 +148,8 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
 
     React.useEffect(() => {
         async function effectHelper() {
-            let data = {win: false};
-            if (winner == you.current) data = {win: true};
+            let data = { win: false };
+            if (winner === parseInt(you)) data.win = true;
             await sendStats(data);
         }
         if (gameOver) {

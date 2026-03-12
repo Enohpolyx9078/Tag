@@ -17,10 +17,10 @@ export function Controller({ it, setIt, setPopping, players, size, itClass, setI
             // check if the game is over
             if (out.current.size == players.length - 1) {
                 end = true;
-                setGameOver(end);
                 for (let i = 0; i < players.length; i++) {
                     if (!out.current.has(i)) setWinner(i);
                 }
+                setGameOver(end);
             }
             // if it's not, choose a new it and kick off a new timer
             if (!end) {
