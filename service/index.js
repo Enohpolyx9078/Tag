@@ -6,7 +6,7 @@ const nanoid = require('nanoid');
 const app = express();
 require('dotenv').config();
 
-const port = process.env.PORT;
+const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const apiRouter = express.Router();
 const devMode = process.env.NODE_ENV;
 
