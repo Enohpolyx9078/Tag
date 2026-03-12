@@ -2,6 +2,7 @@ import React from 'react';
 import './game-screen.css';
 import { Player } from './player.jsx';
 import { GameOver } from './game-over.jsx';
+import { Rain } from './rain.jsx';
 import { sendStats } from '../lib/lib-requests.js';
 
 export function Arena({ you, players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
@@ -10,6 +11,7 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
     // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]
 
     const [finalScreen, setFinalScreen] = React.useState(false);
+    const rain = React.useRef(localStorage.getItem("rain") ?? "false");
 
     // set up players
     //const [setP1Position, setP2Position, setP3Position, setP4Position] = setters;
@@ -170,6 +172,7 @@ export function Arena({ you, players, setters, skins, it, popping, size, itClass
         <div id="arena" className="flex flex-row items-center">
             <div className="arena-wrapper grow-0 mb-2 md:mb-0">
                 <div className="arena relative mb-2 md:mb-0">
+                    {(rain.current == 'true') ? <Rain /> : null}
                     {finalScreen ? <GameOver players={players} skins={skins} winner={winner} /> : playerList}
                 </div>
             </div>

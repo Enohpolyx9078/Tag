@@ -74,19 +74,27 @@ export function Profile() {
         const data = await fetchRoom(val);
         if (data) {
             localStorage.setItem("roomCode", data.code);
+            localStorage.setItem("rain", data.rain);
             nav('/createGame');
         }
     }
 
     async function createRoom() {
+        // get the weather in Chile to determine map conditions
+        const resp = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-52.95215&longitude=-74.09155&current=precipitation&forecast_days=1');
+        const conditions = await resp.json();
+        const rain = conditions.current.precipitation > 0;
+        
         localStorage.removeItem("roomCode");
         const res = await fetch('api/rooms', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({rain})
         });
         const data = await res.json();
         if (res.ok) {
             localStorage.setItem("roomCode", data.code);
+            localStorage.setItem("rain", rain);
             nav('/createGame');
         } else {
             alert('Authentication failed');

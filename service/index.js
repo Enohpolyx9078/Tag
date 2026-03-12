@@ -165,7 +165,8 @@ app.post('/api/rooms', protect, async (req, res) => {
     } while (codeUsed);
     const newRoom = {
         code: newCode,
-        playerInit: []
+        playerInit: [],
+        rain: req.body.rain
     }
     rooms.push(newRoom);
     res.send({ code: newCode });
