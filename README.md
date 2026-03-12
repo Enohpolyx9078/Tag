@@ -125,12 +125,12 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Node.js/Express HTTP service** - I did not complete this part of the deliverable.
-- [ ] **Static middleware for frontend** - I did not complete this part of the deliverable.
-- [ ] **Calls to third party endpoints** - I did not complete this part of the deliverable.
-- [ ] **Backend service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Frontend calls service endpoints** - I did not complete this part of the deliverable.
-- [ ] **Supports registration, login, logout, and restricted endpoint** - I did not complete this part of the deliverable.
+- [x] **Node.js/Express HTTP service** - There is a backend server that uses express to serve everything up!
+- [x] **Static middleware for frontend** - Images, fonts, and pages are all served through the static directories
+- [x] **Calls to third party endpoints** - When you create a game, the front end makes a call to open-meteo to get the weather on a small island in Chile. If it's raining there, then your game will start with a rainy map condition. I didn't create the third party call to Google Gemini yet because that requires setting up an API key, so it couldn't be called from the front end. I left the placeholder stuff there though to remind me to have a look at that later when there's time - maybe after the semester is over.
+- [x] **Backend service endpoints** - There's endpoints for everything the back end has to do (storing data, manipulating rooms, etc...)
+- [x] **Frontend calls service endpoints** - A couple things I let react still take care of for now, either because it needs WebSocket or it just made more sense to use reactivity, but everything that needs the backend endpoints calls them!
+- [s] **Supports registration, login, logout, and restricted endpoint** - Login, logout, and registration all work, and any endpoint past the login page is protected.
 
 ## 🚀 DB deliverable
 

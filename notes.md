@@ -36,3 +36,7 @@ Setting up react took a hot sec because I forgot the import line at the top of m
 ## React Part 2: Reactivity
  
 I was able to get all the needed functionality working! There's a few quality of life improvements that I'll implement later if there's time, but the whole thing works now. As a side note, AI clutched up big to help me debug janky react state stuff and generate some impromptu CSS I needed. Good stuff!
+
+## Service
+
+It took a hot sec to get everything plugged in, but now all the stuff works through express. Rooms can be created and joined, but you still can't play together actively. That'll take some WebSocket magic.
