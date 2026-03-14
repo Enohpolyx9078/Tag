@@ -4,6 +4,9 @@ const express = require('express');
 const uuid = require('uuid');
 const nanoid = require('nanoid');
 const app = express();
+const { MongoClient } = require('mongodb');
+const config = require('./dbConfig.json');
+
 require('dotenv').config();
 
 const port = process.argv.length > 2 ? process.argv[2] : 4000;
