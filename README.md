@@ -136,8 +136,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Stores data in MongoDB** - I did not complete this part of the deliverable.
-- [ ] **Stores credentials in MongoDB** - I did not complete this part of the deliverable.
+- [x] **Stores data in MongoDB** - Users and skins are stored in MongoDB! Rooms are still stored in memory since they're always going to be holding temporary information for WebSocket. There's no need to persist them in a database since they're always going to be deleted immediately.
+- [x] **Stores credentials in MongoDB** - Users and password hashes are stored in MongoDB, so you can login from any browser and any computer to see your data.
 
 ## 🚀 WebSocket deliverable
 

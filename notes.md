@@ -40,3 +40,7 @@ I was able to get all the needed functionality working! There's a few quality of
 ## Service
 
 It took a hot sec to get everything plugged in, but now all the stuff works through express. Rooms can be created and joined, but you still can't play together actively. That'll take some WebSocket magic.
+
+## Database
+
+MongoDB was very easy to plug in! I left some stuff in memory because its statelss and WebSocket is going to handle it later, but overall, a very quick implementation.
