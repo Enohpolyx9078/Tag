@@ -13,28 +13,19 @@ const port = process.argv.length > 2 ? process.argv[2] : 4000;
 const apiRouter = express.Router();
 const devMode = process.env.NODE_ENV;
 
-// eventually, these will be stored in a database, not in memory
-const users = [];
+// setup database
+const url = `mongodb+srv://${config.userName}:${config.password}@${config.hostname}`;
+const client = new MongoClient(url);
+const db = client.db('PlayTag');
+const users = db.collection('users');
+const skins = db.collection('skins');
+
 const rooms = [];
-const skins = {
-    list: [
-        { id: "Grape", fill: "#9922FF", outline: "#BBB" },
-        { id: "Magma", fill: "#FF4500", outline: "#330000" },
-        { id: "Bonsai", fill: "#4A5D23", outline: "#D2B48C" },
-        { id: "Glacier", fill: "#E0FFFF", outline: "#4682B4" },
-        { id: "Abyss", fill: "#000015", outline: "#00FFFF" },
-        { id: "Marigold", fill: "#FFB800", outline: "#7B3F00" },
-        { id: "Bubblegum", fill: "#FF85D1", outline: "#B02E82" },
-        { id: "Minty", fill: "#AAF0D1", outline: "#16A085" },
-        { id: "Voltage", fill: "#FFFF00", outline: "#000" },
-        { id: "Titanium", fill: "#D1D1D1", outline: "#FFF" },
-        { id: "Hazard", fill: "#FC0", outline: "#222" },
-        { id: "Blueprint", fill: "#0047AB", outline: "#E0E0E0" },
-        { id: "Carbon", fill: "#2B2B2B", outline: "#555" },
-        { id: "Nebula", fill: "#2E0854", outline: "#F0F" },
-        { id: "Supernova", fill: "#FFF", outline: "#FFA500" },
-        { id: "Ghost", fill: "#FFF", outline: "#ABC123" },
-    ]
+
+async function fetchSkins() {
+    const cursor = await skins.find({})
+    const list = await cursor.toArray();
+    return list[0];
 }
 
 async function createUser(userName, password) {
@@ -42,23 +33,27 @@ async function createUser(userName, password) {
     const user = {
         password: passwordHash,
         userName: userName,
-        skin: skins.list[0],
+        skin: await fetchSkins().list[0],
         times: { it: 0, notIt: 0, wins: 0, losses: 0 }
     };
-    users.push(user);
+    await users.insertOne(user);
     return user;
 }
 
-function getUser(field, value) {
+ async function getUser(field, value) {
     if (value) {
-        return users.find((user) => user[field] === value);
+        const query = field === "userName" ? { userName: value } : { token: value };
+        const cursor = users.find(query); // call with no params to get all records
+        const result = await cursor.toArray();
+        return result ? result[0] : null;
     }
     return null;
 }
 
 // Create a token for the user and send a cookie containing the token
-function setAuthCookie(res, user) {
+async function setAuthCookie(res, user) {
     user.token = uuid.v4();
+    await users.updateOne( { userName: user.userName }, { $set: user });
     res.cookie('token', user.token, {
         path: '/',
         secure: !devMode,
@@ -69,8 +64,9 @@ function setAuthCookie(res, user) {
 }
 
 // Delete the current token from the user and the browser cookie
-function clearAuthCookie(res, user) {
+async function clearAuthCookie(res, user) {
     delete user.token;
+    await users.updateOne( { userName: user.userName }, { $set: user });
     res.clearCookie('token');
 }
 
@@ -92,7 +88,7 @@ app.post('/api/auth', async (req, res) => {
         res.status(409).send({ msg: 'Existing user' });
     } else {
         const user = await createUser(req.body.userName, req.body.password);
-        setAuthCookie(res, user);
+        await setAuthCookie(res, user);
         res.send({ userName: user.userName });
     }
 });
@@ -101,7 +97,7 @@ app.post('/api/auth', async (req, res) => {
 app.put('/api/auth', async (req, res) => {
     const user = await getUser('userName', req.body.userName);
     if (user && (await bcrypt.compare(req.body.password, user.password))) {
-        setAuthCookie(res, user);
+        await setAuthCookie(res, user);
         res.send({ userName: user.userName });
     } else {
         res.status(401).send({ msg: 'Unauthorized' });
@@ -112,7 +108,7 @@ app.put('/api/auth', async (req, res) => {
 app.delete('/api/auth', async (req, res) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
-    if (user) clearAuthCookie(res, user);
+    if (user) await clearAuthCookie(res, user);
     res.send({});
 });
 
@@ -130,7 +126,8 @@ app.get('/api/user', protect, async (req, res) => {
 
 // Get Skins
 app.get('/api/skins', protect, async (req, res) => {
-    res.send(skins);
+    const thing = await fetchSkins();
+    res.send(thing);
 });
 
 // Change Skin
@@ -140,13 +137,15 @@ app.put('/api/skins', protect, async (req, res) => {
     if (user) {
         const id = req.body.id;
         let current;
-        for (const thing of skins.list) {
+        const skinList = await fetchSkins().list;
+        for (const thing of skinList) {
             if (id === thing.id) {
                 current = thing;
                 break;
             }
         }
         user.skin = current;
+        await users.updateOne( { userName: user.userName }, { $set: user });
         res.send(current);
     } else {
         res.status(400).send({ msg: 'Bad Request' });
@@ -232,6 +231,9 @@ app.put('/api/stats', protect, async (req, res) => {
         else user.times.losses += 1;
         msg = 'Saved win/loss';
     }
+
+    //TODO fix the race condition of the it and not it timers overriding the other's stats on save
+    await users.updateOne( { userName: user.userName }, { $set: user });
     res.send(JSON.stringify({msg}));
 });
 
