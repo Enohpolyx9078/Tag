@@ -65,8 +65,7 @@ async function setAuthCookie(res, user) {
 
 // Delete the current token from the user and the browser cookie
 async function clearAuthCookie(res, user) {
-    delete user.token;
-    await users.updateOne( { userName: user.userName }, { $set: user });
+    await users.updateOne( { userName: user.userName }, { $unset: {token : null} });
     res.clearCookie('token');
 }
 
@@ -137,8 +136,8 @@ app.put('/api/skins', protect, async (req, res) => {
     if (user) {
         const id = req.body.id;
         let current;
-        const skinList = await fetchSkins().list;
-        for (const thing of skinList) {
+        const skinList = await fetchSkins();
+        for (const thing of skinList.list) {
             if (id === thing.id) {
                 current = thing;
                 break;
@@ -222,18 +221,17 @@ app.put('/api/stats', protect, async (req, res) => {
     const time = req.body.time;
     const type = req.body.curType;
     let msg;
+    let update;
     if (type != null) {
-        if (type === 'it') user.times.it += time;
-        else user.times.notIt += time;
+        if (type === 'it') update = { "times.it": user.times.it + time };
+        else  update = { "times.notIt": user.times.notIt + time };
         msg = 'Saved times';
     } else {
-        if (req.body.win === true) user.times.wins += 1;
-        else user.times.losses += 1;
+        if (req.body.win === true) update = { "times.wins": user.times.wins + 1 };
+        else update = { "times.losses": user.times.losses + 1 };
         msg = 'Saved win/loss';
     }
-
-    //TODO fix the race condition of the it and not it timers overriding the other's stats on save
-    await users.updateOne( { userName: user.userName }, { $set: user });
+    await users.updateOne( { userName: user.userName }, { $set: update });
     res.send(JSON.stringify({msg}));
 });
 
