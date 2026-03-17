@@ -30,10 +30,11 @@ async function fetchSkins() {
 
 async function createUser(userName, password) {
     const passwordHash = await bcrypt.hash(password, 10);
+    const skinsList = await fetchSkins();
     const user = {
         password: passwordHash,
         userName: userName,
-        skin: await fetchSkins().list[0],
+        skin: skinsList.list[0],
         times: { it: 0, notIt: 0, wins: 0, losses: 0 }
     };
     await users.insertOne(user);
