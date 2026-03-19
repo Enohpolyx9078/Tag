@@ -20,10 +20,19 @@ const db = client.db('PlayTag');
 const users = db.collection('users');
 const skins = db.collection('skins');
 
-const rooms = [];
+/*
+Example room
+{
+  id: "room_123"
+  playerInit: {}
+  tickInterval: null  // The interval reference for this specific room
+  rain: bool
+}
+*/
+const rooms = new Map();
 
 async function fetchSkins() {
-    const cursor = await skins.find({})
+    const cursor = skins.find({})
     const list = await cursor.toArray();
     return list[0];
 }
@@ -160,7 +169,7 @@ app.post('/api/rooms', protect, async (req, res) => {
     let codeUsed;
     do {
         codeUsed = false;
-        if (rooms.find((room) => room['code'] === newCode)) {
+        if (rooms.has(newCode)) {
             codeUsed = true;
             newCode = generateRoomCode();
         }
@@ -170,13 +179,13 @@ app.post('/api/rooms', protect, async (req, res) => {
         playerInit: [],
         rain: req.body.rain
     }
-    rooms.push(newRoom);
+    rooms.set(newCode, newRoom);
     res.send({ code: newCode });
 });
 
 // Get Room
 app.get('/api/rooms/:code', protect, async (req, res) => {
-    const room = rooms.find((r) => r['code'] === req.params.code);
+    const room = rooms.get(req.params.code);
     if (!room) res.status(404).send({ msg: "Could not find room" });
     else res.send(room);
 });
@@ -185,7 +194,7 @@ app.get('/api/rooms/:code', protect, async (req, res) => {
 app.put('/api/rooms', protect, async (req, res) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
-    const room = rooms.find((r) => r['code'] === req.body.code);
+    const room = rooms.get(req.body.code);
     if (!room) res.status(404).send({ msg: "Could not find room " + req.body.code });
     else {
         if (room.playerInit.length < 4) {
@@ -201,7 +210,7 @@ app.put('/api/rooms', protect, async (req, res) => {
 app.delete('/api/rooms', protect, async (req, res) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
-    const room = rooms.find((r) => r['code'] === req.body.code);
+    const room = rooms.get(req.body.code);
     if (!room) res.status(404).send({ msg: "Could not find room " + req.body.code });
     else {
         for (let i = 0; i < room.playerInit.length; i++) {
