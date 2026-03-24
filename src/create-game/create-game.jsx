@@ -1,6 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { fetchRoom, fetchUser, joinRoom, leaveRoom } from '../lib/lib-requests';
+import { fetchUser } from '../lib/lib-requests';
 import { Receiver } from '../lobbyReceiver';
 
 export function CreateGame() {
@@ -11,7 +11,6 @@ export function CreateGame() {
 
     React.useEffect(() => {
         async function effectHelper() {
-            //const init = await joinRoom(roomCode.current);
             const user = await fetchUser();
             await Receiver.start(roomCode.current, user, setPlayerInit);
         }
