@@ -212,8 +212,7 @@ app.delete('/api/rooms', protect, async (req, res) => {
     const token = req.cookies['token'];
     const user = await getUser('token', token);
     const room = rooms.get(req.body.code);
-    if (!room) res.status(404).send({ msg: "Could not find room " + req.body.code });
-    else {
+    if (room) {
         for (let i = 0; i < room.playerInit.length; i++) {
             let current = room.playerInit[i];
             if (current.name === user.userName) {
@@ -221,8 +220,8 @@ app.delete('/api/rooms', protect, async (req, res) => {
                 break;
             }
         }
-        res.send({ msg: "Left room" });
     };
+    res.send({ msg: "Left room" });
 });
 
 // Save Stats
