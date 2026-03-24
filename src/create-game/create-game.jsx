@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchRoom, fetchUser, joinRoom, leaveRoom } from '../lib/lib-requests';
-import { Receiver } from '../gameReceiver';
+import { Receiver } from '../lobbyReceiver';
 
 export function CreateGame() {
     // playerInit will hold these objects {name: String, skin: skin}
