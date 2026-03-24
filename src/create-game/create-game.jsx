@@ -6,6 +6,7 @@ import { Receiver } from '../lobbyReceiver';
 export function CreateGame() {
     // playerInit will hold these objects {name: String, skin: skin}
     const [playerInit, setPlayerInit] = React.useState([]);
+    const [socket, setSocket] = React.useState(Receiver.socket);
     const roomCode = React.useRef(localStorage.getItem("roomCode"));
     const nav = useNavigate();
 
@@ -13,9 +14,27 @@ export function CreateGame() {
         async function effectHelper() {
             const user = await fetchUser();
             await Receiver.start(roomCode.current, user, setPlayerInit);
+            setSocket(Receiver.socket);
         }
         effectHelper();
     }, []);
+
+    React.useEffect(() => {
+        // 1. Define the event handler
+        const handleMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'STARTING') {
+                // 2. Trigger the navigation for this specific client
+                localStorage.setItem("playerInit", JSON.stringify(playerInit));
+                nav('/game');
+            }
+        };
+        // 3. Attach the listener when the component mounts
+        if (socket) socket.addEventListener('message', handleMessage);
+        return () => {
+            if (socket) socket.removeEventListener('message', handleMessage);
+        }
+    }, [socket, nav]);
 
     async function leave() {
         await Receiver.leaveRoom();
@@ -23,8 +42,7 @@ export function CreateGame() {
     }
 
     async function start() {
-        localStorage.setItem("playerInit", JSON.stringify(playerInit));
-        nav('/game');
+        await Receiver.startGame();
     }
 
     return (

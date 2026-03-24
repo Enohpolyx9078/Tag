@@ -61,6 +61,12 @@ function gameProxy(httpServer, rooms) {
                             if (player !== theClient) player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
                         };
                         break;
+                    case "START":
+                        room = rooms.get(theClient.roomId);
+                        room.clients.forEach(player => {
+                            player.send(JSON.stringify({ type: 'STARTING' }));
+                        });
+                        break;
                     default:
                         theClient.send(JSON.stringify({ message: "Unknown action: " + type }));
                         break;

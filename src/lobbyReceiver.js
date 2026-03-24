@@ -22,6 +22,9 @@ class lobbyReceiver {
                 case "LEAVE":
                     console.log("Left room");
                     break;
+                case "STARTING":
+                    console.log("Starting game");
+                    break;
                 default:
                     alert("Something went wrong: " + data.message);
                     break;
@@ -38,6 +41,10 @@ class lobbyReceiver {
 
     async leaveRoom() {
         this.socket.send(JSON.stringify({ type: "LEAVE" }));
+    }
+
+    async startGame() {
+        this.socket.send(JSON.stringify({ type: "START" }));
     }
 }
 
