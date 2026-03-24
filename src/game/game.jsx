@@ -6,7 +6,7 @@ import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
-import { fetchUser, leaveRoom } from '../lib/lib-requests.js';
+import { fetchUser } from '../lib/lib-requests.js';
 
 export function Game({ Receiver }) {
     const [user, setUser] = React.useState({});
