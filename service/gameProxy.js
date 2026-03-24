@@ -71,6 +71,13 @@ function gameProxy(httpServer, rooms) {
                             player.send(JSON.stringify({ type: 'STARTING' }));
                         });
                         break;
+                    case "MOVE":
+                        //TODO the world state
+                        room = rooms.get(theClient.roomId);
+                        room.clients.forEach((player) => {
+                            if (player !== theClient) player.send(JSON.stringify({ type: "MOVE" }));
+                        });
+                        break;
                     default:
                         theClient.send(JSON.stringify({ message: "Unknown action: " + type }));
                         break;

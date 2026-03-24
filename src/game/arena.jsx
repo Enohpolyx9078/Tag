@@ -13,6 +13,10 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
     const [finalScreen, setFinalScreen] = React.useState(false);
     const rain = React.useRef(localStorage.getItem("rain") ?? "false");
 
+    // set up throttling
+    const lastSent = React.useRef(0);
+    const tickRate = React.useRef(1000 / 30);
+
     // set up players
     //const [setP1Position, setP2Position, setP3Position, setP4Position] = setters;
     const setPlayerPosition = setters.splice(you, 1)[0];
@@ -43,7 +47,8 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
         updateFrame((prev) => {
             let { x, y, time, name } = prev;
             // use delta Time for position change instead of move speed
-            const deltaT = performance.now() - time;
+            const now = performance.now();
+            const deltaT = now - time;
             const distance = speed * deltaT;
 
             const moveUp = () => {
@@ -70,6 +75,14 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
             if (keysPressed.current[keys[1]]) moveDown();
             if (keysPressed.current[keys[2]]) moveLeft();
             if (keysPressed.current[keys[3]]) moveRight();
+
+            if (now - lastSent.current >= tickRate.current) {
+                lastSent.current = now;
+                // Only send the payload if the player actually moved to save bandwidth
+                if (x !== prev.x || y !== prev.y) {
+                    Receiver.sendMove({ x: x, y: y });
+                }
+            }
 
             return { x: x, y: y, time: performance.now(), name: name };
         });

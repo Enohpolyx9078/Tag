@@ -25,6 +25,9 @@ class lobbyReceiver {
                 case "STARTING":
                     console.log("Starting game");
                     break;
+                case "MOVE":
+                    console.log("Someone moved...");
+                    break;
                 default:
                     alert("Something went wrong: " + data.message);
                     break;
@@ -45,6 +48,10 @@ class lobbyReceiver {
 
     async startGame() {
         this.socket.send(JSON.stringify({ type: "START" }));
+    }
+
+    async sendMove(desiredPosition) {
+        this.socket.send(JSON.stringify({type: "MOVE", ...desiredPosition}));
     }
 }
 
