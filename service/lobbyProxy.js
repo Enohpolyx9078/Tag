@@ -16,11 +16,9 @@ function lobbyProxy(httpServer, rooms) {
                 // Add player to the Room Map
                 switch (type) {
                     case "JOIN":
-                        console.log("Joining room");
                         const { roomId, user } = data;
                         const room = rooms.get(roomId);
                         if (room && room.playerInit.length < 4) {
-                            console.log(JSON.stringify(room));
                             //TODO prevent the same user from joining the room twice
                             room.playerInit.push({ name: user.userName, skin: user.skin });
                             room.clients.push(theClient);
@@ -29,8 +27,12 @@ function lobbyProxy(httpServer, rooms) {
                             // Send state back to the client
                             const { clients, ...state } = room;
                             theClient.send(JSON.stringify({ ...state, you: you, type: "JOIN" }));
+
+                            // Tell the other clients someone has joined
+                            room.clients.forEach((player) => {
+                                if (player !== theClient) player.send(JSON.stringify({playerInit: room.playerInit, type: "ADD"}));
+                            });
                         }
-                        //TODO let other clients know someone has joined
                         break;
                     default:
                         theClient.send(JSON.stringify({ message: "Unknown action: " + type }));

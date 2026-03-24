@@ -11,20 +11,21 @@ class GameReceiver {
             this.socket.send(JSON.stringify({ type: "JOIN", roomId: roomId, user: user }));
         };
         this.socket.onmessage = async (msg) => {
-            console.log(msg.data);
             const data = JSON.parse(msg.data);
-            const { type } = data;
+            const { type, playerInit } = data;
 
             switch (type) {
                 case "JOIN":
-                    console.log("joining room");
-                    const { playerInit, you } = data;
+                    const { you } = data;
                     setPlayerInit(playerInit);
                     localStorage.setItem("you", you);
                     break;
+                case "ADD":
+                    console.log(JSON.stringify(playerInit));
+                    setPlayerInit(playerInit);
+                    break;
             }
         };
-        // Add these to catch exactly what is going wrong
         this.socket.onclose = (event) => {
             console.warn(`WebSocket closed. Code: ${event.code}, Reason: ${event.reason}, Clean: ${event.wasClean}`);
         };
