@@ -13,13 +13,13 @@ export function CreateGame() {
         async function effectHelper() {
             //const init = await joinRoom(roomCode.current);
             const user = await fetchUser();
-            Receiver.start(roomCode.current, user, setPlayerInit);
+            await Receiver.start(roomCode.current, user, setPlayerInit);
         }
         effectHelper();
     }, []);
 
     async function leave() {
-        await leaveRoom(roomCode.current);
+        await Receiver.leaveRoom();
         nav('/profile');
     }
 

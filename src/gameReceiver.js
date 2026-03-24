@@ -3,7 +3,7 @@ class GameReceiver {
         this.socket;
     }
 
-    start(roomId, user, setPlayerInit) {
+    async start(roomId, user, setPlayerInit) {
         let port = window.location.port;
         const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
         this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
@@ -12,17 +12,15 @@ class GameReceiver {
         };
         this.socket.onmessage = async (msg) => {
             const data = JSON.parse(msg.data);
-            const { type, playerInit } = data;
+            const { type, playerInit, you } = data;
 
             switch (type) {
-                case "JOIN":
-                    const { you } = data;
+                case "UPDATE":
                     setPlayerInit(playerInit);
-                    localStorage.setItem("you", you);
+                    if (you != undefined) localStorage.setItem("you", you);
                     break;
-                case "ADD":
-                    console.log(JSON.stringify(playerInit));
-                    setPlayerInit(playerInit);
+                case "LEAVE":
+                    console.log("Left room");
                     break;
                 default:
                     alert("Something went wrong: " + data.message);
@@ -36,6 +34,10 @@ class GameReceiver {
         this.socket.onerror = (error) => {
             console.error("WebSocket encountered an error:", error);
         };
+    }
+
+    async leaveRoom() {
+        this.socket.send(JSON.stringify({ type: "LEAVE" }));
     }
 }
 
