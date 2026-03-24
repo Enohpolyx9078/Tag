@@ -1,7 +1,7 @@
 const { WebSocketServer } = require('ws');
 
 // Expects rooms to be a global Map
-function lobbyProxy(httpServer, rooms) {
+function gameProxy(httpServer, rooms) {
     // Create a websocket object
     const socketServer = new WebSocketServer({ server: httpServer });
 
@@ -84,4 +84,4 @@ function lobbyProxy(httpServer, rooms) {
     }, 10000);
 }
 
-module.exports = { lobbyProxy };
+module.exports = { gameProxy };

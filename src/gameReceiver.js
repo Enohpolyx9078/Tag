@@ -1,4 +1,4 @@
-class GameReceiver {
+class lobbyReceiver {
     constructor() {
         this.socket;
     }
@@ -41,5 +41,5 @@ class GameReceiver {
     }
 }
 
-const Receiver = new GameReceiver();
+const Receiver = new lobbyReceiver();
 export { Receiver };
