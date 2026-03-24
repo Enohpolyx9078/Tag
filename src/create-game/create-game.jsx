@@ -34,7 +34,7 @@ export function CreateGame() {
         return () => {
             if (socket) socket.removeEventListener('message', handleMessage);
         }
-    }, [socket, nav]);
+    }, [socket, nav, playerInit]);
 
     async function leave() {
         await Receiver.leaveRoom();
