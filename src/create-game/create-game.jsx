@@ -1,9 +1,8 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import { fetchUser } from '../lib/lib-requests';
-import { Receiver } from '../lobbyReceiver';
 
-export function CreateGame() {
+export function CreateGame({ Receiver }) {
     // playerInit will hold these objects {name: String, skin: skin}
     const [playerInit, setPlayerInit] = React.useState([]);
     const [socket, setSocket] = React.useState(Receiver.socket);

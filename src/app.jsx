@@ -6,6 +6,7 @@ import { CreateAccount } from './create-account/create-account';
 import { Game } from './game/game';
 import { Profile } from './profile/profile';
 import { CreateGame } from './create-game/create-game';
+import { Receiver } from './lobbyReceiver';
 
 export default function App() {
     const [userName, setUserName] = React.useState(localStorage.getItem("tagStartup-userName") || '');
@@ -20,8 +21,8 @@ export default function App() {
                     <Route path='/' element={<Login userName={userName} setUserName={setUserName} />} exact />
                     <Route path='/profile' element={<Profile />} />
                     <Route path='/createAccount' element={<CreateAccount userName={userName} setUserName={setUserName} />} />
-                    <Route path='/game' element={<Game />} />
-                    <Route path='/createGame' element={<CreateGame />} />
+                    <Route path='/game' element={<Game Receiver={ Receiver } />} />
+                    <Route path='/createGame' element={<CreateGame Receiver={ Receiver } />} />
                     <Route path='*' element={<NotFound />} />
                 </Routes>
                 <footer>

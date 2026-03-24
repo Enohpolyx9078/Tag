@@ -5,7 +5,7 @@ import { GameOver } from './game-over.jsx';
 import { Rain } from './rain.jsx';
 import { sendStats } from '../lib/lib-requests.js';
 
-export function Arena({ you, players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
+export function Arena({ Receiver, you, players, setters, skins, it, popping, size, itClass, gameOver, winner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
     // setters will be a list of methods that is 1:1 to players      -> [setter1, setter2]
     // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]

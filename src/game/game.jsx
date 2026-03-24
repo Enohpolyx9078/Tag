@@ -8,7 +8,7 @@ import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
 import { fetchUser, leaveRoom } from '../lib/lib-requests.js';
 
-export function Game() {
+export function Game({ Receiver }) {
     const [user, setUser] = React.useState({});
     const [it, setIt] = React.useState(0);
     const [popping, setPopping] = React.useState(-1);
@@ -72,7 +72,7 @@ export function Game() {
                 {twoPlayer.current ? <LocalLeft you={you} skin={skin2} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} it={it} itClass={itClass} />}
             </section>
             <section>
-                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}
+                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena Receiver={Receiver} you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}
             </section>
             <section className="md:grow-1 sidebar-thin card-thin">
                 <div className="flex flex-col flex-row flex-wrap items-center mb-4">
