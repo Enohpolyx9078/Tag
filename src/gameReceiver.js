@@ -8,7 +8,7 @@ class GameReceiver {
         const protocol = window.location.protocol === 'http:' ? 'ws' : 'wss';
         this.socket = new WebSocket(`${protocol}://${window.location.hostname}:${port}/ws`);
         this.socket.onopen = (event) => {
-            this.socket.send(JSON.stringify({roomId: roomId, user: user}));
+            this.socket.send(JSON.stringify({type: "JOIN", roomId: roomId, user: user}));
         };
         this.socket.onmessage = async (msg) => {
             const init = JSON.parse(msg.data);
