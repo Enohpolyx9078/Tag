@@ -24,6 +24,9 @@ class GameReceiver {
                     console.log(JSON.stringify(playerInit));
                     setPlayerInit(playerInit);
                     break;
+                default:
+                    alert("Something went wrong: " + data.message);
+                    break;
             }
         };
         this.socket.onclose = (event) => {

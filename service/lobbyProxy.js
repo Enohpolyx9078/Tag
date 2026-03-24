@@ -32,6 +32,9 @@ function lobbyProxy(httpServer, rooms) {
                             room.clients.forEach((player) => {
                                 if (player !== theClient) player.send(JSON.stringify({playerInit: room.playerInit, type: "ADD"}));
                             });
+                        } else if (room && room.playerInit.length >= 4) {
+                            //TODO handle rooms being full
+                            theClient.send(JSON.stringify({ message: "Room is full", type: "ERROR" }));
                         }
                         break;
                     default:
