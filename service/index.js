@@ -178,6 +178,7 @@ app.post('/api/rooms', protect, async (req, res) => {
     const newRoom = {
         code: newCode,
         playerInit: [],
+        clients: [],
         rain: req.body.rain
     }
     rooms.set(newCode, newRoom);
