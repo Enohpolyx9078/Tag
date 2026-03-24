@@ -38,8 +38,11 @@ function gameProxy(httpServer, rooms) {
                         } else if (room && room.playerInit.length >= 4) {
                             //TODO handle rooms being full
                             theClient.send(JSON.stringify({ message: "Room is full", type: "ERROR" }));
+                        } else {
+                            //TODO handle the room not existing
                         }
                         break;
+                    // Remove a player from the room
                     case "LEAVE":
                         room = rooms.get(theClient.roomId);
                         if (room) {
@@ -60,6 +63,7 @@ function gameProxy(httpServer, rooms) {
                         break;
                     default:
                         theClient.send(JSON.stringify({ message: "Unknown action: " + type }));
+                        break;
                 }
 
             } catch (err) {
