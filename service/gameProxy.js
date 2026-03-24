@@ -70,7 +70,9 @@ function gameProxy(httpServer, rooms) {
                         room.clients.forEach(player => {
                             player.send(JSON.stringify({ type: 'STARTING' }));
                         });
+                        //TODO start batching tick
                         break;
+                    // Track movements
                     case "MOVE":
                         //TODO the world state
                         room = rooms.get(theClient.roomId);
