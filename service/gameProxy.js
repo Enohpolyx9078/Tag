@@ -20,13 +20,13 @@ function gameProxy(httpServer, rooms) {
                         const { roomId, user } = data;
                         room = rooms.get(roomId);
                         if (room && room.playerInit.length < 4) {
-                            theClient.roomId = roomId;
-                            theClient.userName = user.userName;
                             //TODO prevent the same user from joining the room twice
                             room.playerInit.push({ name: user.userName, skin: user.skin });
-                            room.clients.push(theClient);
                             const you = room.playerInit.length - 1;
-
+                            theClient.roomId = roomId;
+                            theClient.userName = user.userName;
+                            theClient.you = you;
+                            room.clients.push(theClient);
                             // Send state back to the client
                             const { clients, ...state } = room;
                             theClient.send(JSON.stringify({ ...state, you: you, type: "UPDATE" }));
@@ -58,9 +58,13 @@ function gameProxy(httpServer, rooms) {
                         theClient.send(JSON.stringify({ type: "LEAVE", msg: "Left room" }));
                         for (var i = 0; i < room.clients.length; i++) {
                             let player = room.clients[i];
-                            if (player !== theClient) player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
+                            if (player !== theClient) {
+                                player.you = i;
+                                player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
+                            }
                         };
                         break;
+                    // Start the game
                     case "START":
                         room = rooms.get(theClient.roomId);
                         room.clients.forEach(player => {
