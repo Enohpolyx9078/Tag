@@ -249,4 +249,4 @@ const service = app.listen(port, () => {
     if (devMode) console.log(`Listening on port ${port}`);
 });
 
-lobbyProxy(service);
+lobbyProxy(service, rooms);

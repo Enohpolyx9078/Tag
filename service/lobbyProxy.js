@@ -1,7 +1,7 @@
 const { WebSocketServer } = require('ws');
 
 // Expects rooms to be a global Map
-function lobbyProxy(httpServer) {
+function lobbyProxy(httpServer, rooms) {
     // Create a websocket object
     const socketServer = new WebSocketServer({ server: httpServer });
 
