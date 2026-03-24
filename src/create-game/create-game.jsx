@@ -13,7 +13,7 @@ export function CreateGame() {
         async function effectHelper() {
             //const init = await joinRoom(roomCode.current);
             const user = await fetchUser();
-            Receiver.start(roomCode.current, user);
+            Receiver.start(roomCode.current, user, setPlayerInit);
         }
         effectHelper();
     }, []);
