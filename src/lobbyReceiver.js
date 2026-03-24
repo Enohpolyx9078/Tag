@@ -20,7 +20,7 @@ class lobbyReceiver {
                     if (you != undefined) localStorage.setItem("you", you);
                     break;
                 case "LEAVE":
-                    console.log("Left room");
+                    this.socket.close();
                     break;
                 case "STARTING":
                     console.log("Starting game");
