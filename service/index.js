@@ -6,7 +6,7 @@ const nanoid = require('nanoid');
 const app = express();
 const { MongoClient } = require('mongodb');
 const config = require('./dbConfig.json');
-const { gameProxy } = require('./gameProxy.js');
+const { lobbyProxy } = require('./lobbyProxy.js');
 
 require('dotenv').config();
 
@@ -250,4 +250,4 @@ const service = app.listen(port, () => {
     if (devMode) console.log(`Listening on port ${port}`);
 });
 
-gameProxy(service);
+lobbyProxy(service);

@@ -1,6 +1,7 @@
 import React from 'react';
-import { NavLink, useNavigate } from 'react-router-dom';
-import { fetchRoom, joinRoom, leaveRoom } from '../lib/lib-requests';
+import { useNavigate } from 'react-router-dom';
+import { fetchRoom, fetchUser, joinRoom, leaveRoom } from '../lib/lib-requests';
+import { Receiver } from '../gameReceiver';
 
 export function CreateGame() {
     // playerInit will hold these objects {name: String, skin: skin}
@@ -10,9 +11,9 @@ export function CreateGame() {
 
     React.useEffect(() => {
         async function effectHelper() {
-            const init = await joinRoom(roomCode.current);
-            setPlayerInit(init.playerInit);
-            localStorage.setItem("you", init.you);
+            //const init = await joinRoom(roomCode.current);
+            const user = await fetchUser();
+            Receiver.start(roomCode.current, user);
         }
         effectHelper();
     }, []);
