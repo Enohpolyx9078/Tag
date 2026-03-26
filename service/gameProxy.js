@@ -1,6 +1,6 @@
 const { WebSocketServer } = require('ws');
 
-const TICK_RATE = 20;
+const TICK_RATE = 30;
 
 function startRoomTick(rooms, roomId) {
     const room = rooms.get(roomId);
