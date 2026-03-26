@@ -25,8 +25,9 @@ class lobbyReceiver {
                 case "STARTING":
                     console.log("Starting game");
                     break;
-                case "MOVE":
-                    console.log("Someone moved...");
+                case "TICK":
+                    console.log(msg);
+                    //TODO display updated movements
                     break;
                 default:
                     alert("Something went wrong: " + data.message);

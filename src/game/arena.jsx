@@ -15,10 +15,9 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     // set up throttling
     const lastSent = React.useRef(0);
-    const tickRate = React.useRef(1000 / 30);
+    const TICK_RATE = React.useRef(1000 / 20); // 20 Hz
 
     // set up players
-    //const [setP1Position, setP2Position, setP3Position, setP4Position] = setters;
     const setPlayerPosition = setters.splice(you, 1)[0];
 
     const playerList = (() => {
@@ -76,12 +75,10 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
             if (keysPressed.current[keys[2]]) moveLeft();
             if (keysPressed.current[keys[3]]) moveRight();
 
-            if (now - lastSent.current >= tickRate.current) {
+            if (now - lastSent.current >= TICK_RATE.current) {
                 lastSent.current = now;
                 // Only send the payload if the player actually moved to save bandwidth
-                if (x !== prev.x || y !== prev.y) {
-                    Receiver.sendMove({ x: x, y: y });
-                }
+                if (x !== prev.x || y !== prev.y) Receiver.sendMove({ x: x, y: y });
             }
 
             return { x: x, y: y, time: performance.now(), name: name };

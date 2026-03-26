@@ -1,7 +1,35 @@
 const { WebSocketServer } = require('ws');
 
+const TICK_RATE = 20;
+
+function startRoomTick(rooms, roomId) {
+    console.log("Starting tick");
+    const room = rooms.get(roomId);
+    if (!room || room.state == "ACTIVE") return;
+    console.log("Found room");
+    room.state = "ACTIVE";
+    room.tickInterval = setInterval(() => {
+        console.log("ticking");
+        // 1. kill the interval to save CPU
+        if (room.clients.size === 0 || room.state === "FINISH") {
+            clearInterval(room.tickInterval);
+            rooms.delete(roomId);
+            return;
+        }
+
+        // 2. Prepare the payload for ONLY this room
+        const state = room.remoteUpdate;
+
+        // 3. Broadcast only to players in THIS room
+        room.clients.forEach(player => {
+            player.send(JSON.stringify({ type: 'TICK', state }));
+        });
+    }, TICK_RATE); // 20Hz independent tick
+}
+
 // Expects rooms to be a global Map
 function gameProxy(httpServer, rooms) {
+
     // Create a websocket object
     const socketServer = new WebSocketServer({ server: httpServer });
 
@@ -70,15 +98,13 @@ function gameProxy(httpServer, rooms) {
                         room.clients.forEach(player => {
                             player.send(JSON.stringify({ type: 'STARTING' }));
                         });
-                        //TODO start batching tick
+                        startRoomTick(rooms, theClient.roomId);
                         break;
                     // Track movements
                     case "MOVE":
-                        //TODO the world state
                         room = rooms.get(theClient.roomId);
-                        room.clients.forEach((player) => {
-                            if (player !== theClient) player.send(JSON.stringify({ type: "MOVE" }));
-                        });
+                        const { x, y } = data
+                        room.remoteUpdate[theClient.you] = { x, y };
                         break;
                     default:
                         theClient.send(JSON.stringify({ message: "Unknown action: " + type }));
@@ -90,6 +116,29 @@ function gameProxy(httpServer, rooms) {
                 theClient.close();
             }
         });
+        // listen for on close so that empty rooms can be removed
+        theClient.on('close', () => {
+            const room = rooms.get(theClient.roomId);
+            if (room) {
+                for (let i = 0; i < room.playerInit.length; i++) {
+                    let current = room.playerInit[i];
+                    if (current.name === theClient.userName) {
+                        room.playerInit.splice(i, 1);
+                        room.clients.splice(i, 1);
+                        break;
+                    }
+                }
+            };
+            theClient.send(JSON.stringify({ type: "LEAVE", msg: "Left room" }));
+            for (var i = 0; i < room.clients.length; i++) {
+                let player = room.clients[i];
+                if (player !== theClient) {
+                    player.you = i;
+                    player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
+                }
+            };
+        });
+
         // Respond to pong messages by marking the connection alive
         theClient.on('pong', () => {
             theClient.isAlive = true;
