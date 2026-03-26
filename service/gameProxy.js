@@ -25,7 +25,7 @@ function startRoomTick(rooms, roomId) {
         room.clients.forEach(player => {
             player.send(JSON.stringify({ type: 'TICK', state }));
         });
-    }, TICK_RATE); // 20Hz independent tick
+    }, TICK_RATE);
 }
 
 // Expects rooms to be a global Map

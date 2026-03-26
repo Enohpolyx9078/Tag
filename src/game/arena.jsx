@@ -15,7 +15,7 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     // set up throttling
     const lastSent = React.useRef(0);
-    const TICK_RATE = React.useRef(1000 / 30); // 20 Hz
+    const TICK_RATE = React.useRef(1000 / 30);
     const world = React.useRef({});
     const [socket, setSocket] = React.useState(Receiver.socket);
 
