@@ -21,7 +21,6 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     // set up players
     const setPlayerPosition = setters[you];
-    const remoteSetters = setters.filter((_, index) => index !== you);
 
     const playerList = (() => {
         const list = [];
@@ -44,7 +43,6 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
-    console.log(world.current);
     // Watch for updates coming from WebSocket
     React.useEffect(() => {
         const handleMessage = (event) => {
@@ -56,10 +54,10 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
                 for (var i = 0; i < players.length; i++) {
                     // Update the interpolation buffer
                     const next = state[i];
-                    const prev = world.current[i] ?? {x: next.x, y: next.y};
+                    const prev = world.current[i] ?? { renderX: next.x, renderY: next.y };
                     world.current[i] = {
-                        startX: prev.renderX ?? next.x, // Start from where they currently are on screen
-                        startY: prev.renderY ?? next.y,
+                        startX: prev.renderX || next.x, // Start from where they currently are on screen
+                        startY: prev.renderY || next.y,
                         targetX: next.x,
                         targetY: next.y,
                         startTime: now
@@ -76,6 +74,7 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
+        // Animate local player
         updateFrame((prev) => {
             let { x, y, time, name } = prev;
             // use delta Time for position change instead of move speed
@@ -117,58 +116,37 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
             return { x: x, y: y, time: performance.now(), name: name };
         });
 
-        requestRef.current = requestAnimationFrame(() => animate(updateFrame, keys));
-    }
+        // Animate remote players
+        const now = performance.now();
+        Object.keys(world.current).forEach((id) => {
+            if (id === you) return;
+            const data = world.current[id];
+            const setter = setters[id];
+            if (!setter) return;
 
-    // placeholder movement code for Websocket stuff later
-    const animateBot = async (updateFrame, count, dir, wait) => {
-        updateFrame((prev) => {
-            let { x, y, time, name } = prev;
-            // use delta Time for position change instead of move speed
-            const deltaT = performance.now() - time;
-            const distance = speed * deltaT;
+            // 1. Calculate how far we are into the 50ms tick (t)
+            // TICK_RATE is 50ms (1000/20)
+            let t = (now - data.startTime) / (1000 / TICK_RATE.current);
+            if (t > 1) t = 1; // Clamp to 1 so they don't over-shoot
 
-            const moveUp = () => {
-                if (y - distance < 0) y = 0;
-                else y -= distance;
-            }
+            // 2. Linear Interpolation (LERP)
+            const renderX = data.startX + (data.targetX - data.startX) * t;
+            const renderY = data.startY + (data.targetY - data.startY) * t;
 
-            const moveDown = () => {
-                if (y + distance > edge) y = edge;
-                else y += distance;
-            }
+            // 3. Update the remote player's visual state
+            setter((prev) => { return { x: renderX, y: renderY, name: prev.name }; });
 
-            const moveLeft = () => {
-                if (x - distance < 0) x = 0;
-                else x -= distance;
-            }
-
-            const moveRight = () => {
-                if (x + distance > edge) x = edge;
-                else x += distance;
-            }
-
-            if (count % wait == 0) {
-                dir = Math.floor(Math.random() * 4);
-                wait = Math.round(Math.random() * 120);
-            }
-
-            if (dir == 0) moveUp();
-            if (dir == 1) moveDown();
-            if (dir == 2) moveLeft();
-            if (dir == 3) moveRight();
-
-            return { x: x, y: y, time: performance.now(), name: name };
+            // Save the current render position to use as startX for the next tick
+            data.renderX = renderX;
+            data.renderY = renderY;
         });
 
-        requestRef.current = requestAnimationFrame(() => animateBot(updateFrame, count + 1, dir, wait));
+        requestRef.current = requestAnimationFrame(() => animate(updateFrame, keys));
     }
 
     React.useEffect(() => {
         requestRef.current = requestAnimationFrame(() => animate(setPlayerPosition, p1Keys));
-        if (players.length >= 2) requestRef.current = requestAnimationFrame(() => animateBot(remoteSetters[0], 0, 0, 60));
-        if (players.length >= 3) requestRef.current = requestAnimationFrame(() => animateBot(remoteSetters[1], 0, 0, 120));
-        if (players.length >= 4) requestRef.current = requestAnimationFrame(() => animateBot(remoteSetters[2], 0, 0, 30));
+
         const gameKeys = p1Keys;
         const down = (e) => {
             if (gameKeys.includes(e.key)) e.preventDefault();
