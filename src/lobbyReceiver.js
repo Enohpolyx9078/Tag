@@ -23,10 +23,8 @@ class lobbyReceiver {
                     this.socket.close();
                     break;
                 case "STARTING":
-                    console.log("Starting game");
                     break;
                 case "TICK":
-                    //TODO display updated movements
                     break;
                 default:
                     alert("Something went wrong: " + data.message);

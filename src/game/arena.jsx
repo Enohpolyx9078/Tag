@@ -16,9 +16,12 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
     // set up throttling
     const lastSent = React.useRef(0);
     const TICK_RATE = React.useRef(1000 / 20); // 20 Hz
+    const [world, setWorld] = React.useState({});
+    const [socket, setSocket] = React.useState(Receiver.socket);
 
     // set up players
-    const setPlayerPosition = setters.splice(you, 1)[0];
+    const setPlayerPosition = setters[you];
+    const remoteSetters = setters.filter((_, index) => index !== you);
 
     const playerList = (() => {
         const list = [];
@@ -40,6 +43,19 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
     const keysPressed = React.useRef({});
 
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
+
+    React.useEffect(() => {
+        // 1. Define the event handler
+        const handleMessage = (event) => {
+            const data = JSON.parse(event.data);
+            if (data.type === 'TICK') setWorld(data.state);
+        };
+        // 3. Attach the listener when the component mounts
+        if (socket) socket.addEventListener('message', handleMessage);
+        return () => {
+            if (socket) socket.removeEventListener('message', handleMessage);
+        }
+    }, [socket]);
 
     // Made with some help from Gemini 3
     const animate = async (updateFrame, keys) => {
@@ -133,9 +149,9 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     React.useEffect(() => {
         requestRef.current = requestAnimationFrame(() => animate(setPlayerPosition, p1Keys));
-        if (players.length >= 2) requestRef.current = requestAnimationFrame(() => animateBot(setters[0], 0, 0, 60));
-        if (players.length >= 3) requestRef.current = requestAnimationFrame(() => animateBot(setters[1], 0, 0, 120));
-        if (players.length >= 4) requestRef.current = requestAnimationFrame(() => animateBot(setters[2], 0, 0, 30));
+        if (players.length >= 2) requestRef.current = requestAnimationFrame(() => animateBot(remoteSetters[0], 0, 0, 60));
+        if (players.length >= 3) requestRef.current = requestAnimationFrame(() => animateBot(remoteSetters[1], 0, 0, 120));
+        if (players.length >= 4) requestRef.current = requestAnimationFrame(() => animateBot(remoteSetters[2], 0, 0, 30));
         const gameKeys = p1Keys;
         const down = (e) => {
             if (gameKeys.includes(e.key)) e.preventDefault();
