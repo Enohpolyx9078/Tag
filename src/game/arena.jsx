@@ -16,7 +16,7 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
     // set up throttling
     const lastSent = React.useRef(0);
     const TICK_RATE = React.useRef(1000 / 20); // 20 Hz
-    const [world, setWorld] = React.useState({});
+    const world = React.useRef({});
     const [socket, setSocket] = React.useState(Receiver.socket);
 
     // set up players
@@ -44,11 +44,28 @@ export function Arena({ Receiver, you, players, setters, skins, it, popping, siz
 
     const p1Keys = ['ArrowUp', 'ArrowDown', 'ArrowLeft', 'ArrowRight'];
 
+    console.log(world.current);
+    // Watch for updates coming from WebSocket
     React.useEffect(() => {
-        // 1. Define the event handler
         const handleMessage = (event) => {
             const data = JSON.parse(event.data);
-            if (data.type === 'TICK') setWorld(data.state);
+            if (data.type === 'TICK') {
+                const now = performance.now();
+                const state = data.state;
+                // For each player in the server's list
+                for (var i = 0; i < players.length; i++) {
+                    // Update the interpolation buffer
+                    const next = state[i];
+                    const prev = world.current[i] ?? {x: next.x, y: next.y};
+                    world.current[i] = {
+                        startX: prev.renderX ?? next.x, // Start from where they currently are on screen
+                        startY: prev.renderY ?? next.y,
+                        targetX: next.x,
+                        targetY: next.y,
+                        startTime: now
+                    };
+                };
+            }
         };
         // 3. Attach the listener when the component mounts
         if (socket) socket.addEventListener('message', handleMessage);
