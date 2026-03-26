@@ -26,7 +26,6 @@ class lobbyReceiver {
                     console.log("Starting game");
                     break;
                 case "TICK":
-                    console.log(msg);
                     //TODO display updated movements
                     break;
                 default:

@@ -3,13 +3,14 @@ const { WebSocketServer } = require('ws');
 const TICK_RATE = 20;
 
 function startRoomTick(rooms, roomId) {
-    console.log("Starting tick");
     const room = rooms.get(roomId);
     if (!room || room.state == "ACTIVE") return;
-    console.log("Found room");
     room.state = "ACTIVE";
+    const numPlayers = room.clients.length;
+    room.remoteUpdate = {0: {x: 10, y: 10}, 1: {x: 429, y: 429}};
+    if (numPlayers >= 3) room.remoteUpdate[2] = {x: 429, y: 10};
+    if (numPlayers >= 4) room.remoteUpdate[3] = {x: 10, y: 429};
     room.tickInterval = setInterval(() => {
-        console.log("ticking");
         // 1. kill the interval to save CPU
         if (room.clients.size === 0 || room.state === "FINISH") {
             clearInterval(room.tickInterval);
