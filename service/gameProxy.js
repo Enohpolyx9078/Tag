@@ -149,7 +149,10 @@ function gameProxy(httpServer, rooms) {
     // Periodically send out a ping message to make sure clients are alive
     setInterval(() => {
         socketServer.clients.forEach(function each(client) {
-            if (client.isAlive === false) return client.terminate();
+            if (client.isAlive === false) {
+                //TODO remove this client from their room
+                return client.terminate();
+            }
 
             client.isAlive = false;
             client.ping();
