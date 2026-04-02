@@ -85,7 +85,7 @@ function checkEndGame(numPlayers, room, out) {
             room.clients.forEach(player => {
                 player.send(JSON.stringify({ type: 'END', winner: winner }));
             });
-        }, 3000);
+        }, 1500);
     }
     return ending;
 }
@@ -114,6 +114,7 @@ function startRoomTick(rooms, roomId) {
         timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
         if (!ending) ending = checkEndGame(numPlayers, room, out);
         const state = room.remoteUpdate;
+        console.log(state);
 
         // 3. Broadcast only to players in THIS room
         room.clients.forEach(player => {

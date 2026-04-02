@@ -63,7 +63,10 @@ export function Arena({ Receiver, you, players, setters, skins, it, setIt, poppi
                         startTime: now
                     };
                 };
-                if (state.popping !== popping) setPopping(state.popping);
+                if (state.popping !== popping) {
+                    setPopping(state.popping);
+                    setItClass("it");
+                }
                 if (state.itClass !== itClass) setItClass(state.itClass);
                 setIt(state.it);
             } else if (data.type === 'END') {
