@@ -49,7 +49,7 @@ function checkPop(timer, players, out, numPlayers) {
     }
 }
 
-function checkEndGame(numPlayers, out) {
+function findWinner(numPlayers, out) {
     if (out.size === numPlayers - 1) {
         for (let i = 0; i < numPlayers; i++) {
             if (!out.has(i)) return i;
@@ -58,9 +58,27 @@ function checkEndGame(numPlayers, out) {
     return null;
 }
 
+function checkEndGame(numPlayers, room, rooms, roomId, out) {
+    let ending = false;
+    const winner = findWinner(numPlayers, out);
+    if (winner !== null) {
+        ending = true;
+        console.log("GAME OVER: " + winner);
+        setTimeout(() => {
+            room.state = "FINISH";
+            room.remoteUpdate.winner = winner;
+            room.clients.forEach(player => {
+                player.send(JSON.stringify({ type: 'END', winner: winner }));
+            });
+        }, 3000);
+    }
+    return ending;
+}
+
 function startRoomTick(rooms, roomId) {
     const out = new Set();
     const room = rooms.get(roomId);
+    let ending = false;
     let timer = Math.floor(Math.random() * (MAX_ROUND - MIN_ROUND)) + MIN_ROUND;
     if (!room || room.state == "ACTIVE") return;
     room.state = "ACTIVE";
@@ -79,18 +97,7 @@ function startRoomTick(rooms, roomId) {
         // 2. Prepare the payload for ONLY this room
         checkCollisions(numPlayers, room.remoteUpdate, out);
         timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
-        const winner = checkEndGame(numPlayers, out);
-        if (winner !== null) {
-            console.log("GAME OVER: " + winner);
-            room.state = "FINISH";
-            room.remoteUpdate.winner = winner;
-            room.clients.forEach(player => {
-                player.send(JSON.stringify({ type: 'END', winner: winner }));
-            });
-            clearInterval(room.tickInterval);
-            rooms.delete(roomId);
-            return;
-        }
+        if (!ending) ending = checkEndGame(numPlayers, room, rooms, roomId, out);
 
         console.log("Timer: " + (timer - (performance.now() - room.remoteUpdate.lastPop)));
         console.log(room.remoteUpdate);
