@@ -1,6 +1,6 @@
 import React from 'react'
 
-export function ControllerOnline({ it, setIt, setPopping, players, size, itClass, setItClass, gameOver, setGameOver, setWinner }) {
+export function ControllerOnline({ Receiver, it, setIt, setPopping, players, size, itClass, setItClass, gameOver, setGameOver, setWinner }) {
     // players will be a list of Player objects -> [{x:1, y:1, time:1000, skin:skin}, {}]
     const maxRound = 90000;
     const minRound = 30000;
@@ -8,6 +8,7 @@ export function ControllerOnline({ it, setIt, setPopping, players, size, itClass
     let timer = Math.floor(Math.random() * (maxRound - minRound)) + minRound;
     const [time, setTime] = React.useState(timer);
     const out = React.useRef(new Set());
+    const [socket, setSocket] = React.useState(Receiver.socket);
 
     React.useEffect(() => {
         let end = false;

@@ -1,15 +1,51 @@
 const { WebSocketServer } = require('ws');
 
 const TICK_RATE = 30;
+const SIZE = 50; // player size
+
+function checkCollisions(players, out, canTag) {
+    let it = null;
+    if (canTag) {
+        for (let i = 0; i < players.length - 1; i++) {
+            if (out.has(i)) continue;
+            let p1Position = players[i];
+            for (let j = i + 1; j < players.length; j++) {
+                if (out.has(j)) continue;
+                let p2Position = players[j];
+                // check if x overlaps
+                let leftEdge = Math.max(p1Position.x, p2Position.x);
+                let rightEdge = Math.min(p1Position.x + SIZE, p2Position.x + SIZE);
+                let xOverlap = rightEdge - leftEdge >= 0;
+                // check if y overlaps
+                let topEdge = Math.max(p1Position.y, p2Position.y);
+                let bottomEdge = Math.min(p1Position.y + SIZE, p2Position.y + SIZE);
+                let yOverlap = bottomEdge - topEdge >= 0;
+                // if both overlap, they collided
+                if (xOverlap && yOverlap) {
+                    if (it == j) it = i;
+                    else if (it == i) it = j;
+                    canTag = false;
+                    itCooldown(canTag);
+                }
+            }
+        }
+    }
+    return it;
+}
+
+function itCooldown(canTag) {
+    canTag = false;
+    setTimeout(() => canTag = true, 500);
+}
 
 function startRoomTick(rooms, roomId) {
     const room = rooms.get(roomId);
     if (!room || room.state == "ACTIVE") return;
     room.state = "ACTIVE";
     const numPlayers = room.clients.length;
-    room.remoteUpdate = {0: {x: 10, y: 10}, 1: {x: 429, y: 429}};
-    if (numPlayers >= 3) room.remoteUpdate[2] = {x: 429, y: 10};
-    if (numPlayers >= 4) room.remoteUpdate[3] = {x: 10, y: 429};
+    room.remoteUpdate = { 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
+    if (numPlayers >= 3) room.remoteUpdate[2] = { x: 429, y: 10 };
+    if (numPlayers >= 4) room.remoteUpdate[3] = { x: 10, y: 429 };
     room.tickInterval = setInterval(() => {
         // 1. kill the interval to save CPU
         if (room.clients.size === 0 || room.state === "FINISH") {
@@ -19,6 +55,8 @@ function startRoomTick(rooms, roomId) {
         }
 
         // 2. Prepare the payload for ONLY this room
+        //TODO handle collision logic
+        //TODO broadcast "it" to all players
         const state = room.remoteUpdate;
 
         // 3. Broadcast only to players in THIS room
