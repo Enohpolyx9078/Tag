@@ -2,11 +2,13 @@ const { WebSocketServer } = require('ws');
 
 const TICK_RATE = 30; // refresh rate
 const SIZE = 50; // player size
-const TAG_COOLDOWN = 500; // ms between tags
+const TAG_COOLDOWN = 500; // time between tags in ms
+const MIN_ROUND = 30000; // max round length in ms
+const MAX_ROUND = 90000; // min round length in ms
 
 function checkCollisions(numPlayers, players, out) {
     let it = players.it;
-    const canTag = performance.now() - players.lastTag > TAG_COOLDOWN;
+    const canTag = (performance.now() - players.lastTag) > TAG_COOLDOWN;
     if (canTag) {
         for (let i = 0; i < numPlayers - 1; i++) {
             if (out.has(i)) continue;
@@ -34,13 +36,31 @@ function checkCollisions(numPlayers, players, out) {
     }
 }
 
+function checkPop(timer, players, out, numPlayers) {
+    const pop = (performance.now() - players.lastPop) >= timer;
+    if (pop) {
+        players.popping = players.it;
+        out.add(players.popping);
+        players.lastPop = performance.now();
+        let choice = players.it;
+        while (out.has(choice)) choice = Math.floor(Math.random() * numPlayers);
+        players.it = choice;
+        return Math.floor(Math.random() * (MAX_ROUND - MIN_ROUND)) + MIN_ROUND;
+    }
+}
+
+function checkEndGame() {
+    
+}
+
 function startRoomTick(rooms, roomId) {
     const out = new Set();
     const room = rooms.get(roomId);
+    let timer = Math.floor(Math.random() * (MAX_ROUND - MIN_ROUND)) + MIN_ROUND;
     if (!room || room.state == "ACTIVE") return;
     room.state = "ACTIVE";
     const numPlayers = room.clients.length;
-    room.remoteUpdate = { it: 0, lastTag: performance.now(), 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
+    room.remoteUpdate = { it: 0, popping: null, lastTag: performance.now(), lastPop: performance.now(), 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
     if (numPlayers >= 3) room.remoteUpdate[2] = { x: 429, y: 10 };
     if (numPlayers >= 4) room.remoteUpdate[3] = { x: 10, y: 429 };
     room.tickInterval = setInterval(() => {
@@ -53,6 +73,11 @@ function startRoomTick(rooms, roomId) {
 
         // 2. Prepare the payload for ONLY this room
         checkCollisions(numPlayers, room.remoteUpdate, out);
+        timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
+        checkEndGame();
+
+        console.log("Timer: " + (timer - (performance.now() - room.remoteUpdate.lastPop)));
+        console.log(room.remoteUpdate);
         const state = room.remoteUpdate;
 
         // 3. Broadcast only to players in THIS room

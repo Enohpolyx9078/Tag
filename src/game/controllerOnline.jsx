@@ -44,28 +44,6 @@ export function ControllerOnline({ Receiver, it, setIt, setPopping, players, itC
     }, [time]);
 
     return (
-        gameOver ? null : <ShotClock timer={timer} setTime={setTime} />
+        null
     );
-}
-
-export function ShotClock({ timer, setTime }) {
-    const requestRef = React.useRef();
-    const startTime = React.useRef();
-
-    const animate = async (now) => {
-        if (!startTime.current) startTime.current = now;
-        const deltaTime = now - startTime.current;
-        const remaining = timer - deltaTime;
-        setTime(remaining);
-        if (remaining > 0) requestRef.current = requestAnimationFrame(animate);
-        else {
-            startTime.current = now;
-            requestRef.current = requestAnimationFrame(animate);
-        }
-    }
-
-    React.useEffect(() => {
-        requestRef.current = requestAnimationFrame(animate);
-        return () => cancelAnimationFrame(requestRef.current);
-    }, []);
 }
