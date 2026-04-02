@@ -5,7 +5,7 @@ import { GameOver } from './game-over.jsx';
 import { Rain } from './rain.jsx';
 import { sendStats } from '../lib/lib-requests.js';
 
-export function Arena({ Receiver, you, players, setters, skins, it, setIt, popping, setPopping, size, itClass, gameOver, setGameOver, winner, setWinner }) {
+export function Arena({ Receiver, you, players, setters, skins, it, setIt, popping, setPopping, size, itClass, setItClass, gameOver, setGameOver, winner, setWinner }) {
     // players will be a list of Position objects                    -> [{x:1, y:1, time:1000}]
     // setters will be a list of methods that is 1:1 to players      -> [setter1, setter2]
     // setters will be a list of Skin objects that is 1:1 to players -> [skin1, skin2]
@@ -63,8 +63,8 @@ export function Arena({ Receiver, you, players, setters, skins, it, setIt, poppi
                         startTime: now
                     };
                 };
-                console.log("Popping" + state.popping);
                 if (state.popping !== popping) setPopping(state.popping);
+                if (state.itClass !== itClass) setItClass(state.itClass);
                 setIt(state.it);
             } else if (data.type === 'END') {
                 setWinner(data.winner);

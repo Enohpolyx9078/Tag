@@ -6,7 +6,6 @@ import { Arena } from './arena.jsx';
 import { Timer } from './timers.jsx';
 import { LocalLeft, OnlineLeft } from './left-bar.jsx';
 import { Controller } from './controller.jsx';
-import { ControllerOnline } from './controllerOnline.jsx';
 import { fetchUser } from '../lib/lib-requests.js';
 
 export function Game({ Receiver }) {
@@ -68,12 +67,12 @@ export function Game({ Receiver }) {
 
     return (
         <main className="md:flex md:flex-col md:flex-row md:justify-evenly gap-4">
-            {twoPlayer.current ? <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} setWinner={setWinner} /> : <ControllerOnline Receiver={Receiver} it={it} setIt={setIt} setPopping={setPopping} players={players} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} setWinner={setWinner} />}
+            {twoPlayer.current ? <Controller it={it} setIt={setIt} setPopping={setPopping} players={players} size={size} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} setWinner={setWinner} /> : null}
             <section className="mb-2 md:mb-0 md:grow-1 sidebar-thin card-thin">
                 {twoPlayer.current ? <LocalLeft you={you} skin={skin2} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} it={it} itClass={itClass} />}
             </section>
             <section>
-                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena Receiver={Receiver} you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} setPopping={setPopping} size={size} itClass={itClass} gameOver={gameOver} setGameOver={setGameOver} winner={winner} setWinner={setWinner}/>}
+                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena Receiver={Receiver} you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} setPopping={setPopping} size={size} itClass={itClass} setItClass={setItClass} gameOver={gameOver} setGameOver={setGameOver} winner={winner} setWinner={setWinner}/>}
             </section>
             <section className="md:grow-1 sidebar-thin card-thin">
                 <div className="flex flex-col flex-row flex-wrap items-center mb-4">

@@ -37,11 +37,27 @@ function checkCollisions(numPlayers, players, out) {
 }
 
 function checkPop(timer, players, out, numPlayers) {
+    const time = timer - (performance.now() - players.lastPop);
+
+    switch (players.itClass) {
+        case "it":
+            if (time <= timer / 2) players.itClass = "it-halfway";
+            break;
+        case "it-halfway":
+            if (time <= timer / 4) players.itClass = "it-soon";
+            break;
+        case "it-soon":
+            if (time <= timer / 10) players.itClass = "it-very-soon";
+            break;
+    }
+
     const pop = (performance.now() - players.lastPop) >= timer;
     if (pop) {
         players.popping = players.it;
         out.add(players.popping);
         players.lastPop = performance.now();
+        players.itClass = "it";
+
         let choice = players.it;
         while (out.has(choice)) choice = Math.floor(Math.random() * numPlayers);
         players.it = choice;
@@ -58,7 +74,7 @@ function findWinner(numPlayers, out) {
     return null;
 }
 
-function checkEndGame(numPlayers, room, rooms, roomId, out) {
+function checkEndGame(numPlayers, room, out) {
     let ending = false;
     const winner = findWinner(numPlayers, out);
     if (winner !== null) {
@@ -83,7 +99,7 @@ function startRoomTick(rooms, roomId) {
     if (!room || room.state == "ACTIVE") return;
     room.state = "ACTIVE";
     const numPlayers = room.clients.length;
-    room.remoteUpdate = { it: 0, popping: null, lastTag: performance.now(), lastPop: performance.now(), 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
+    room.remoteUpdate = { it: 0, itClass: "it", popping: null, lastTag: performance.now(), lastPop: performance.now(), 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
     if (numPlayers >= 3) room.remoteUpdate[2] = { x: 429, y: 10 };
     if (numPlayers >= 4) room.remoteUpdate[3] = { x: 10, y: 429 };
     room.tickInterval = setInterval(() => {
@@ -97,7 +113,7 @@ function startRoomTick(rooms, roomId) {
         // 2. Prepare the payload for ONLY this room
         checkCollisions(numPlayers, room.remoteUpdate, out);
         timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
-        if (!ending) ending = checkEndGame(numPlayers, room, rooms, roomId, out);
+        if (!ending) ending = checkEndGame(numPlayers, room, out);
 
         console.log("Timer: " + (timer - (performance.now() - room.remoteUpdate.lastPop)));
         console.log(room.remoteUpdate);
