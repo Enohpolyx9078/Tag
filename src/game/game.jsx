@@ -73,7 +73,7 @@ export function Game({ Receiver }) {
                 {twoPlayer.current ? <LocalLeft you={you} skin={skin2} it={it} gameOver={gameOver} /> : <OnlineLeft players={players} skins={skins} roomCode={roomCode} it={it} itClass={itClass} />}
             </section>
             <section>
-                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena Receiver={Receiver} you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} />}
+                {twoPlayer.current ? <LocalArena you={you} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} winner={winner} /> : <Arena Receiver={Receiver} you={you.current} players={players} setters={setters} skins={skins} it={it} setIt={setIt} popping={popping} size={size} itClass={itClass} gameOver={gameOver} setGameOver={setGameOver} winner={winner} setWinner={setWinner}/>}
             </section>
             <section className="md:grow-1 sidebar-thin card-thin">
                 <div className="flex flex-col flex-row flex-wrap items-center mb-4">

@@ -49,8 +49,13 @@ function checkPop(timer, players, out, numPlayers) {
     }
 }
 
-function checkEndGame() {
-    
+function checkEndGame(numPlayers, out) {
+    if (out.size === numPlayers - 1) {
+        for (let i = 0; i < numPlayers; i++) {
+            if (!out.has(i)) return i;
+        }
+    }
+    return null;
 }
 
 function startRoomTick(rooms, roomId) {
@@ -74,7 +79,18 @@ function startRoomTick(rooms, roomId) {
         // 2. Prepare the payload for ONLY this room
         checkCollisions(numPlayers, room.remoteUpdate, out);
         timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
-        checkEndGame();
+        const winner = checkEndGame(numPlayers, out);
+        if (winner !== null) {
+            console.log("GAME OVER: " + winner);
+            room.state = "FINISH";
+            room.remoteUpdate.winner = winner;
+            room.clients.forEach(player => {
+                player.send(JSON.stringify({ type: 'END', winner: winner }));
+            });
+            clearInterval(room.tickInterval);
+            rooms.delete(roomId);
+            return;
+        }
 
         console.log("Timer: " + (timer - (performance.now() - room.remoteUpdate.lastPop)));
         console.log(room.remoteUpdate);

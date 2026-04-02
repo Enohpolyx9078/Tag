@@ -23,8 +23,9 @@ class lobbyReceiver {
                     this.socket.close();
                     break;
                 case "STARTING":
-                    break;
                 case "TICK":
+                case "END":
+                    // These are handled by React
                     break;
                 default:
                     alert("Something went wrong: " + data.message);
