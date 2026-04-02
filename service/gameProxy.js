@@ -79,7 +79,6 @@ function checkEndGame(numPlayers, room, out) {
     const winner = findWinner(numPlayers, out);
     if (winner !== null) {
         ending = true;
-        console.log("GAME OVER: " + winner);
         setTimeout(() => {
             room.state = "FINISH";
             room.remoteUpdate.winner = winner;
@@ -114,9 +113,6 @@ function startRoomTick(rooms, roomId) {
         checkCollisions(numPlayers, room.remoteUpdate, out);
         timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
         if (!ending) ending = checkEndGame(numPlayers, room, out);
-
-        console.log("Timer: " + (timer - (performance.now() - room.remoteUpdate.lastPop)));
-        console.log(room.remoteUpdate);
         const state = room.remoteUpdate;
 
         // 3. Broadcast only to players in THIS room
@@ -194,17 +190,21 @@ function gameProxy(httpServer, rooms) {
                     // Start the game
                     case "START":
                         room = rooms.get(theClient.roomId);
-                        room.clients.forEach(player => {
-                            player.send(JSON.stringify({ type: 'STARTING' }));
-                        });
-                        startRoomTick(rooms, theClient.roomId);
-                        break;
+                        if (room) {
+                            room.clients.forEach(player => {
+                                player.send(JSON.stringify({ type: 'STARTING' }));
+                            });
+                            startRoomTick(rooms, theClient.roomId);
+                            break;
+                        }
                     // Track movements
                     case "MOVE":
                         room = rooms.get(theClient.roomId);
-                        const { x, y } = data
-                        room.remoteUpdate[theClient.you] = { x, y };
-                        break;
+                        if (room) {
+                            const { x, y } = data
+                            room.remoteUpdate[theClient.you] = { x, y };
+                            break;
+                        }
                     default:
                         theClient.send(JSON.stringify({ message: "Unknown action: " + type }));
                         break;
@@ -217,26 +217,31 @@ function gameProxy(httpServer, rooms) {
         });
         // listen for on close so that empty rooms can be removed
         theClient.on('close', () => {
-            const room = rooms.get(theClient.roomId);
-            if (room) {
-                for (let i = 0; i < room.playerInit.length; i++) {
-                    let current = room.playerInit[i];
-                    if (current.name === theClient.userName) {
-                        room.playerInit.splice(i, 1);
-                        room.clients.splice(i, 1);
-                        break;
+            try {
+                const room = rooms.get(theClient.roomId);
+                if (room) {
+                    for (let i = 0; i < room.playerInit.length; i++) {
+                        let current = room.playerInit[i];
+                        if (current.name === theClient.userName) {
+                            room.playerInit.splice(i, 1);
+                            room.clients.splice(i, 1);
+                            break;
+                        }
                     }
-                }
-            };
-            theClient.send(JSON.stringify({ type: "LEAVE", msg: "Left room" }));
-            for (var i = 0; i < room.clients.length; i++) {
-                let player = room.clients[i];
-                if (player !== theClient) {
-                    player.you = i;
-                    player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
-                }
-            };
+                    for (var i = 0; i < room.clients.length; i++) {
+                        let player = room.clients[i];
+                        if (player !== theClient) {
+                            player.you = i;
+                            player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
+                        }
+                    };
+                };
+                theClient.send(JSON.stringify({ type: "LEAVE", msg: "Left room" }));
+            } catch (err) {
+                console.error("Error on close:", err.message);
+            }
         });
+
 
         // Respond to pong messages by marking the connection alive
         theClient.on('pong', () => {

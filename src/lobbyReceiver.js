@@ -25,6 +25,7 @@ class lobbyReceiver {
                 case "STARTING":
                 case "TICK":
                 case "END":
+                case "MOVE":
                     // These are handled by React
                     break;
                 default:
