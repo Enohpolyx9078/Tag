@@ -1,23 +1,22 @@
 const { WebSocketServer } = require('ws');
 
-const TICK_RATE = 30;
+const TICK_RATE = 30; // refresh rate
 const SIZE = 50; // player size
+const TAG_COOLDOWN = 500; // ms between tags
 
-function checkCollisions(it, numPlayers, players, out, canTag) {
+function checkCollisions(numPlayers, players, out) {
+    let it = players.it;
+    const canTag = performance.now() - players.lastTag > TAG_COOLDOWN;
     if (canTag) {
         for (let i = 0; i < numPlayers - 1; i++) {
             if (out.has(i)) continue;
             let p1Position = players[i];
             for (let j = i + 1; j < numPlayers; j++) {
-                console.log("Positions");
-                console.log(p1Position);
                 if (out.has(j)) continue;
                 let p2Position = players[j];
-                console.log(p2Position);
                 // check if x overlaps
                 let leftEdge = Math.max(p1Position.x, p2Position.x);
                 let rightEdge = Math.min(p1Position.x + SIZE, p2Position.x + SIZE);
-                console.log("X Overlap: " + (rightEdge - leftEdge));
                 let xOverlap = rightEdge - leftEdge >= 0;
                 // check if y overlaps
                 let topEdge = Math.max(p1Position.y, p2Position.y);
@@ -27,28 +26,21 @@ function checkCollisions(it, numPlayers, players, out, canTag) {
                 if (xOverlap && yOverlap) {
                     if (it == j) it = i;
                     else if (it == i) it = j;
-                    canTag = false;
-                    itCooldown(canTag);
+                    players.lastTag = performance.now();
+                    players.it = it;
                 }
             }
         }
     }
-    console.log("it: " + it);
-    return it;
-}
-
-function itCooldown(canTag) {
-    setTimeout(() => canTag = true, 500);
 }
 
 function startRoomTick(rooms, roomId) {
     const out = new Set();
-    const canTag = true;
     const room = rooms.get(roomId);
     if (!room || room.state == "ACTIVE") return;
     room.state = "ACTIVE";
     const numPlayers = room.clients.length;
-    room.remoteUpdate = { it: 0, 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
+    room.remoteUpdate = { it: 0, lastTag: performance.now(), 0: { x: 10, y: 10 }, 1: { x: 429, y: 429 } };
     if (numPlayers >= 3) room.remoteUpdate[2] = { x: 429, y: 10 };
     if (numPlayers >= 4) room.remoteUpdate[3] = { x: 10, y: 429 };
     room.tickInterval = setInterval(() => {
@@ -60,11 +52,7 @@ function startRoomTick(rooms, roomId) {
         }
 
         // 2. Prepare the payload for ONLY this room
-        //TODO handle collision logic
-        //TODO broadcast "it" to all players
-        const newIt = checkCollisions(room.remoteUpdate.it, numPlayers, room.remoteUpdate, out, canTag);
-        if (newIt !== null) room.remoteUpdate.it = newIt;
-
+        checkCollisions(numPlayers, room.remoteUpdate, out);
         const state = room.remoteUpdate;
 
         // 3. Broadcast only to players in THIS room
