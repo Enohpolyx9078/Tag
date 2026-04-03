@@ -15,6 +15,7 @@ function formatTime(timeStamp) {
 }
 
 export function Profile() {
+    const [isLoading, setIsLoading] = React.useState(false);
     const [user, setUser] = React.useState('');
     const [skin, setSkin] = React.useState({});
     const [skins, setSkins] = React.useState({ list: [] });
@@ -79,16 +80,17 @@ export function Profile() {
     }
 
     async function createRoom() {
+        setIsLoading(true);
         // get the weather in Chile to determine map conditions
         const resp = await fetch('https://api.open-meteo.com/v1/forecast?latitude=-52.95215&longitude=-74.09155&current=precipitation&forecast_days=1');
         const conditions = await resp.json();
         const rain = conditions.current.precipitation > 0;
-        
+
         localStorage.removeItem("roomCode");
         const res = await fetch('api/rooms', {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({rain})
+            body: JSON.stringify({ rain })
         });
         const data = await res.json();
         if (res.ok) {
@@ -132,10 +134,41 @@ export function Profile() {
                 </div>
                 <div className="col-span-1 grid grid-flow-col grid-rows-5">
                     <input ref={roomCode} className="border-2 border-white" id="roomCode" placeholder="Room Code" />
-                    <button type="button" onClick={() => joinRoom()} className="main-button" to="/game">Join Game</button>
-                    <button onClick={() => createRoom()} className="main-button">Create Game</button>
-                    <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true">2 Player Game</NavLink>
-                    <button onClick={() => onLogout()} className="outline-button">Logout</button>
+                    <button type="button" onClick={() => joinRoom()} className="main-button" to="/game" disabled={isLoading}>Join Game</button>
+                    <button
+                        id="create"
+                        onClick={createRoom}
+                        disabled={isLoading}
+                        className={`main-button flex items-center justify-center min-w-[120px] transition-opacity ${isLoading ? 'cursor-not-allowed opacity-75' : ''
+                            }`}
+                    >
+                        {isLoading ? (
+                            <svg
+                                className="animate-spin h-5 w-5 text-current"
+                                xmlns="http://www.w3.org/2000/svg"
+                                fill="none"
+                                viewBox="0 0 24 24"
+                            >
+                                <circle
+                                    className="opacity-25"
+                                    cx="12"
+                                    cy="12"
+                                    r="10"
+                                    stroke="currentColor"
+                                    strokeWidth="4"
+                                />
+                                <path
+                                    className="opacity-75"
+                                    fill="currentColor"
+                                    d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"
+                                />
+                            </svg>
+                        ) : (
+                            "Create Game"
+                        )}
+                    </button>
+                    <NavLink onClick={() => prepTwoPlayer()} className="main-button" to="/game?twoPlayer=true" disabled={isLoading}>2 Player Game</NavLink>
+                    <button onClick={() => onLogout()} className="outline-button" disabled={isLoading}>Logout</button>
                 </div>
             </section>
             <section className="md:grid md:grid-flow-col md:grid-cols-2 gap-4">
