@@ -138,7 +138,7 @@ export function Profile() {
                     <button onClick={() => onLogout()} className="outline-button">Logout</button>
                 </div>
             </section>
-            <section className="md:grid md:grid-flow-col md:grid-cols-3 gap-4">
+            <section className="md:grid md:grid-flow-col md:grid-cols-2 gap-4">
                 <div className="col-span-1 card mb-4 md:mb-0 half-screen">
                     <h3>Skins</h3>
                     <div className="overflow-x-auto">
