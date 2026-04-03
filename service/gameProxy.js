@@ -103,7 +103,7 @@ function startRoomTick(rooms, roomId) {
     if (numPlayers >= 4) room.remoteUpdate[3] = { x: 10, y: 429 };
     room.tickInterval = setInterval(() => {
         // 1. kill the interval to save CPU
-        if (room.clients.size === 0 || room.state === "FINISH") {
+        if (room.clients.length === 0 || room.state === "FINISH") {
             clearInterval(room.tickInterval);
             rooms.delete(roomId);
             return;
@@ -114,7 +114,6 @@ function startRoomTick(rooms, roomId) {
         timer = checkPop(timer, room.remoteUpdate, out, numPlayers) ?? timer;
         if (!ending) ending = checkEndGame(numPlayers, room, out);
         const state = room.remoteUpdate;
-        console.log(state);
 
         // 3. Broadcast only to players in THIS room
         room.clients.forEach(player => {
@@ -170,21 +169,12 @@ function gameProxy(httpServer, rooms) {
                     case "LEAVE":
                         room = rooms.get(theClient.roomId);
                         if (room) {
-                            for (let i = 0; i < room.playerInit.length; i++) {
-                                let current = room.playerInit[i];
-                                if (current.name === theClient.userName) {
-                                    room.playerInit.splice(i, 1);
+                            for (let i = 0; i < room.clients.length; i++) {
+                                let current = room.clients[i];
+                                if (current === theClient) {
                                     room.clients.splice(i, 1);
                                     break;
                                 }
-                            }
-                        };
-                        theClient.send(JSON.stringify({ type: "LEAVE", msg: "Left room" }));
-                        for (var i = 0; i < room.clients.length; i++) {
-                            let player = room.clients[i];
-                            if (player !== theClient) {
-                                player.you = i;
-                                player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
                             }
                         };
                         break;
@@ -219,25 +209,16 @@ function gameProxy(httpServer, rooms) {
         // listen for on close so that empty rooms can be removed
         theClient.on('close', () => {
             try {
+                theClient.isAlive = false;
                 const room = rooms.get(theClient.roomId);
                 if (room) {
-                    for (let i = 0; i < room.playerInit.length; i++) {
-                        let current = room.playerInit[i];
-                        if (current.name === theClient.userName) {
-                            room.playerInit.splice(i, 1);
+                    for (let i = 0; i < room.clients.length; i++) {
+                        if (theClient = room.clients[i]) {
                             room.clients.splice(i, 1);
                             break;
                         }
                     }
-                    for (var i = 0; i < room.clients.length; i++) {
-                        let player = room.clients[i];
-                        if (player !== theClient) {
-                            player.you = i;
-                            player.send(JSON.stringify({ playerInit: room.playerInit, type: "UPDATE", you: i }));
-                        }
-                    };
                 };
-                theClient.send(JSON.stringify({ type: "LEAVE", msg: "Left room" }));
             } catch (err) {
                 console.error("Error on close:", err.message);
             }
@@ -254,7 +235,16 @@ function gameProxy(httpServer, rooms) {
     setInterval(() => {
         socketServer.clients.forEach(function each(client) {
             if (client.isAlive === false) {
-                //TODO remove this client from their room
+                // remove this client from their room
+                const room = rooms.get(client.roomId);
+                if (room) {
+                    for (let i = 0; i < room.clients.length; i++) {
+                        if (client = room.clients[i]) {
+                            room.clients.splice(i, 1);
+                            break;
+                        }
+                    }
+                };
                 return client.terminate();
             }
 
