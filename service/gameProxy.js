@@ -197,7 +197,6 @@ function gameProxy(httpServer, rooms) {
                             break;
                         }
                     default:
-                        theClient.send(JSON.stringify({ message: "Unknown action: " + type }));
                         break;
                 }
 
