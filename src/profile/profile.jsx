@@ -1,6 +1,6 @@
 import React, { useRef } from 'react';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { fetchUser, fetchSkins, fetchRoom, joinRoom } from '../lib/lib-requests';
+import { fetchUser, fetchSkins, fetchRoom } from '../lib/lib-requests';
 
 function formatTime(timeStamp) {
     let seconds = Math.floor(timeStamp / 1000);
@@ -15,7 +15,6 @@ function formatTime(timeStamp) {
 }
 
 export function Profile() {
-    let [analysis, setAnalysis] = React.useState(<p className="m-7"></p>);
     const [user, setUser] = React.useState('');
     const [skin, setSkin] = React.useState({});
     const [skins, setSkins] = React.useState({ list: [] });
@@ -109,26 +108,6 @@ export function Profile() {
         localStorage.setItem("you", 0);
     }
 
-    async function getAnalysis(setAnalysis) {
-        setAnalysis(
-            (<div class="animate-pulse m-4">
-                <svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" fill="currentColor" class="bi bi-stars" viewBox="0 0 16 16">
-                    <path d="M7.657 6.247c.11-.33.576-.33.686 0l.645 1.937a2.89 2.89 0 0 0 1.829 1.828l1.936.645c.33.11.33.576 0 .686l-1.937.645a2.89 2.89 0 0 0-1.828 1.829l-.645 1.936a.361.361 0 0 1-.686 0l-.645-1.937a2.89 2.89 0 0 0-1.828-1.828l-1.937-.645a.361.361 0 0 1 0-.686l1.937-.645a2.89 2.89 0 0 0 1.828-1.828zM3.794 1.148a.217.217 0 0 1 .412 0l.387 1.162c.173.518.579.924 1.097 1.097l1.162.387a.217.217 0 0 1 0 .412l-1.162.387A1.73 1.73 0 0 0 4.593 5.69l-.387 1.162a.217.217 0 0 1-.412 0L3.407 5.69A1.73 1.73 0 0 0 2.31 4.593l-1.162-.387a.217.217 0 0 1 0-.412l1.162-.387A1.73 1.73 0 0 0 3.407 2.31zM10.863.099a.145.145 0 0 1 .274 0l.258.774c.115.346.386.617.732.732l.774.258a.145.145 0 0 1 0 .274l-.774.258a1.16 1.16 0 0 0-.732.732l-.258.774a.145.145 0 0 1-.274 0l-.258-.774a1.16 1.16 0 0 0-.732-.732L9.1 2.137a.145.145 0 0 1 0-.274l.774-.258c.346-.115.617-.386.732-.732z" />
-                </svg>
-            </div>)
-        );
-        // Placeholder for API call later
-        setTimeout(() => {
-            setAnalysis(
-                (<p>
-                    <em>
-                        During the last game, you spent 76% of the time as "It." Your average distance from "It" while not "It" was 10 units. Try to stay further away from "It" to avoing being caught.
-                    </em>
-                </p>)
-            )
-        }, 3000);
-    }
-
     async function onLogout() {
         const res = await fetch('api/auth', {
             method: 'DELETE',
@@ -171,11 +150,6 @@ export function Profile() {
                     <p>Time It: {formatTime(times.it)}</p>
                     <p>Time Not It: {formatTime(times.notIt)}</p>
                     <p>Win to Loss: {times.wins} - {times.losses}</p>
-                </div>
-                <div className="col-span-1 card mb-4 md:mb-0 half-screen">
-                    <h3>AI Analysis</h3>
-                    <a className="outline-button cursor-pointer" onClick={() => getAnalysis(setAnalysis)}>Get Analysis</a>
-                    {analysis}
                 </div>
             </section>
         </main>
