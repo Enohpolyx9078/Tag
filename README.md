@@ -143,8 +143,8 @@ For this deliverable I did the following. I checked the box `[x]` and added a de
 
 For this deliverable I did the following. I checked the box `[x]` and added a description for things I completed.
 
-- [ ] **Backend listens for WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Frontend makes WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **Data sent over WebSocket connection** - I did not complete this part of the deliverable.
-- [ ] **WebSocket data displayed** - I did not complete this part of the deliverable.
-- [ ] **Application is fully functional** - I did not complete this part of the deliverable.
+- [x] **Backend listens for WebSocket connection** - The backend connects to my gameProxy.js, which is the WebSocket
+- [x] **Frontend makes WebSocket connection** - When you go to the profile page and start or join a game, a WebSocket conneciton is established to make the game room.
+- [x] **Data sent over WebSocket connection** - All of the game data is sent over WebSocket. All of it. Moving, winning, losing, popping.
+- [x] **WebSocket data displayed** - The game is displayed with WebSocket. The other players' movements are sent to you live. Neat!
+- [x] **Application is fully functional** - The app works start to finish! You can start, join, and play games, track your stats, change your skin, and overall dominate your friends with this modern take on playground games!

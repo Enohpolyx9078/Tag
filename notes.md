@@ -44,3 +44,6 @@ It took a hot sec to get everything plugged in, but now all the stuff works thro
 ## Database
 
 MongoDB was very easy to plug in! I left some stuff in memory because its statelss and WebSocket is going to handle it later, but overall, a very quick implementation.
+
+## WebSocket
+That took a FAT second cuz basically all of my game logic came from WebSocket. The good news is, it now works! There's definitely more I could do to improve the latency, load times, etc..., but overall, I'm happy with it!
